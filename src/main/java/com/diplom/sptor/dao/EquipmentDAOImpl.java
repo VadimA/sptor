@@ -20,7 +20,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
 
     @SuppressWarnings("unchecked")
     public List<Equipment> getEquipments() {
-        return null;
+        return sessionFactory.getCurrentSession().createQuery("Select equipment_name, equipment_id from equipment").list();
     }
 
     public void removeEquipments(Integer id) {
