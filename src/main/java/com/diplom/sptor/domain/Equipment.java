@@ -8,29 +8,37 @@ import java.sql.Date;
  * Created by user on 25.11.2015.
  */
 @Entity
-@Table(name = "equipment")
+@Table(name = "toir.equipment")
 public class Equipment implements Serializable{
 
-    private Integer equipment_ID;
+    @Id
+    @Column(name = "equipment_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer equipment_id;
+    @Column(name = "equipment_name")
     private String equipment_name;
+    @Column(name = "type_of_equipment_id")
     private Integer type_of_equipment_id;
+    @Column(name = "subdivision_id")
     private Integer subdivision_id;
+    @Column(name = "inventory_number")
     private Integer inventory_number;
+    @Column(name = "graduation_year")
     private Date graduation_year;
+    @Column(name = "producer_of_equipment")
     private String producer_of_equipment;
+    @Column(name = "description")
     private String description;
 
     public Equipment() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getEquipment_ID() {
-        return equipment_ID;
+    public Integer getEquipment_id() {
+        return equipment_id;
     }
 
-    public void setEquipment_ID(Integer equipment_ID) {
-        this.equipment_ID = equipment_ID;
+    public void setEquipment_id(Integer equipment_id) {
+        this.equipment_id = equipment_id;
     }
 
     public String getEquipment_name() {
@@ -96,7 +104,7 @@ public class Equipment implements Serializable{
 
         Equipment equipment = (Equipment) o;
 
-        if (!getEquipment_ID().equals(equipment.getEquipment_ID())) return false;
+        if (!getEquipment_id().equals(equipment.getEquipment_id())) return false;
         if (!getEquipment_name().equals(equipment.getEquipment_name())) return false;
         if (!getType_of_equipment_id().equals(equipment.getType_of_equipment_id())) return false;
         if (!getSubdivision_id().equals(equipment.getSubdivision_id())) return false;
@@ -111,7 +119,7 @@ public class Equipment implements Serializable{
 
     @Override
     public int hashCode() {
-        int result = getEquipment_ID().hashCode();
+        int result = getEquipment_id().hashCode();
         result = 31 * result + getEquipment_name().hashCode();
         result = 31 * result + getType_of_equipment_id().hashCode();
         result = 31 * result + getSubdivision_id().hashCode();

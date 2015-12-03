@@ -18,14 +18,14 @@
   Add a Equipment
 </h1>
 
-<c:url var="addAction" value="//equipment/add" ></c:url>
+<c:url var="addAction" value="/equipment/add" ></c:url>
 
 <form:form action="${addAction}" commandName="equipment">
   <table>
-    <c:if test="${!empty equipment.equipment_ID}">
+    <c:if test="${!empty equipment.equipment_id}">
       <tr>
         <td>
-          <form:label path="equipment_ID">
+          <form:label path="equipment_id">
             <spring:message text="ID"/>
           </form:label>
         </td>
@@ -35,6 +35,16 @@
         </td>
       </tr>
     </c:if>
+    <tr>
+      <td>
+        <form:label path="equipment_id">
+          <spring:message text="ID"/>
+        </form:label>
+      </td>
+      <td>
+        <form:input path="equipment_id" />
+      </td>
+    </tr>
     <tr>
       <td>
         <form:label path="equipment_name">
@@ -56,12 +66,32 @@
       </td>
     </tr>
     <tr>
+      <td>
+        <form:label path="type_of_equipment_id">
+          <spring:message text="Type_of_equipment"/>
+        </form:label>
+      </td>
+      <td>
+        <form:input path="type_of_equipment_id" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <form:label path="subdivision_id">
+          <spring:message text="Subdiviion ID"/>
+        </form:label>
+      </td>
+      <td>
+        <form:input path="subdivision_id" />
+      </td>
+    </tr>
+    <tr>
       <td colspan="2">
-        <c:if test="${!empty equipment.equipment_ID}">
+        <c:if test="${!empty equipment.equipment_id}">
           <input type="submit"
                  value="<spring:message text="Edit Equipment"/>" />
         </c:if>
-        <c:if test="${empty equipment.equipment_ID}">
+        <c:if test="${empty equipment.equipment_id}">
           <input type="submit"
                  value="<spring:message text="Add Equipment"/>" />
         </c:if>
@@ -83,7 +113,7 @@
     </tr>
     <c:forEach items="${listEquipments}" var="equipment">
       <tr>
-        <td>${equipment.equipment_ID}</td>
+        <td>${equipment.equipment_id}</td>
         <td>${equipment.equipment_name}</td>
         <td>${equipment.inventory_number}</td>
         <td>${equipment.producer_of_equipment}</td>

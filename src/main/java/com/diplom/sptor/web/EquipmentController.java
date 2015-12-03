@@ -21,34 +21,23 @@ import java.util.Set;
 @Controller
 @RequestMapping("/")
 public class EquipmentController {
+	private EquipmentService EquipmentService;
 
-	private EquipmentServiceImpl equipmentService;
-
-	public void setEquipmentService(EquipmentServiceImpl equipmentService){
-		this.equipmentService = equipmentService;
+	@Autowired(required=true)
+	public void setEquipmentService(EquipmentService EquipmentService){
+		this.EquipmentService = EquipmentService;
 	}
 
 	@RequestMapping(value = "/equipment", method = RequestMethod.GET)
 	public String listEquipments(Model model) {
-		List<Equipment> equipments = new ArrayList<Equipment>(2);
-		Equipment equipment1 = new Equipment();
-		equipment1.setEquipment_ID(2);
-		equipment1.setEquipment_name("aaaa");
-		Equipment equipment2 = new Equipment();
-		equipment2.setEquipment_ID(3);
-		equipment2.setEquipment_name("bbb");
-		equipments.add(equipment1);
-		equipments.add(equipment2);
 		model.addAttribute("equipment", new Equipment());
-		model.addAttribute("listEquipments", this.equipmentService.listEquipments());
+		model.addAttribute("listEquipments", this.EquipmentService.listEquipments());
 		return "equipment";
 	}
 
 	@RequestMapping(value= "/equipment/add", method = RequestMethod.POST)
 	public String addPerson(@ModelAttribute("equipment") Equipment equipment){
-
-			//new person, add it
-			this.equipmentService.addEquipment(equipment);
+			this.EquipmentService.addEquipment(equipment);
 		return "redirect:/equipment";
 
 	}

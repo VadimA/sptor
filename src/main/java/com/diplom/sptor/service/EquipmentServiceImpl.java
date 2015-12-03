@@ -3,6 +3,7 @@ package com.diplom.sptor.service;
 import com.diplom.sptor.dao.EquipmentDAO;
 import com.diplom.sptor.dao.EquipmentDAOImpl;
 import com.diplom.sptor.domain.Equipment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

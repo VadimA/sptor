@@ -55,7 +55,7 @@
     <beans:bean id="equipmentDAO" class="com.diplom.sptor.dao.EquipmentDAOImpl">
         <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </beans:bean>
-    <beans:bean id="equipmentervice" class="com.diplom.sptor.service.EquipmentServiceImpl">
+    <beans:bean id="EquipmentService" class="com.diplom.sptor.service.EquipmentServiceImpl">
         <beans:property name="equipmentDAO" ref="equipmentDAO"></beans:property>
     </beans:bean>
     <context:component-scan base-package="com.diplom.sptor" />
