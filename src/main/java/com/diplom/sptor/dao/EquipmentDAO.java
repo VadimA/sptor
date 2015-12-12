@@ -14,4 +14,6 @@ public interface EquipmentDAO {
     public List<Equipment> listEquipments();
 
     public Equipment getEquipmentById(int id);
+
+    public void deleteEquipment(int id);
 }

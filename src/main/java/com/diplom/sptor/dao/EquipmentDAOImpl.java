@@ -40,4 +40,8 @@ public class EquipmentDAOImpl implements EquipmentDAO {
         Equipment equipment = (Equipment) session.load(Equipment.class, new Integer(id));
         return equipment;
     }
+
+    public void deleteEquipment(int id) {
+
+    }
 }
