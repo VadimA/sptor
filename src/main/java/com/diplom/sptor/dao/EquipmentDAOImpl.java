@@ -12,7 +12,7 @@ import java.util.List;
  * Created by user on 27.11.2015.
  */
 @Repository
-public class EquipmentDAOImpl implements EquipmentDAO {
+public class EquipmentDAO implements GeneralEntityDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -39,5 +39,9 @@ public class EquipmentDAOImpl implements EquipmentDAO {
         Session session = this.sessionFactory.getCurrentSession();
         Equipment equipment = (Equipment) session.load(Equipment.class, new Integer(id));
         return equipment;
+    }
+
+    public void deleteEquipment(int id) {
+
     }
 }
