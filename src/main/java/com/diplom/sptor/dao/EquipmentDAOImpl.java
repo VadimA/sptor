@@ -12,7 +12,7 @@ import java.util.List;
  * Created by user on 27.11.2015.
  */
 @Repository
-public class EquipmentDAO implements GeneralEntityDAO {
+public class EquipmentDAOImpl implements EquipmentDAO {
 
     @Autowired
     private SessionFactory sessionFactory;

@@ -1,5 +1,7 @@
 package com.diplom.sptor.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -10,11 +12,14 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "toir.subdivisions")
+@SequenceGenerator(name="seq", initialValue=4, allocationSize=100)
 public class Subdivisions implements Serializable{
 
     @Id
-    @Column(name = "equipment_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name="kaugen" , strategy="increment")
+    @GeneratedValue(generator="kaugen")
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    //@GeneratedValue(strategy=GenerationType.IDENTITY)
     private int subdivision_id;
 
     private String subdivision_name;
@@ -22,14 +27,14 @@ public class Subdivisions implements Serializable{
     private String responsible;
     private String description;
 
-    public Subdivision(String subdivision_name, String abbreviation, String responsible, String description) {
+    public Subdivisions(String subdivision_name, String abbreviation, String responsible, String description) {
         this.subdivision_name = subdivision_name;
         this.abbreviation = abbreviation;
         this.responsible = responsible;
         this.description = description;
     }
 
-    public Subdivision() {}
+    public Subdivisions() {}
 
     public int getSubdivision_id() {
         return subdivision_id;
@@ -67,16 +72,16 @@ public class Subdivisions implements Serializable{
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String descriptiontds) {
         this.description = description;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Subdivision)) return false;
+        if (!(o instanceof Subdivisions)) return false;
 
-        Subdivision that = (Subdivision) o;
+        Subdivisions that = (Subdivisions) o;
 
         if (getSubdivision_id() != that.getSubdivision_id()) return false;
         if (!getSubdivision_name().equals(that.getSubdivision_name())) return false;

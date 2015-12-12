@@ -1,10 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ page session="false" %>
+<%@ page session="false" isELIgnored="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+
 <html>
 <head>
-  <title>Person Page</title>
+  <title>Equipment Page</title>
   <style type="text/css">
     .tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
     .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
@@ -14,11 +15,7 @@
 </head>
 <body>
 
-<h1>
-  Add a Equipment
-</h1>
-
-<c:url var="addAction" value="/equipment/add" ></c:url>
+<c:url var="addAction" value="//equipment/add" ></c:url>
 
 <form:form action="${addAction}" commandName="equipment">
   <table>
@@ -30,21 +27,11 @@
           </form:label>
         </td>
         <td>
-          <form:input path="id" readonly="true" size="8"  disabled="true" />
-          <form:hidden path="id" />
+          <form:input path="equipment_id" readonly="true" size="8"  disabled="true" />
+          <form:hidden path="equipment_id" />
         </td>
       </tr>
     </c:if>
-    <tr>
-      <td>
-        <form:label path="equipment_id">
-          <spring:message text="ID"/>
-        </form:label>
-      </td>
-      <td>
-        <form:input path="equipment_id" />
-      </td>
-    </tr>
     <tr>
       <td>
         <form:label path="equipment_name">
@@ -57,18 +44,8 @@
     </tr>
     <tr>
       <td>
-        <form:label path="inventory_number">
-          <spring:message text="Inventory Number"/>
-        </form:label>
-      </td>
-      <td>
-        <form:input path="inventory_number" />
-      </td>
-    </tr>
-    <tr>
-      <td>
         <form:label path="type_of_equipment_id">
-          <spring:message text="Type_of_equipment"/>
+          <spring:message text="type_of_equipment_id"/>
         </form:label>
       </td>
       <td>
@@ -78,7 +55,7 @@
     <tr>
       <td>
         <form:label path="subdivision_id">
-          <spring:message text="Subdiviion ID"/>
+          <spring:message text="subdivision_id"/>
         </form:label>
       </td>
       <td>
@@ -86,20 +63,62 @@
       </td>
     </tr>
     <tr>
+      <td>
+        <form:label path="inventory_number">
+          <spring:message text="inventory_number"/>
+        </form:label>
+      </td>
+      <td>
+        <form:input path="inventory_number" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <form:label path="graduation_year">
+          <spring:message text="graduation_year"/>
+        </form:label>
+      </td>
+      <td>
+        <form:input path="graduation_year" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <form:label path="producer_of_equipment">
+          <spring:message text="producer_of_equipment"/>
+        </form:label>
+      </td>
+      <td>
+        <form:input path="producer_of_equipment" />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <form:label path="description">
+          <spring:message text="description"/>
+        </form:label>
+      </td>
+      <td>
+        <form:input path="description" />
+      </td>
+    </tr>
+
+    <tr>
       <td colspan="2">
         <c:if test="${!empty equipment.equipment_id}">
           <input type="submit"
-                 value="<spring:message text="Edit Equipment"/>" />
+                 value="<spring:message text="Edit Person"/>" />
         </c:if>
         <c:if test="${empty equipment.equipment_id}">
           <input type="submit"
-                 value="<spring:message text="Add Equipment"/>" />
+                 value="<spring:message text="Add Person"/>" />
         </c:if>
       </td>
     </tr>
   </table>
 </form:form>
 <br>
+
 
 <h1>Equipment List</h1>
 <c:if test="${!empty listEquipments}">
