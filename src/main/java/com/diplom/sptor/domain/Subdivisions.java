@@ -1,6 +1,7 @@
 package com.diplom.sptor.domain;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "toir.subdivisions")
-@SequenceGenerator(name="seq", initialValue=4, allocationSize=100)
+@Proxy(lazy=false)
 public class Subdivisions implements Serializable{
 
     @Id

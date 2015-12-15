@@ -1,5 +1,8 @@
 package com.diplom.sptor.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -10,11 +13,12 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "toir.type_of_equipment")
+@Proxy(lazy=false)
 public class TypeOfEquipment implements Serializable {
 
     @Id
-    @Column(name = "equipment_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name="kaugen" , strategy="increment")
+    @GeneratedValue(generator="kaugen")
     private int type_of_equipment_id;
     private String type_of_equipment_name;
     private String description;

@@ -15,81 +15,51 @@
 </head>
 <body>
 
-<c:url var="addAction" value="/equipment/add" ></c:url>
+<c:url var="addAction" value="/spares/add" ></c:url>
 
-<form:form action="${addAction}" commandName="equipment">
+<form:form action="${addAction}" commandName="spare">
   <table>
-    <c:if test="${!empty equipment.equipment_id}">
+    <c:if test="${!empty spare.spare_id}">
       <tr>
         <td>
-          <form:label path="equipment_id">
+          <form:label path="spare_id">
             <spring:message text="ID"/>
           </form:label>
         </td>
         <td>
-          <form:input path="equipment_id" readonly="true" size="8"  disabled="true" />
-          <form:hidden path="equipment_id" />
+          <form:input path="spare_id" readonly="true" size="8"  disabled="true" />
+          <form:hidden path="spare_id" />
         </td>
       </tr>
     </c:if>
     <tr>
       <td>
-        <form:label path="equipment_name">
+        <form:label path="spare_name">
           <spring:message text="Name"/>
         </form:label>
       </td>
       <td>
-        <form:input path="equipment_name" />
+        <form:input path="spare_name" />
       </td>
     </tr>
     <tr>
       <td>
-        <form:label path="type_of_equipment_id">
-          <spring:message text="type_of_equipment_id"/>
+        <form:label path="spare_producer">
+          <spring:message text="spare_producer"/>
         </form:label>
       </td>
       <td>
-        <form:input path="type_of_equipment_id" />
+        <form:input path="spare_producer" />
       </td>
     </tr>
     <tr>
       <td>
-        <form:label path="subdivision_id">
-          <spring:message text="subdivision_id"/>
+        <form:label path="price">
+          <spring:message text="price"/>
         </form:label>
       </td>
       <td>
-        <form:input path="subdivision_id" />
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <form:label path="inventory_number">
-          <spring:message text="inventory_number"/>
-        </form:label>
-      </td>
-      <td>
-        <form:input path="inventory_number" />
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <form:label path="graduation_year">
-          <spring:message text="graduation_year"/>
-        </form:label>
-      </td>
-      <td>
-        <form:input path="graduation_year" />
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <form:label path="producer_of_equipment">
-          <spring:message text="producer_of_equipment"/>
-        </form:label>
-      </td>
-      <td>
-        <form:input path="producer_of_equipment" />
+        <form:input path="price" />
       </td>
     </tr>
     <tr>
@@ -102,14 +72,13 @@
         <form:input path="description" />
       </td>
     </tr>
-
     <tr>
       <td colspan="2">
-        <c:if test="${!empty equipment.equipment_id}">
+        <c:if test="${!empty spare.spare_id}">
           <input type="submit"
                  value="<spring:message text="Edit Person"/>" />
         </c:if>
-        <c:if test="${empty equipment.equipment_id}">
+        <c:if test="${empty spare.spare_id}">
           <input type="submit"
                  value="<spring:message text="Add Person"/>" />
         </c:if>
@@ -121,22 +90,26 @@
 
 
 <h1>Equipment List</h1>
-<c:if test="${!empty listEquipment}">
+<c:if test="${!empty listSpares}">
   <table class="tg">
     <tr>
-      <th width="80">Equipment ID</th>
-      <th width="120">Equipment Name</th>
-      <th width="120">Inventory Number</th>
-      <th width="120">Producer </th>
+      <th width="80">Spare ID</th>
+      <th width="120">Spare Name</th>
+      <th width="120">Spare Producer</th>
+      <th width="120">Price</th>
       <th width="120">Description</th>
+      <th width="80">Edit</th>
+      <th width="80">Delete</th>
     </tr>
-    <c:forEach items="${listEquipment}" var="equipment">
+    <c:forEach items="${listSpares}" var="spare">
       <tr>
-        <td>${equipment.equipment_id}</td>
-        <td>${equipment.equipment_name}</td>
-        <td>${equipment.inventory_number}</td>
-        <td>${equipment.producer_of_equipment}</td>
-        <td>${equipment.description}</td>
+        <td>${spare.spare_id}</td>
+        <td>${spare.spare_name}</td>
+        <td>${spare.spare_producer}</td>
+        <td>${spare.price}</td>
+        <td>${spare.description}</td>
+        <td><a href="<c:url value='type/edit/${spare.spare_id}' />" >Edit</a></td>
+        <td><a href="<c:url value='type/remove/${spare.spare_id}' />" >Delete</a></td>
       </tr>
     </c:forEach>
   </table>
