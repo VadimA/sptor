@@ -6,8 +6,10 @@
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+		<param-value>/WEB-INF/spring/appServlet/servlet-context.xml,
+			/WEB-INF/spring/spring-security.xml</param-value>
 	</context-param>
+
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
@@ -21,6 +23,7 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -38,6 +41,23 @@
 	</jsp-config>
 
 	<filter>
+		<filter-name>characterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>characterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+<!--	<filter>
 		<filter-name>charsetFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
@@ -54,6 +74,20 @@
 	<filter-mapping>
 		<filter-name>charsetFilter</filter-name>
 		<url-pattern>/*</url-pattern>
+	</filter-mapping> !-->
+
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+	<welcome-file-list>
+		<welcome-file>WEB-INF/pages/index.html</welcome-file>
+	</welcome-file-list>
 
 </web-app>

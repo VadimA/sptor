@@ -1,6 +1,6 @@
 package com.diplom.sptor.service;
 
-import com.diplom.sptor.domain.RepairSheet;
+import com.diplom.sptor.domain.*;
 
 import java.util.List;
 
@@ -18,4 +18,14 @@ public interface RepairSheetService {
     public void deleteRepairSheet(int id);
 
     public void updateRepairSheet(RepairSheet repairSheet);
+
+    public List<RepairSheet> getRepairSheetByStatus(Status status);
+
+    public List<RepairSheet> getRepairSheetByResponsibleForDelivery(User user);
+
+    public List<RepairSheet> getRepairSheetByResponsibleAndStatus(User user, int status);
+
+    public List<RepairSheet> getTypeOfMaintenanceOfRepairByEquipmentAndComponents(Equipment equipment, Components components);
+
+    public List<RepairSheet> getRepairSheetByEquipment(Equipment equipment);
 }

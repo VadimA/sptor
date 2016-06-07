@@ -1,11 +1,14 @@
 package com.diplom.sptor.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,6 +30,10 @@ public class Subdivisions implements Serializable{
     private String abbreviation;
     private String responsible;
     private String description;
+
+    @OneToMany(mappedBy = "subdivision",fetch = FetchType.LAZY)
+    @JsonIgnore
+    private  Set<Equipment> equipments_sub = new HashSet<Equipment>();
 
     public Subdivisions(String subdivision_name, String abbreviation, String responsible, String description) {
         this.subdivision_name = subdivision_name;
@@ -73,10 +80,18 @@ public class Subdivisions implements Serializable{
         return description;
     }
 
-    public void setDescription(String descriptiontds) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
+    public Set<Equipment> getEquipments_sub() {
+        return equipments_sub;
+    }
+
+    public void addEquipments(Equipment equipment) {
+        equipment.setSubdivision(this);
+        this.equipments_sub.add(equipment);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

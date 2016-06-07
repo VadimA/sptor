@@ -1,5 +1,6 @@
 package com.diplom.sptor.dao;
 
+import com.diplom.sptor.domain.Equipment;
 import com.diplom.sptor.domain.TechnologicalCard;
 import com.diplom.sptor.domain.TypeOfEquipment;
 
@@ -19,4 +20,6 @@ public interface TechnologicalCardDAO{
         public void deleteCard(int id);
 
         public void updateCard(TechnologicalCard technologicalCard);
+
+        public List<TechnologicalCard> getTechCardByEquipment(Equipment equipment);
 }

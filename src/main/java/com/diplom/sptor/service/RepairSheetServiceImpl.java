@@ -2,7 +2,7 @@ package com.diplom.sptor.service;
 
 import com.diplom.sptor.dao.RepairSheetDAO;
 import com.diplom.sptor.dao.SpareDAO;
-import com.diplom.sptor.domain.RepairSheet;
+import com.diplom.sptor.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,5 +43,28 @@ public class RepairSheetServiceImpl implements RepairSheetService {
     @Transactional
     public void updateRepairSheet(RepairSheet repairSheet) {
         this.repairSheetDAO.updateRepairSheet(repairSheet);
+    }
+
+    @Transactional
+    public List<RepairSheet> getRepairSheetByStatus(Status status){
+        return this.repairSheetDAO.getRepairSheetByStatus(status);
+    }
+    @Transactional
+    public List<RepairSheet> getRepairSheetByResponsibleForDelivery(User user){
+        return this.repairSheetDAO.getRepairSheetByResponsibleForDelivery(user);
+    }
+    @Transactional
+    public List<RepairSheet> getRepairSheetByResponsibleAndStatus(User user, int status){
+        return this.repairSheetDAO.getRepairSheetByResponsibleAndStatus(user, status);
+    }
+
+    @Transactional
+    public List<RepairSheet> getTypeOfMaintenanceOfRepairByEquipmentAndComponents(Equipment equipment, Components components){
+        return this.repairSheetDAO.getTypeOfMaintenanceOfRepairByEquipmentAndComponents(equipment,components);
+    }
+
+    @Transactional
+    public List<RepairSheet> getRepairSheetByEquipment(Equipment equipment){
+        return this.repairSheetDAO.getRepairSheetByEquipment(equipment);
     }
 }

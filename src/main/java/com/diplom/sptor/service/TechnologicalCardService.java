@@ -1,5 +1,6 @@
 package com.diplom.sptor.service;
 
+import com.diplom.sptor.domain.Equipment;
 import com.diplom.sptor.domain.TechnologicalCard;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface TechnologicalCardService {
     public void deleteCard(int id);
 
     public void updateCard(TechnologicalCard technologicalCard);
+
+    public List<TechnologicalCard> getTechCardByEquipment(Equipment equipment);
 }

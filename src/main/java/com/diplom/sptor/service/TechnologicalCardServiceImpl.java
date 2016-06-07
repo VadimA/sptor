@@ -2,7 +2,9 @@ package com.diplom.sptor.service;
 
 import com.diplom.sptor.dao.TechnologicalCardDAO;
 import com.diplom.sptor.dao.TypeOfEquipmentDAO;
+import com.diplom.sptor.domain.Equipment;
 import com.diplom.sptor.domain.TechnologicalCard;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +13,7 @@ import java.util.List;
 /**
  * Created by user on 15.12.2015.
  */
-@Service
+@Component
 public class TechnologicalCardServiceImpl implements TechnologicalCardService {
 
     private TechnologicalCardDAO technologicalCardDAO;
@@ -43,5 +45,10 @@ public class TechnologicalCardServiceImpl implements TechnologicalCardService {
     @Transactional
     public void updateCard(TechnologicalCard technologicalCard) {
         this.technologicalCardDAO.updateCard(technologicalCard);
+    }
+
+    @Transactional
+    public List<TechnologicalCard> getTechCardByEquipment(Equipment equipment){
+        return this.technologicalCardDAO.getTechCardByEquipment(equipment);
     }
 }

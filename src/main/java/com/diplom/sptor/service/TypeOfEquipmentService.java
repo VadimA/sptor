@@ -18,4 +18,5 @@ public interface TypeOfEquipmentService {
     public void deleteType(int id);
 
     public void updateType(TypeOfEquipment typeOfEquipment);
+
 }

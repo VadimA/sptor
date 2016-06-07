@@ -52,4 +52,5 @@ public class TypeOfEquipmentDAOImpl implements TypeOfEquipmentDAO {
         Session session = this.sessionFactory.getCurrentSession();
         session.update(typeOfEquipment);
     }
+
 }

@@ -19,5 +19,4 @@ public interface TypeOfEquipmentDAO {
     public void deleteType(int id);
 
     public void updateType(TypeOfEquipment typeOfEquipment);
-
 }

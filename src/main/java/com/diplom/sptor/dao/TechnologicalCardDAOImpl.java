@@ -1,5 +1,7 @@
 package com.diplom.sptor.dao;
 
+import com.diplom.sptor.domain.Equipment;
+import com.diplom.sptor.domain.Parameters;
 import com.diplom.sptor.domain.TechnologicalCard;
 import com.diplom.sptor.domain.TypeOfEquipment;
 import org.hibernate.Session;
@@ -38,6 +40,12 @@ public class TechnologicalCardDAOImpl implements TechnologicalCardDAO {
         return technologicalCard;
     }
 
+    public List<TechnologicalCard> getCardByEquipmentId(int id) {
+        Session session = this.sessionFactory.getCurrentSession();
+        List<TechnologicalCard> cardList = session.createQuery(" select card from com.diplom.sptor.domain.TechnologicalCard card where card.equipment_id =:id ").setParameter("id", id).list();
+        return cardList;
+    }
+
     public void deleteCard(int id) {
         Session session = this.sessionFactory.getCurrentSession();
         TechnologicalCard technologicalCard = (TechnologicalCard) session.load(TechnologicalCard.class, new Integer(id));
@@ -49,5 +57,12 @@ public class TechnologicalCardDAOImpl implements TechnologicalCardDAO {
     public void updateCard(TechnologicalCard technologicalCard) {
         Session session = this.sessionFactory.getCurrentSession();
         session.update(technologicalCard);
+    }
+
+    public List<TechnologicalCard> getTechCardByEquipment(Equipment equipment) {
+        Session session = this.sessionFactory.getCurrentSession();
+        List<TechnologicalCard> technologicalCardList = session.createQuery(" select tech from com.diplom.sptor.domain.TechnologicalCard tech " +
+                "where tech.equipment =:equipment ").setParameter("equipment", equipment).list();
+        return technologicalCardList;
     }
 }
