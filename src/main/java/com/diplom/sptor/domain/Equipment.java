@@ -1,16 +1,19 @@
 package com.diplom.sptor.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by user on 25.11.2015.
  */
 @Entity
 @Table(name = "toir.equipment")
+@Proxy(lazy=false)
 public class Equipment implements Serializable{
 
     //@Column(name = "equipment_id")
@@ -21,11 +24,13 @@ public class Equipment implements Serializable{
 
     private String equipment_name;
 
+    @ManyToOne()
+    @JoinColumn(name = "type_of_equipment_id")
+    private TypeOfEquipment type_of_equipment;
 
-    private int type_of_equipment_id;
-
-
-    private int subdivision_id;
+    @ManyToOne()
+    @JoinColumn(name = "subdivision_id")
+    private Subdivisions subdivision;
 
     private int inventory_number;
 
@@ -35,21 +40,29 @@ public class Equipment implements Serializable{
 
     private String description;
 
+    private double working_hours;
+
+    @ManyToOne()
+    @JoinColumn(name = "status")
+    private StatusOfEquipment status;
+
     public Equipment() {}
 
-    public Equipment(String equipment_name, int type_of_equipment_id,
-                     int subdivision_id, int inventory_number, Date graduation_year,
-                     String producer_of_equipment, String description) {
+    public Equipment(String equipment_name, TypeOfEquipment type_of_equipment, Subdivisions subdivision,
+                     int inventory_number, Date graduation_year, String producer_of_equipment, String description,
+                     double working_hours, StatusOfEquipment status) {
         this.equipment_name = equipment_name;
-        this.type_of_equipment_id = type_of_equipment_id;
-        this.subdivision_id = subdivision_id;
+        this.type_of_equipment = type_of_equipment;
+        this.subdivision = subdivision;
         this.inventory_number = inventory_number;
         this.graduation_year = graduation_year;
         this.producer_of_equipment = producer_of_equipment;
         this.description = description;
+        this.working_hours = working_hours;
+        this.status = status;
     }
 
-    public Integer getEquipment_id() {
+    public int getEquipment_id() {
         return equipment_id;
     }
 
@@ -65,23 +78,23 @@ public class Equipment implements Serializable{
         this.equipment_name = equipment_name;
     }
 
-    public int getType_of_equipment_id() {
-        return type_of_equipment_id;
+    public TypeOfEquipment getType_of_equipment() {
+        return type_of_equipment;
     }
 
-    public void setType_of_equipment_id(int type_of_equipment_id) {
-        this.type_of_equipment_id = type_of_equipment_id;
+    public void setType_of_equipment(TypeOfEquipment type_of_equipment) {
+        this.type_of_equipment = type_of_equipment;
     }
 
-    public int getSubdivision_id() {
-        return subdivision_id;
+    public Subdivisions getSubdivision() {
+        return subdivision;
     }
 
-    public void setSubdivision_id(int subdivision_id) {
-        this.subdivision_id = subdivision_id;
+    public void setSubdivision(Subdivisions subdivision) {
+        this.subdivision = subdivision;
     }
 
-    public Integer getInventory_number() {
+    public int getInventory_number() {
         return inventory_number;
     }
 
@@ -113,6 +126,22 @@ public class Equipment implements Serializable{
         this.description = description;
     }
 
+    public double getWorking_hours() {
+        return working_hours;
+    }
+
+    public void setWorking_hours(double working_hours) {
+        this.working_hours = working_hours;
+    }
+
+    public StatusOfEquipment getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusOfEquipment status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -121,27 +150,35 @@ public class Equipment implements Serializable{
         Equipment equipment = (Equipment) o;
 
         if (getEquipment_id() != equipment.getEquipment_id()) return false;
-        if (getType_of_equipment_id() != equipment.getType_of_equipment_id()) return false;
-        if (getSubdivision_id() != equipment.getSubdivision_id()) return false;
         if (getInventory_number() != equipment.getInventory_number()) return false;
+        if (Double.compare(equipment.getWorking_hours(), getWorking_hours()) != 0) return false;
         if (!getEquipment_name().equals(equipment.getEquipment_name())) return false;
+        if (!getType_of_equipment().equals(equipment.getType_of_equipment())) return false;
+        if (!getSubdivision().equals(equipment.getSubdivision())) return false;
         if (getGraduation_year() != null ? !getGraduation_year().equals(equipment.getGraduation_year()) : equipment.getGraduation_year() != null)
             return false;
         if (!getProducer_of_equipment().equals(equipment.getProducer_of_equipment())) return false;
-        return !(getDescription() != null ? !getDescription().equals(equipment.getDescription()) : equipment.getDescription() != null);
+        if (getDescription() != null ? !getDescription().equals(equipment.getDescription()) : equipment.getDescription() != null)
+            return false;
+        return getStatus().equals(equipment.getStatus());
 
     }
 
     @Override
     public int hashCode() {
-        int result = getEquipment_id();
+        int result;
+        long temp;
+        result = getEquipment_id();
         result = 31 * result + getEquipment_name().hashCode();
-        result = 31 * result + getType_of_equipment_id();
-        result = 31 * result + getSubdivision_id();
+        result = 31 * result + getType_of_equipment().hashCode();
+        result = 31 * result + getSubdivision().hashCode();
         result = 31 * result + getInventory_number();
         result = 31 * result + (getGraduation_year() != null ? getGraduation_year().hashCode() : 0);
         result = 31 * result + getProducer_of_equipment().hashCode();
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        temp = Double.doubleToLongBits(getWorking_hours());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + getStatus().hashCode();
         return result;
     }
 }

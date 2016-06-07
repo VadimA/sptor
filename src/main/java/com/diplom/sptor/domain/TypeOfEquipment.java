@@ -1,8 +1,14 @@
 package com.diplom.sptor.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -10,15 +16,23 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "toir.type_of_equipment")
+@Proxy(lazy=false)
 public class TypeOfEquipment implements Serializable {
 
     @Id
-    @Column(name = "equipment_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name="kaugen" , strategy="increment")
+    @GeneratedValue(generator="kaugen")
     private int type_of_equipment_id;
     private String type_of_equipment_name;
     private String description;
 
+    @OneToMany(mappedBy = "type_of_equipment",fetch = FetchType.LAZY)
+    @JsonIgnore
+    private final Set<Equipment> equipments_type = new HashSet<Equipment>();
+
+  // @OneToMany(mappedBy = "type_of_equipment_components",fetch = FetchType.LAZY)
+  // @JsonIgnore
+  // private final Set<ComponentModel> spares = new HashSet<ComponentModel>();
 
     public TypeOfEquipment() {}
 
@@ -26,7 +40,6 @@ public class TypeOfEquipment implements Serializable {
         this.type_of_equipment_name = type_of_equipment_name;
         this.description = description;
     }
-
     public int getType_of_equipment_id() {
         return type_of_equipment_id;
     }
@@ -51,6 +64,13 @@ public class TypeOfEquipment implements Serializable {
         this.description = description;
     }
 
+    public Set<Equipment> getEquipments_type() {
+        return equipments_type;
+    }
+    public void addEquipments(Equipment equipment) {
+        equipment.setType_of_equipment(this);
+        this.equipments_type.add(equipment);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

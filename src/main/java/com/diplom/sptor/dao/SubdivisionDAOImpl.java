@@ -14,7 +14,6 @@ import java.util.List;
 @Repository
 public class SubdivisionDAOImpl implements SubdivisionDAO {
 
-    @Autowired
     SessionFactory sessionFactory;
 
     public void setSessionFactory(SessionFactory sessionFactory) {

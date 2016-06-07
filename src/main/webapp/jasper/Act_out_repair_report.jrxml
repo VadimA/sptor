@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Act_in_repair_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e9c43669-2d61-4a3b-a5c0-2db052ed7f37">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="96"/>
+	<field name="type_of_maintenance" class="java.lang.String"/>
+	<field name="subdivision" class="java.lang.String"/>
+	<field name="sheet_number" class="java.lang.String"/>
+	<field name="start_date" class="java.lang.String"/>
+	<field name="type_of_equipment" class="java.lang.String"/>
+	<field name="equipment" class="java.lang.String"/>
+	<field name="producer" class="java.lang.String"/>
+	<field name="lastRepair" class="java.lang.String"/>
+	<field name="responsible" class="java.lang.String"/>
+	<field name="category" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement x="391" y="15" width="199" height="20" uuid="8c75c260-d7bd-4f1d-be23-ca3765aa6c1d"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10"/>
+				</textElement>
+				<text><![CDATA[СТП 579.09.276-2011 (приложение К)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="52" width="62" height="17" uuid="7325227f-8751-406c-a136-119659b81912"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[АКТ №                                                              ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="390" y="52" width="1" height="23" uuid="993f0eb6-338e-4f06-97c7-cc18e4dde131"/>
+			</line>
+			<staticText>
+				<reportElement x="392" y="52" width="120" height="21" uuid="a92a19b0-a9b2-4175-ac85-1ce0330a0ede"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Цех-заказчик №
+]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="86" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="100" height="1" uuid="726d2c92-6be2-4259-9f9f-ca9d36674c3b"/>
+			</line>
+			<staticText>
+				<reportElement x="41" y="52" width="81" height="17" uuid="b5d1c6b4-7a2f-49ec-8f3d-a709eb66e1bc"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[подпись, ФИО]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="1" width="172" height="17" uuid="6f73815f-727e-41bd-9a0f-afb82b84163d"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[передачи оборудования из ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="142" y="21" width="175" height="19" uuid="0faeb64c-f304-4e69-811f-8a6c2df3e781"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{type_of_maintenance}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="143" y="40" width="175" height="1" uuid="8f4f6c13-7af1-4aa6-8895-f890b8ab8811"/>
+			</line>
+			<line>
+				<reportElement x="1" y="52" width="131" height="1" uuid="c344c12c-dc12-4129-9793-9889da973a63"/>
+			</line>
+			<staticText>
+				<reportElement x="318" y="21" width="54" height="17" uuid="9875fb98-d605-448b-a7ef-e63995853dec"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ремонта]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="217" y="50" width="100" height="20" uuid="3ba45479-1ecc-4fde-8e77-272af796fe8c"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{start_date}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="217" y="70" width="100" height="1" uuid="83a981aa-d153-4105-ba8b-b4bb135b75da"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="4" width="121" height="17" uuid="330ad1c5-e67f-4346-9083-e28ae031918b"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Главный механик]]></text>
+			</staticText>
+			<line>
+				<reportElement x="132" y="1" width="1" height="76" uuid="6a737123-655f-49d6-bd9d-c17b97636c0f"/>
+			</line>
+			<line>
+				<reportElement x="0" y="77" width="555" height="1" uuid="5af8d9cd-3482-4e50-868f-b76b191b5f48"/>
+			</line>
+			<line>
+				<reportElement x="390" y="0" width="1" height="86" uuid="c53bcfd4-9887-4794-b46b-3284c79dbcc7"/>
+			</line>
+			<textField>
+				<reportElement x="392" y="1" width="100" height="20" uuid="20c0e550-57db-41ac-8290-a4a55d942098"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subdivision}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="395" y="33" width="122" height="20" uuid="99574561-7e40-45d7-a358-2a1867d47cf1"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Цех-исполнитель №
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="395" y="57" width="100" height="20" uuid="0fb993be-8a05-445a-99bd-8902b09fddc7"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subdivision}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="30" width="121" height="20" uuid="6e07d137-4738-49c3-b18e-169b53c7e40e"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{responsible}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="31" y="1" width="90" height="38" uuid="7ac25487-3e39-42b8-ab49-dbeefbe373a6"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Наименование оборудования]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="142" y="1" width="229" height="37" uuid="f3fd901d-acbd-4f23-b00e-601a461380e2"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{type_of_equipment}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="142" y="39" width="228" height="1" uuid="c0f93888-cecb-437f-9316-ff2c541a31ba"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="aaec6acb-92bd-4ea2-a9b6-0ac81969946f"/>
+			</line>
+			<line>
+				<reportElement x="390" y="1" width="1" height="49" uuid="fe01d7be-a734-4bd9-900f-f7da7481d701"/>
+			</line>
+			<staticText>
+				<reportElement x="395" y="1" width="143" height="20" uuid="b6969bce-e982-4d67-b6e8-65e80d85b9a2"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Инвентарный номер]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="395" y="21" width="122" height="20" uuid="0afb4b1b-744c-435f-8f9a-e7dbd4e742c1"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sheet_number}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="395" y="41" width="122" height="1" uuid="4d818ee0-4747-4fcc-81ce-ab03bd4c0a69"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="462" splitType="Stretch">
+			<staticText>
+				<reportElement x="32" y="37" width="100" height="17" uuid="93c1874a-aec6-4e88-a216-28cb00a40fc3"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Модель]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="0" width="175" height="20" uuid="04c6e2ef-4ec7-407e-ba34-4304345a5977"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Завод-изготовитель (фирма)_____________________ ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="244" y="37" width="100" height="20" uuid="cbb07788-cc64-4a0c-9cf5-3cd6703355eb"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{equipment}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="244" y="0" width="100" height="20" uuid="d50081eb-8ecf-4997-bea8-ee82d6a979f6"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producer}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="244" y="19" width="100" height="1" uuid="2f984a37-0f85-4c39-8772-c97354d751e1"/>
+			</line>
+			<line>
+				<reportElement x="244" y="57" width="100" height="1" uuid="95799384-aa81-4702-8423-628dc3746544"/>
+			</line>
+			<staticText>
+				<reportElement x="31" y="104" width="156" height="78" uuid="c35246f7-66fd-4f0e-bebb-b5a565cd8dec"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Дефекты, обнаруженные при эксплуатации станка]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="31" y="68" width="198" height="17" uuid="af7796ed-cb4c-45f4-a1d2-4bb35d3417f9"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Вид и дата последнего ремонта]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="244" y="68" width="294" height="17" uuid="8f366337-dbbf-431b-b010-c7d60e4172b7"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lastRepair}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="249" y="85" width="289" height="1" uuid="ccfaccb5-3882-4c44-a986-1d7b697a14e8"/>
+			</line>
+			<line>
+				<reportElement x="31" y="103" width="507" height="1" uuid="c755865f-ec35-49b6-9dae-69c288a7eb95"/>
+			</line>
+			<staticText>
+				<reportElement x="31" y="182" width="156" height="78" uuid="366d8940-0b9e-4d3b-9114-fcb74f63695f"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Замечания и требования
+цеха-заказчика
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="186" y="103" width="1" height="157" uuid="80794501-e862-48f4-9a20-2f0012607646"/>
+			</line>
+			<line>
+				<reportElement x="31" y="103" width="1" height="157" uuid="933074ea-c9b7-4d83-87e3-462214b7a646"/>
+			</line>
+			<line>
+				<reportElement x="32" y="182" width="155" height="1" uuid="cf85c71e-da89-43de-9778-9092b156d69b"/>
+			</line>
+			<line>
+				<reportElement x="32" y="260" width="506" height="1" uuid="3e050c60-7e91-4711-84da-d46375a72255"/>
+			</line>
+			<staticText>
+				<reportElement x="32" y="305" width="228" height="83" uuid="2feb349d-ec3f-49b0-be52-aa5acba8b5c9"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Мастер цеха___________________
+                               подпись, Ф.И.О.
+Начальник цеха_______________
+                               подпись, Ф.И.О.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="289" y="305" width="249" height="83" uuid="9a9fc4f8-383d-4932-8d7d-4ed49f3069d0"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Мастер  ЭМП 64 _________________
+                              подпись, Ф.И.О.
+
+Начальник ЭМП 64_________________
+                              подпись, Ф.И.О.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="121" y="272" width="46" height="21" uuid="c3838d30-9c2d-46ef-892f-4599ea00d267"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Сдали:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="272" width="61" height="21" uuid="3b64ea9c-9da2-4d4e-a442-2c078a8c8756"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Приняли:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="187" y="183" width="351" height="1" uuid="e651d737-f24c-4281-a219-6ad17db3a8ed"/>
+			</line>
+			<line>
+				<reportElement x="390" y="0" width="1" height="57" uuid="a55bc185-9cc2-46ed-9ea5-738f9bc4ae58"/>
+			</line>
+			<staticText>
+				<reportElement x="395" y="0" width="160" height="37" uuid="a775f859-34f9-4b99-825c-a4caf54346b2"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Категория слож-
+ности ремонта
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="395" y="38" width="100" height="20" uuid="7377b0da-4802-4e06-addc-5565e3d3d98c"/>
+				<textElement>
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{category}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="395" y="57" width="100" height="1" uuid="db208ba4-8bab-430c-8bf5-f578e2d62b3d"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
