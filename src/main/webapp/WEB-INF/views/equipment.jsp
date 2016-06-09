@@ -317,11 +317,11 @@
                                 data: {value: value, equipment_id: current_equipment},
                                 success: function (returnData) {
                                     $(that).dialog("close");
-                                    SendGet(current_equipment);
-                                    workedHours(current_equipment);
                                     //window.location.reload(true);//$('#container').html(returnData);
                                 }
                             });
+                            SendGet(current_equipment);
+                            workedHours(current_equipment);
                         }
                         SendGet(current_equipment);
                         workedHours(current_equipment);
