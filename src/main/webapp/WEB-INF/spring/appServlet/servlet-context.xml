@@ -78,6 +78,7 @@
                 <beans:value>com.diplom.sptor.domain.TypeOfMaintenance</beans:value>
                 <beans:value>com.diplom.sptor.domain.DownTime</beans:value>
                 <beans:value>com.diplom.sptor.domain.StatusOfEquipment</beans:value>
+                <beans:value>com.diplom.sptor.domain.Document</beans:value>
             </beans:list>
         </beans:property>
         <beans:property name="hibernateProperties">
@@ -89,6 +90,12 @@
                 <beans:prop key="current_session_context_class">thread</beans:prop>
         </beans:props>
         </beans:property>
+    </beans:bean>
+
+    <beans:bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <beans:property name="maxUploadSize" value="10000000" />
     </beans:bean>
 
     <beans:bean id="equipmentDAO" class="com.diplom.sptor.dao.EquipmentDAOImpl">
@@ -147,6 +154,10 @@
         <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </beans:bean>
 
+    <beans:bean id="documentDAO" class="com.diplom.sptor.dao.DocumentDAO">
+        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </beans:bean>
+
     <beans:bean id="EquipmentService" class="com.diplom.sptor.service.EquipmentServiceImpl">
         <beans:property name="equipmentDAO" ref="equipmentDAO"></beans:property>
     </beans:bean>
@@ -201,6 +212,10 @@
 
     <beans:bean id="StatusOfEqService" class="com.diplom.sptor.service.StatusOfEqServiceImpl">
         <beans:property name="statusOfEqDAO" ref="statusOfEqDAO"></beans:property>
+    </beans:bean>
+
+    <beans:bean id="DocumentService" class="com.diplom.sptor.service.DocumentService">
+        <beans:property name="documentDAO" ref="documentDAO"></beans:property>
     </beans:bean>
 
     <beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">

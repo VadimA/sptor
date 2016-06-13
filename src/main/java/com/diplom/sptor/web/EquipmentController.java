@@ -4,15 +4,24 @@ import com.diplom.sptor.domain.*;
 import com.diplom.sptor.service.*;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.apache.commons.io.IOUtils;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.rowset.serial.SerialException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -33,6 +42,7 @@ public class EquipmentController {
     private StatusService StatusService;
     private TypeOfMaintenanceService TypeOfMaintenanceService;
     private DownTimeService DownTimeService;
+    private DocumentService DocumentService;
 
     @Autowired(required=true)
     public void setTypeOfEquipmentService(TypeOfEquipmentService TypeOfEquipmentService){
@@ -82,6 +92,11 @@ public class EquipmentController {
     @Autowired(required=true)
     public void setDownTimeService(DownTimeService DownTimeService) {
         this.DownTimeService = DownTimeService;
+    }
+
+    @Autowired(required=true)
+    public void setDocumentService(DocumentService DocumentService) {
+        this.DocumentService = DocumentService;
     }
 
     /**
@@ -331,5 +346,61 @@ public class EquipmentController {
         return "Deleted successfully";
     }
 
+    @RequestMapping("/documents")
+    public String index(Map<String, Object> map) {
+        try {
+            map.put("document", new Document());
+            map.put("documentList", this.DocumentService.listDocument());
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return "documents";
+    }
+    @RequestMapping(value = "documents/save", method = RequestMethod.POST)
+    public String save(
+            @ModelAttribute("document") Document document,
+            @RequestParam("file") MultipartFile file) throws SerialException, SQLException{
+        System.out.println("Name:" + document.getDocument_name());
+        System.out.println("Desc:" + document.getDescription());
+        System.out.println("File:" + file.getName());
+        System.out.println("ContentType:" + file.getContentType());
+        try {
+            Blob blob = new javax.sql.rowset.serial.SerialBlob(IOUtils.toByteArray(file.getInputStream()));
+            System.out.println("Blob:" + blob);
+            document.setPath(file.getOriginalFilename());
+            document.setContent(IOUtils.toByteArray(file.getInputStream()));
+            document.setContent_type(file.getContentType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            this.DocumentService.saveDocument(document);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return "documents";
+    }
+    @RequestMapping("documents/download/{documentId}")
+    public String download(@PathVariable("documentId")
+                           Integer documentId, HttpServletResponse response) {
+        Document doc = this.DocumentService.getDocument(documentId);
+        try {
+            response.setHeader("Content-Disposition", "inline;filename=\"" +doc.getPath()+ "\"");
+            OutputStream out = response.getOutputStream();
+            response.setContentType(doc.getContent_type());
+            IOUtils.copy(new ByteArrayInputStream(doc.getContent()), out);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    @RequestMapping("documents/remove/{documentId}")
+    public String remove(@PathVariable("documentId")
+                         Integer documentId) {
+        this.DocumentService.removeDocument(documentId);
+        return "documents"; }
+    }
 
-}
+
