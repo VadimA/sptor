@@ -317,11 +317,11 @@
                                 data: {value: value, equipment_id: current_equipment},
                                 success: function (returnData) {
                                     $(that).dialog("close");
-                                    SendGet(current_equipment);
-                                    workedHours(current_equipment);
                                     //window.location.reload(true);//$('#container').html(returnData);
                                 }
                             });
+                            SendGet(current_equipment);
+                            workedHours(current_equipment);
                         }
                         SendGet(current_equipment);
                         workedHours(current_equipment);
@@ -549,7 +549,6 @@
               text: 'Закрыть',
               click: function() {
                 jQuery("#techCardDialog").dialog('close');
-                refreshContent();
               }}
           ]
         });
@@ -741,6 +740,7 @@
             <button class="btn btn-default" onclick="workedHours(current_equipment);">Наработка</button>
             <button class="btn btn-default" onclick="downTime(current_equipment);">Простой</button>
             <button class="btn btn-default" onclick="getTechCard(current_equipment);">Технологические карты</button>
+            <button class="btn btn-default"><a href="/documents">Документы</a></button>
           </div>
         </div>
       </div>

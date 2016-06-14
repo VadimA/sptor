@@ -26,11 +26,14 @@ public class TypeOfMaintenance implements Serializable{
 
     private String description;
 
+    private int duration;
+
     public TypeOfMaintenance() {}
 
-    public TypeOfMaintenance(String type_of_maintenance_name, String description) {
+    public TypeOfMaintenance(String type_of_maintenance_name, String description, int duration) {
         this.type_of_maintenance_name = type_of_maintenance_name;
         this.description = description;
+        this.duration = duration;
     }
 
     public int getType_of_maintenance_id() {
@@ -57,6 +60,14 @@ public class TypeOfMaintenance implements Serializable{
         this.description = description;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,17 +75,19 @@ public class TypeOfMaintenance implements Serializable{
 
         TypeOfMaintenance that = (TypeOfMaintenance) o;
 
-        if (type_of_maintenance_id != that.type_of_maintenance_id) return false;
-        if (!type_of_maintenance_name.equals(that.type_of_maintenance_name)) return false;
-        return !(description != null ? !description.equals(that.description) : that.description != null);
+        if (getType_of_maintenance_id() != that.getType_of_maintenance_id()) return false;
+        if (getDuration() != that.getDuration()) return false;
+        if (!getType_of_maintenance_name().equals(that.getType_of_maintenance_name())) return false;
+        return !(getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = type_of_maintenance_id;
-        result = 31 * result + type_of_maintenance_name.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        int result = getType_of_maintenance_id();
+        result = 31 * result + getType_of_maintenance_name().hashCode();
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + getDuration();
         return result;
     }
 }
