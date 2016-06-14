@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-  
+
 
   <script>
     $(document).ready(function() {
@@ -153,17 +153,44 @@
         </ul>
       </div>
     </div>
-      <div id="result"></div>
+
+    <div class="col-md-8" style="background:beige;min-height:600px;">
+      <div id="result">
+    <h3>Список документов</h3>
+    <c:if  test="${!empty documentList}">
+      <table class="data">
+        <tr>
+          <th>Имя</th>
+          <th>Описание</th>
+          <th>&nbsp;</th>
+        </tr>
+        <c:forEach items="${documentList}" var="document">
+          <tr>
+            <td width="100px">${document.document_name}</td>
+            <td width="250px">${document.description}</td>
+            <td width="20px">
+              <span class="glyphicon glyphicon-plus" id="openDoc"></span>
+
+              <a href="/documents/remove/${document.document_id}"
+                 onclick="return confirm('Вы действительно хотите удалить текущий документ?')">
+                <span class="glyphicon glyphicon-minus"></span></a>
+            </td>
+          </tr>
+        </c:forEach>
+      </table>
+    </c:if>
+
+    </br>
       <h3>Добавить новый документ</h3>
       <form:form method="post" action="/documents/save" commandName="document" enctype="multipart/form-data">
         <form:errors path="*" cssClass="error"/>
         <table>
           <tr>
-            <td><form:label path="document_name">Name</form:label></td>
+            <td><form:label path="document_name">Наименование</form:label></td>
             <td><form:input path="document_name" /></td>
           </tr>
           <tr>
-            <td><form:label path="description">Description</form:label></td>
+            <td><form:label path="description">Описание</form:label></td>
             <td><form:textarea path="description" /></td>
           </tr>
           <tr>
@@ -171,42 +198,19 @@
             <td><input type="file" name="file" id="file"></input></td>
           </tr>
           <tr>
+            <td><input type="hidden" name="equipment" path="equipment" value="${cu}">
+          </tr>
+          <tr>
             <td colspan="2">
-              <input type="submit" value="Add Document"/>
+              <input type="submit" value="Добавить документ"/>
             </td>
           </tr>
         </table>
       </form:form>
 
       <br/>
-      <h3>Список документов</h3>
-      <c:if  test="${!empty documentList}">
-        <table class="data">
-          <tr>
-            <th>Имя</th>
-            <th>Описание</th>
-            <th>&nbsp;</th>
-          </tr>
-          <c:forEach items="${documentList}" var="document">
-            <tr>
-              <td width="100px">${document.document_name}</td>
-              <td width="250px">${document.description}</td>
-              <td width="20px">
-                <a href="/documents/download/${document.document_id}">
-                        border="0"
-                        title="Загрузить документ"/><span class="glyphicon glyphicon-file"></span></a>
-
-                <a href="/documents/remove/${document.document_id}"
-                   onclick="return confirm('Are you sure you want to delete this document?')"><img
-                         border="0"
-                        title="Удалить документ"/><span class="glyphicon glyphicon-file"></span></a>
-              </td>
-            </tr>
-          </c:forEach>
-        </table>
-      </c:if>
-
     </div>
+      </div>
     <div class="col-md-2">
       <input type="text" class="form-control input-sm" placeholder="Поиск">
       </br>

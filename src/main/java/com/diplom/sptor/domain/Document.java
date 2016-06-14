@@ -5,6 +5,7 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.sql.Blob;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -31,6 +32,10 @@ public class Document {
     private Date date_of_adding;
 
     private String path;
+
+    @ManyToOne()
+    @JoinColumn(name = "equipment_id")
+    private Equipment equipment;
 
     public int getDocument_id() {
         return document_id;
@@ -88,17 +93,26 @@ public class Document {
         this.path = path;
     }
 
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
+
     public Document() {
     }
 
     public Document(String document_name, String description, byte[] content,
-                    String content_type, Date date_of_adding, String path) {
+                    String content_type, Date date_of_adding, String path, Equipment equipment) {
         this.document_name = document_name;
         this.description = description;
         this.content = content;
         this.content_type = content_type;
         this.date_of_adding = date_of_adding;
         this.path = path;
+        this.equipment = equipment;
     }
 
     @Override
@@ -112,10 +126,13 @@ public class Document {
         if (!getDocument_name().equals(document.getDocument_name())) return false;
         if (getDescription() != null ? !getDescription().equals(document.getDescription()) : document.getDescription() != null)
             return false;
-        if (!getContent().equals(document.getContent())) return false;
+        if (!Arrays.equals(getContent(), document.getContent())) return false;
         if (getContent_type() != null ? !getContent_type().equals(document.getContent_type()) : document.getContent_type() != null)
             return false;
-        return getDate_of_adding().equals(document.getDate_of_adding());
+        if (getDate_of_adding() != null ? !getDate_of_adding().equals(document.getDate_of_adding()) : document.getDate_of_adding() != null)
+            return false;
+        if (getPath() != null ? !getPath().equals(document.getPath()) : document.getPath() != null) return false;
+        return !(getEquipment() != null ? !getEquipment().equals(document.getEquipment()) : document.getEquipment() != null);
 
     }
 
@@ -124,9 +141,11 @@ public class Document {
         int result = getDocument_id();
         result = 31 * result + getDocument_name().hashCode();
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + getContent().hashCode();
+        result = 31 * result + Arrays.hashCode(getContent());
         result = 31 * result + (getContent_type() != null ? getContent_type().hashCode() : 0);
-        result = 31 * result + getDate_of_adding().hashCode();
+        result = 31 * result + (getDate_of_adding() != null ? getDate_of_adding().hashCode() : 0);
+        result = 31 * result + (getPath() != null ? getPath().hashCode() : 0);
+        result = 31 * result + (getEquipment() != null ? getEquipment().hashCode() : 0);
         return result;
     }
 }

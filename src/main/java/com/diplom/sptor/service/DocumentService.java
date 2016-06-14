@@ -2,6 +2,7 @@ package com.diplom.sptor.service;
 
 import com.diplom.sptor.dao.DocumentDAO;
 import com.diplom.sptor.domain.Document;
+import com.diplom.sptor.domain.Equipment;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,6 +26,10 @@ public class DocumentService {
 
     public List<Document> listDocument() {
          return this.documentDAO.listDocument();
+    }
+
+    public List<Document> getDocumentsByEquipment(Equipment equipment){
+        return this.documentDAO.getDocumentsByEquipment(equipment);
     }
 
     public Document getDocument(Integer document_id) {

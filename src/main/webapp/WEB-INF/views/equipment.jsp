@@ -186,6 +186,48 @@
       });
     }
 
+        function getDocuments(equipment_id){
+            $.ajax({
+                type: "GET",
+                contentType: 'application/json',
+                url: "/documents/"+equipment_id,
+                dataType: 'json',
+                mimeType: 'application/json',
+            }).done(function( data) {
+                jQuery("#result").html("<center></br><h5>Оборудование: " + current_equipment_name + "</h5></br><button class=\"btn btn-default\"  type=\"button\" onclick=\"addDocuments();\">Добавить документ</button></br></center><table class=\"table table-hover\" id=\"params_t\">\n\
+<thead>\n\
+  <tr><th>&nbsp;</th><th>Наименование</th><th>Дата добавления</th><th>Описание</th></tr>\n\
+  </thead>\n\
+<tbody>");
+                for(var i =0;i<data.length;i++) {
+                    components_id = data[i].component_id;
+                    var date = new Date(data[i].date_of_adding);
+                    var mm = date.getMonth() + 1;
+                    var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
+                    $("#params_t").append("<tr><td onclick=\"openDocuments(this.innerHTML)\">" + data[i].document_id + "</td><td>" + data[i].document_name + "</td><td>" + dtade + "</td><td>" + data[i].description + "</td></tr>");
+
+                }
+                jQuery("#result").append("<table class=\"table table-hover\" id=\"repair_t\"></table>");
+            });
+        }
+
+        function addDocuments() {
+
+            jQuery("#new_doc").dialog({
+                        title: "Добавление нового документа",
+                        width:550,
+                        height: 470,
+                        resizable: false,
+                        cache: false,
+                        modal: true
+                    }
+            );
+        }
+
+        function openDocuments(document_id){
+            location.href = "/documents/download/"+document_id;
+        }
+
     function getRepairBySpare(component_id){
       $.ajax({
         type: "GET",
@@ -740,7 +782,12 @@
             <button class="btn btn-default" onclick="workedHours(current_equipment);">Наработка</button>
             <button class="btn btn-default" onclick="downTime(current_equipment);">Простой</button>
             <button class="btn btn-default" onclick="getTechCard(current_equipment);">Технологические карты</button>
-            <button class="btn btn-default"><a href="/documents">Документы</a></button>
+            <button class="btn btn-default"  onclick="getDocuments(current_equipment);">Документы</button>
+           <!--   <script type="text/javascript">
+                  document.getElementById("doc_but").onclick = function () {
+                      location.href = "/documents/"+current_equipment;
+                  };
+              </script>-->
           </div>
         </div>
       </div>
@@ -816,6 +863,39 @@
         </form:form>
       </div>
       <div id="techCardDialog" style="display: none"></div>
+
+        <div id="new_doc" style="display: none">
+
+            <form:form method="post" action="/documents/save" commandName="document" enctype="multipart/form-data">
+                <form:errors path="*" cssClass="error"/>
+                <table>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><form:label path="document_name">Наименование </form:label></td>
+                        <td><form:input path="document_name" /></td>
+                    </tr>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><form:label path="description">Описание </form:label></td>
+                        <td><form:textarea path="description" /></td>
+                    </tr>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><form:label path="content">Документ </form:label></td>
+                        <td><input type="file" name="file" id="file"></input></td>
+                    </tr>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><br/></td>
+                        <td>
+                        <center>
+                            <input type="submit" value="Добавить документ"/>
+                        </center>
+                        </td>
+                    </tr>
+                </table>
+            </form:form>
+        </div>
     </div>
     <div class="col-md-2">
       <input type="text" class="form-control input-sm" placeholder="Поиск">
