@@ -104,6 +104,7 @@ public class EquipmentController {
      * @return list
      */
 
+    Equipment cur_equipment=null;
     private String getPrincipal(){
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -142,6 +143,7 @@ public class EquipmentController {
         model.addAttribute("TOEquipment", this.EquipmentService.getEquipmentsByStatus(2).size());
         model.addAttribute("repairEquipment", this.EquipmentService.getEquipmentsByStatus(3).size());
         model.addAttribute("ConservEquipment", this.EquipmentService.getEquipmentsByStatus(4).size());
+        model.addAttribute("document", new Document());
         return "equipment";
         //return EquipmentService.listEquipments();
     }
@@ -237,7 +239,8 @@ public class EquipmentController {
     public @ResponseBody
     Equipment getEquipmentById(@ApiParam(value = "ID of equipment that" +
             "needs to be fetched", required = true,
-            defaultValue = "1")@PathVariable("equipmentId")int equipmentId) {
+            defaultValue = "1")@PathVariable("equipmentId")int equipmentId, Model model) {
+        model.addAttribute("current_equipment", EquipmentService.getEquipmentById(equipmentId).getEquipment_id());
         return EquipmentService.getEquipmentById(equipmentId);
     }
 
@@ -346,15 +349,14 @@ public class EquipmentController {
         return "Deleted successfully";
     }
 
-    @RequestMapping("/documents")
-    public String index(Map<String, Object> map) {
-        try {
+    @RequestMapping("/documents/{equipmentId}")
+    public @ResponseBody List<Document> index(Map<String, Object> map, @PathVariable(value = "equipmentId") int equipmentId, Model model) {
             map.put("document", new Document());
-            map.put("documentList", this.DocumentService.listDocument());
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-        return "documents";
+            Equipment equipment = this.EquipmentService.getEquipmentById(equipmentId);
+            map.put("cur_eq", equipment.getEquipment_id());
+            cur_equipment = equipment;
+            map.put("documentList", this.DocumentService.getDocumentsByEquipment(equipment));
+        return this.DocumentService.getDocumentsByEquipment(equipment);
     }
     @RequestMapping(value = "documents/save", method = RequestMethod.POST)
     public String save(
@@ -370,6 +372,8 @@ public class EquipmentController {
             document.setPath(file.getOriginalFilename());
             document.setContent(IOUtils.toByteArray(file.getInputStream()));
             document.setContent_type(file.getContentType());
+            document.setDate_of_adding(new Date());
+            document.setEquipment(cur_equipment);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -378,7 +382,7 @@ public class EquipmentController {
         } catch(Exception e) {
             e.printStackTrace();
         }
-        return "documents";
+        return "redirect:/equipments";
     }
     @RequestMapping("documents/download/{documentId}")
     public String download(@PathVariable("documentId")
