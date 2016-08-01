@@ -2,6 +2,7 @@ package com.diplom.sptor.web;
 
 import com.diplom.sptor.domain.*;
 import com.diplom.sptor.model.UserFormModel;
+import com.diplom.sptor.repository.UserRepository;
 import com.diplom.sptor.service.*;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -9,20 +10,19 @@ import com.wordnik.swagger.annotations.ApiParam;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.NamingException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.*;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -58,13 +60,19 @@ public class ServiceController {
 	private SpareService SpareService;
 	private TechnologicalCardService TechnologicalCardService;
 	private RepairSheetService RepairSheetService;
-	private UserService UserService;
-	private ComponentService ComponentService;
 	private TypeOfMaintenanceService TypeOfMaintenanceService;
 	private StatusService StatusService;
 	private DownTimeService DownTimeService;
 	private StatusOfEqService StatusOfEqService;
 
+	@Autowired
+	UserService userService;
+
+	@Autowired
+	SpareService spareService;
+
+	@Autowired
+	ComponentManager componentManager;
 	@Autowired(required=true)
 	public void setEquipmentService(EquipmentService EquipmentService){
 		this.EquipmentService = EquipmentService;
@@ -96,16 +104,6 @@ public class ServiceController {
 	}
 
 	@Autowired(required=true)
-	public void setUserService(UserService UserService){
-		this.UserService = UserService;
-	}
-
-	@Autowired(required=true)
-	public void setComponentService(ComponentService ComponentService){
-		this.ComponentService = ComponentService;
-	}
-
-	@Autowired(required=true)
 	public void setTypeOfMaintenanceService(TypeOfMaintenanceService TypeOfMaintenanceService) {
 		this.TypeOfMaintenanceService = TypeOfMaintenanceService;
 	}
@@ -127,12 +125,11 @@ public class ServiceController {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
-
 	@RequestMapping(value = "/sptor", method = RequestMethod.GET,
 			produces = "application/json")
 	public String getStarted(Model model) {
-		model.addAttribute("user", UserService.findBySso(getPrincipal()).getLast_name() + " " +
-				UserService.findBySso(getPrincipal()).getFirst_name());
+		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = StatusService.getStatusById(1);
 		Status status2 = StatusService.getStatusById(2);
 		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
@@ -144,8 +141,8 @@ public class ServiceController {
 	@RequestMapping(value = "/about", method = RequestMethod.GET,
 			produces = "application/json")
 	public String getAbout(Model model) {
-		model.addAttribute("user", UserService.findBySso(getPrincipal()).getLast_name() + " " +
-				UserService.findBySso(getPrincipal()).getFirst_name());
+		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = StatusService.getStatusById(1);
 		Status status2 = StatusService.getStatusById(2);
 		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
@@ -195,14 +192,14 @@ public class ServiceController {
 		Equipment equipment = this.EquipmentService.getEquipmentById(equipmentId);
 		TypeOfEquipment typeOfEquipment = equipment.getType_of_equipment();
 		//TypeOfEquipment typeOfEquipment=  TypeOfEquipmentService.getTypeById(typeId);
-		return ComponentService.getComponentsByType(typeOfEquipment);
+		return componentManager.getComponentByType(typeOfEquipment);
 	}
 
 	@RequestMapping(value = "/components/{componentId}/equipment/{equipmentId}", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody List<RepairSheet> getTypeOfMaintenanceByComponents(@PathVariable(value = "componentId")int componentId, @PathVariable(value = "equipmentId")int equipmentId,  Model model) {
 		Equipment equipment = this.EquipmentService.getEquipmentById(equipmentId);
-		Components components = this.ComponentService.getComponentById(componentId);
+		Components components = componentManager.getComponentById(componentId);
 		return this.RepairSheetService.getTypeOfMaintenanceOfRepairByEquipmentAndComponents(equipment, components);
 	}
 
@@ -250,14 +247,14 @@ public class ServiceController {
 		model.addAttribute("repairSheet", new RepairSheet());
 		model.addAttribute("listRepair", this.RepairSheetService.listRepairSheets());
 		model.addAttribute("status_one", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(1)).size());
-		model.addAttribute("status_two", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(2)).size() + this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(2)).size());
-		model.addAttribute("status_three", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(5)).size());
-		model.addAttribute("status_four", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(4)).size());
+		model.addAttribute("status_two", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(2)).size() + this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(3)).size());
+		model.addAttribute("status_three", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(4)).size());
+		model.addAttribute("status_four", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(5)).size());
 		model.addAttribute("status_all", this.RepairSheetService.listRepairSheets().size());
 		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
-		model.addAttribute("components", this.ComponentService.listComponents());
-		model.addAttribute("user", UserService.findBySso(getPrincipal()).getLast_name() + " " +
-				UserService.findBySso(getPrincipal()).getFirst_name());
+		model.addAttribute("components", componentManager.getAllComponents());
+		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+				userService.getUserBySso(getPrincipal()).getFirst_name());
 		model.addAttribute("listEquipments", this.EquipmentService.listEquipments());
 		model.addAttribute("listTypeOfMaintenance", this.TypeOfMaintenanceService.listType());
 		Status status1 = StatusService.getStatusById(1);
@@ -282,17 +279,20 @@ public class ServiceController {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date start = formatter.parse(start_date);
 		Date end = formatter.parse(start_date);
+		DateTime dateTime = new DateTime(end);
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("mm-dd-yyyy");
+		DateTime end_date = dateTime.plusDays(this.TypeOfMaintenanceService.getTypeById(type_of_maintenance_id).getDuration());
 		Status status = this.StatusService.getStatusById(1);
-		User resp_for_delivery = this.UserService.findById(1);
-		User resp_for_reception = this.UserService.findById(1);
+		User resp_for_delivery = userService.getUserById(1);
+		User resp_for_reception = userService.getUserById(1);
 		Equipment equipment = this.EquipmentService.getEquipmentById(equipment_id);
-		Components components1 = this.ComponentService.getComponentById(components);
+		Components components1 = componentManager.getComponentById(components);
 		Subdivisions subdivisions = this.SubdivisionService.getSubdivisionById(subdivision_id);
 		TypeOfMaintenance typeOfMaintenance = this.TypeOfMaintenanceService.getTypeById(type_of_maintenance_id);
 		int sheet_number = equipment_id + 33000;
 		int warranty_period = type_of_maintenance_id;
 		this.RepairSheetService.addRepairSheet(new RepairSheet(typeOfMaintenance, equipment,
-				components1, subdivisions, start, end, sheet_number, warranty_period,
+				components1, subdivisions, start, end_date.toDate(), sheet_number, warranty_period,
 				resp_for_delivery, resp_for_reception, description, status));
 
 		deleteComponentInStock(components1);
@@ -303,9 +303,9 @@ public class ServiceController {
 	}
 
 	public void deleteComponentInStock(Components components){
-		Spares spares =  this.SpareService.getSpareById(components.getSpare().getSpare_id());
-		spares.setAmount_in_stock(spares.getAmount_in_stock()-1);
-		this.SpareService.updateSpare(spares);
+		Spares spares =  spareService.getSpareById(components.getSpare().getSpare_id());
+		spares.setAmount_in_stock(spares.getAmount_in_stock() - 1);
+		//this.SpareService.updateSpare(spares);
 	}
 
 	public void changeStatusOfEquipment(Equipment equipment, Status status, TypeOfMaintenance typeOfMaintenance){
@@ -348,10 +348,12 @@ public class ServiceController {
 			produces = "application/json")
 	public @ResponseBody List<RepairSheet> getRepairByEquipmentId(@PathVariable("equipmentId") int equipmentId, Model model) {
 		List<RepairSheet> repairSheets = this.RepairSheetService.getRepairSheetByEquipment(this.EquipmentService.getEquipmentById(equipmentId));
-		for(RepairSheet repairSheet : repairSheets){
+		Iterator<RepairSheet> iterator = repairSheets.iterator();
+		while(iterator.hasNext()){
+			RepairSheet repairSheet = iterator.next();
 			if(repairSheet.getType_of_maintenance().getType_of_maintenance_id()==3||repairSheet.getType_of_maintenance().getType_of_maintenance_id()==4
 					||repairSheet.getType_of_maintenance().getType_of_maintenance_id()==5){
-				repairSheets.remove(repairSheet);
+				iterator.remove();
 			}
 		}
 
@@ -457,7 +459,7 @@ public class ServiceController {
 				lastRepair = "не было";
 			}
 			repairReport.setLastRepair(lastRepair);
-			repairReport.setResponsible(UserService.findBySso(getPrincipal()).getLast_name());
+			repairReport.setResponsible(userService.getUserBySso(getPrincipal()).getLast_name());
 			reportItems.add(repairReport);
 			JRDataSource datasource = new JRBeanCollectionDataSource(reportItems);
 
@@ -561,7 +563,7 @@ public class ServiceController {
 				lastRepair = "не было";
 			}
 			repairReport.setLastRepair(lastRepair);
-			repairReport.setResponsible(UserService.findBySso(getPrincipal()).getLast_name());
+			repairReport.setResponsible(userService.getUserBySso(getPrincipal()).getLast_name());
 			reportItems.add(repairReport);
 			JRDataSource datasource = new JRBeanCollectionDataSource(reportItems);
 
@@ -696,8 +698,8 @@ public class ServiceController {
 		Status status2 = StatusService.getStatusById(2);
 		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
 		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
-		model.addAttribute("user", UserService.findBySso(getPrincipal()).getLast_name() + " " +
-				UserService.findBySso(getPrincipal()).getFirst_name());
+		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+				userService.getUserBySso(getPrincipal()).getFirst_name());
 		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
 		return "graphics";
 	}
@@ -778,8 +780,8 @@ public class ServiceController {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		technologicalCard.setStart_date(formatter.parse(start_date));
 		technologicalCard.setEnd_date(formatter.parse(start_date));
-		technologicalCard.setResponsible_for_delivery(UserService.findBySso(getPrincipal()));
-		technologicalCard.setResponsible_for_reception(UserService.findBySso(getPrincipal()));
+		technologicalCard.setResponsible_for_delivery(userService.getUserBySso(getPrincipal()));
+		technologicalCard.setResponsible_for_reception(userService.getUserBySso(getPrincipal()));
 		technologicalCard.setDescription(description);
 		TechnologicalCardService.addCard(technologicalCard);
 		return "redirect:/equipments";
@@ -818,8 +820,8 @@ public class ServiceController {
 		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
 		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
 		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
-		model.addAttribute("user", UserService.findBySso(getPrincipal()).getLast_name() + " " +
-				UserService.findBySso(getPrincipal()).getFirst_name());
+		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+				userService.getUserBySso(getPrincipal()).getFirst_name());
 		return "manual";
 	}
 
@@ -828,7 +830,7 @@ public class ServiceController {
 	@RequestMapping(value = "/users/all", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody List<User> getUsers(Model model) {
-		return UserService.getUsers();
+		return userService.getUsers();
 	}
 
 	@ApiOperation(value = "getUsers", notes = "Get all technological cards")
@@ -837,8 +839,8 @@ public class ServiceController {
 	public String getUsersView(Model model) {
 		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
 		model.addAttribute("userForm", new UserFormModel());
-		model.addAttribute("user", UserService.findBySso(getPrincipal()).getLast_name() + " " +
-				UserService.findBySso(getPrincipal()).getFirst_name());
+		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = StatusService.getStatusById(1);
 		Status status2 = StatusService.getStatusById(2);
 		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
@@ -853,14 +855,17 @@ public class ServiceController {
 						   @RequestParam String first_name,
 						   @RequestParam String last_name,
 						   @RequestParam String password,
-						   @RequestParam String email) {
+						   @RequestParam String email) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(password.getBytes("UTF-8"));
+		byte [] digest = md.digest();
 		User user = new User();
 		user.setFirst_name(first_name);
 		user.setLast_name(last_name);
 		user.setEmail(email);
 		user.setssoid(ssoid);
-		user.setPassword(passwordEncoder.encodePassword(password, ssoid));
-		this.UserService.addUser(user);
+		user.setPassword(String.format("%064x", new java.math.BigInteger(1, digest)));
+		userService.addUser(user);
 		return "manual";
 	}
 
@@ -877,11 +882,11 @@ public class ServiceController {
 	public String getEquipmentView(Model model) {
 		model.addAttribute("eqType", this.TypeOfEquipmentService.listType());
 		model.addAttribute("eqSub", this.SubdivisionService.listSubdivisions());
-		model.addAttribute("eqResp", this.UserService.getUsers());
+		model.addAttribute("eqResp", this.userService.getUsers());
 		model.addAttribute("eqStatus", this.StatusOfEqService.listStatus());
 		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
-		model.addAttribute("user", UserService.findBySso(getPrincipal()).getLast_name() + " " +
-				UserService.findBySso(getPrincipal()).getFirst_name());
+		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = StatusService.getStatusById(1);
 		Status status2 = StatusService.getStatusById(2);
 		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
@@ -921,7 +926,7 @@ public class ServiceController {
 	@RequestMapping(value = "/spare/all", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody List<Spares> getSpare(Model model) {
-		return SpareService.listSpares();
+		return spareService.getAllSpares();
 	}
 
 	@ApiOperation(value = "getEquipments", notes = "Get all technological cards")
@@ -929,8 +934,8 @@ public class ServiceController {
 			produces = "application/json")
 	public String getSpareView(Model model) {
 		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
-		model.addAttribute("user", UserService.findBySso(getPrincipal()).getLast_name() + " " +
-				UserService.findBySso(getPrincipal()).getFirst_name());
+		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = StatusService.getStatusById(1);
 		Status status2 = StatusService.getStatusById(2);
 		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
@@ -952,7 +957,7 @@ public class ServiceController {
 		spare.setPrice(price);
 		spare.setAmount_in_stock(amount_in_stock);
 		spare.setDescription(description);
-		this.SpareService.addSpare(spare);
+		spareService.saveSpare(spare);
 		return "manual";
 	}
 
@@ -968,8 +973,8 @@ public class ServiceController {
 			produces = "application/json")
 	public String getSubdivisionView(Model model) {
 		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
-		model.addAttribute("user", UserService.findBySso(getPrincipal()).getLast_name() + " " +
-				UserService.findBySso(getPrincipal()).getFirst_name());
+		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = StatusService.getStatusById(1);
 		Status status2 = StatusService.getStatusById(2);
 		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());

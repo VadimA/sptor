@@ -4,15 +4,24 @@ import com.diplom.sptor.domain.*;
 import com.diplom.sptor.service.*;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.apache.commons.io.IOUtils;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.rowset.serial.SerialException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -27,12 +36,18 @@ public class EquipmentController {
     private SubdivisionService SubdivisionService;
     private TypeOfEquipmentService TypeOfEquipmentService;
     private ParametersService ParametersService;
-    private UserService UserService;
     private WorkingHoursService WorkingHoursService;
     private RepairSheetService RepairSheetService;
     private StatusService StatusService;
     private TypeOfMaintenanceService TypeOfMaintenanceService;
     private DownTimeService DownTimeService;
+    private DocumentService DocumentService;
+
+    @Autowired
+    EquipmentManager equipmentManager;
+
+    @Autowired
+    UserService userService;
 
     @Autowired(required=true)
     public void setTypeOfEquipmentService(TypeOfEquipmentService TypeOfEquipmentService){
@@ -52,11 +67,6 @@ public class EquipmentController {
     @Autowired(required=true)
     public void setParametersService(ParametersService ParametersService){
         this.ParametersService = ParametersService;
-    }
-
-    @Autowired(required=true)
-    public void setUserService(UserService UserService){
-        this.UserService = UserService;
     }
 
     @Autowired(required=true)
@@ -84,11 +94,17 @@ public class EquipmentController {
         this.DownTimeService = DownTimeService;
     }
 
+    @Autowired(required=true)
+    public void setDocumentService(DocumentService DocumentService) {
+        this.DocumentService = DocumentService;
+    }
+
     /**
      * GET list of all equipments.
      * @return list
      */
 
+    Equipment cur_equipment=null;
     private String getPrincipal(){
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -114,8 +130,8 @@ public class EquipmentController {
         model.addAttribute("subdivisions", SubdivisionService.listSubdivisions());
         model.addAttribute("workingHours", new WorkingHours());
         model.addAttribute("allRepair", RepairSheetService.listRepairSheets());
-        model.addAttribute("user", UserService.findBySso(username).getLast_name() + " " +
-                UserService.findBySso(username).getFirst_name());
+        model.addAttribute("user", userService.getUserBySso(username).getLast_name() + " " +
+                userService.getUserBySso(username).getFirst_name());
         Status status1 = StatusService.getStatusById(1);
         Status status2 = StatusService.getStatusById(2);
         model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
@@ -127,6 +143,7 @@ public class EquipmentController {
         model.addAttribute("TOEquipment", this.EquipmentService.getEquipmentsByStatus(2).size());
         model.addAttribute("repairEquipment", this.EquipmentService.getEquipmentsByStatus(3).size());
         model.addAttribute("ConservEquipment", this.EquipmentService.getEquipmentsByStatus(4).size());
+        model.addAttribute("document", new Document());
         return "equipment";
         //return EquipmentService.listEquipments();
     }
@@ -165,7 +182,7 @@ public class EquipmentController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String sso = ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User responsible = UserService.findBySso(sso);
+        User responsible = userService.getUserBySso(sso);
         Equipment equipment = this.EquipmentService.getEquipmentById(equipment_id);
         double new_value=0.0;
         int list_size = this.WorkingHoursService.getWorkingHoursByEquipmentId(equipment).size();
@@ -200,7 +217,7 @@ public class EquipmentController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String sso = ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User responsible = UserService.findBySso(sso);
+        User responsible = userService.getUserBySso(sso);
         Equipment equipment = this.EquipmentService.getEquipmentById(equipment_id);
         double new_value=0.0;
         int list_size = this.DownTimeService.getDownTimeByEquipmentId(equipment).size();
@@ -222,23 +239,28 @@ public class EquipmentController {
     public @ResponseBody
     Equipment getEquipmentById(@ApiParam(value = "ID of equipment that" +
             "needs to be fetched", required = true,
-            defaultValue = "1")@PathVariable("equipmentId")int equipmentId) {
-        return EquipmentService.getEquipmentById(equipmentId);
+            defaultValue = "1")@PathVariable("equipmentId")int equipmentId, Model model) {
+        model.addAttribute("current_equipment", equipmentManager.getEquipmentByEquipmentId(equipmentId).getEquipment_id());
+        return equipmentManager.getEquipmentByEquipmentId(equipmentId);
     }
 
+    public @ResponseBody
+    List<Equipment> AllEquipment() {
+        return equipmentManager.getAllEquipment();
+    }
     /**
      * GET equipment by Subdivision_Id.pu
      * @return equipment
      */
-   @ApiOperation(value = "getEquipmentBySubId", notes = "Get equipment by Subdivision_Id")
-   @RequestMapping(value = "/equipments/subdivisions/{subdivisionId}", method = RequestMethod.GET,
-           produces = "application/json")
-   public @ResponseBody
-   Set<Equipment> getEquipmentBySubId(@ApiParam(value = "ID of equipment that" +
-           "needs to be fetched", required = true,
-           defaultValue = "1")@PathVariable(value = "subdivisionId")int subdivisionId) {
-       return SubdivisionService.getSubdivisionById(subdivisionId).getEquipments_sub();
-   }
+    @ApiOperation(value = "getEquipmentBySubId", notes = "Get equipment by Subdivision_Id")
+    @RequestMapping(value = "/equipments/subdivisions/{subdivisionId}", method = RequestMethod.GET,
+            produces = "application/json")
+    public @ResponseBody
+    Set<Equipment> getEquipmentBySubId(@ApiParam(value = "ID of equipment that" +
+            "needs to be fetched", required = true,
+            defaultValue = "1")@PathVariable(value = "subdivisionId")int subdivisionId) {
+        return SubdivisionService.getSubdivisionById(subdivisionId).getEquipments_sub();
+    }
 
     /**
      * GET equipment by Subdivision_Id.pu
@@ -331,5 +353,63 @@ public class EquipmentController {
         return "Deleted successfully";
     }
 
-
+    @RequestMapping("/documents/{equipmentId}")
+    public @ResponseBody List<Document> index(Map<String, Object> map, @PathVariable(value = "equipmentId") int equipmentId, Model model) {
+        map.put("document", new Document());
+        Equipment equipment = this.EquipmentService.getEquipmentById(equipmentId);
+        map.put("cur_eq", equipment.getEquipment_id());
+        cur_equipment = equipment;
+        map.put("documentList", this.DocumentService.getDocumentsByEquipment(equipment));
+        return this.DocumentService.getDocumentsByEquipment(equipment);
+    }
+    @RequestMapping(value = "documents/save", method = RequestMethod.POST)
+    public String save(
+            @ModelAttribute("document") Document document,
+            @RequestParam("file") MultipartFile file) throws SerialException, SQLException{
+        System.out.println("Name:" + document.getDocument_name());
+        System.out.println("Desc:" + document.getDescription());
+        System.out.println("File:" + file.getName());
+        System.out.println("ContentType:" + file.getContentType());
+        try {
+            Blob blob = new javax.sql.rowset.serial.SerialBlob(IOUtils.toByteArray(file.getInputStream()));
+            System.out.println("Blob:" + blob);
+            document.setPath(file.getOriginalFilename());
+            document.setContent(IOUtils.toByteArray(file.getInputStream()));
+            document.setContent_type(file.getContentType());
+            document.setDate_of_adding(new Date());
+            document.setEquipment(cur_equipment);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            this.DocumentService.saveDocument(document);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/equipments";
+    }
+    @RequestMapping("documents/download/{documentId}")
+    public String download(@PathVariable("documentId")
+                           Integer documentId, HttpServletResponse response) {
+        Document doc = this.DocumentService.getDocument(documentId);
+        try {
+            response.setHeader("Content-Disposition", "inline;filename=\"" +doc.getPath()+ "\"");
+            OutputStream out = response.getOutputStream();
+            response.setContentType(doc.getContent_type());
+            IOUtils.copy(new ByteArrayInputStream(doc.getContent()), out);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    @RequestMapping("documents/remove/{documentId}")
+    public String remove(@PathVariable("documentId")
+                         Integer documentId) {
+        this.DocumentService.removeDocument(documentId);
+        return "documents";
+    }
 }
+
+

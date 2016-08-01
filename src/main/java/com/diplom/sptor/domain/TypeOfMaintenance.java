@@ -26,11 +26,14 @@ public class TypeOfMaintenance implements Serializable{
 
     private String description;
 
+    private int duration;
+
     public TypeOfMaintenance() {}
 
-    public TypeOfMaintenance(String type_of_maintenance_name, String description) {
+    public TypeOfMaintenance(String type_of_maintenance_name, String description, int duration) {
         this.type_of_maintenance_name = type_of_maintenance_name;
         this.description = description;
+        this.duration = duration;
     }
 
     public int getType_of_maintenance_id() {
@@ -55,6 +58,14 @@ public class TypeOfMaintenance implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     @Override

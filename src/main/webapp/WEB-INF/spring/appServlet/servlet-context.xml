@@ -12,7 +12,7 @@
 
     <annotation-driven validator="validator"/>
     <default-servlet-handler/>
-    <context:component-scan base-package="com.diplom.sptor.web" />
+    <context:component-scan base-package="com.diplom.sptor" />
     <!-- Handles HTTP GET requests for /resources/** by efficiently serving
         up static resources in the ${webappRoot}/resources directory -->
     <resources mapping="/resources/**" location="/resources/" />
@@ -46,165 +46,42 @@
 
     <beans:bean id="documentationConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
 
+    <beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <beans:property name="packagesToScan" value="com.diplom.sptor.domain.jpa"/>
+        <beans:property name="dataSource" ref="dataSource"/>
+        <beans:property name="jpaVendorAdapter">
+            <beans:bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </beans:property>
+        <beans:property name="jpaProperties" >
+            <beans:props>
+                <beans:prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</beans:prop>
+            </beans:props>
+        </beans:property>
+    </beans:bean>
 
     <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <beans:property name="driverClassName" value="org.postgresql.Driver" />
         <beans:property name="url"
-                        value="jdbc:postgresql://localhost:5430/zaprib" />
+                        value="jdbc:postgresql://localhost:5432/zaprib3" />
         <beans:property name="username" value="Vadim" />
         <beans:property name="password" value="wadim888" />
     </beans:bean>
 
-
-    <!-- Hibernate 4 SessionFactory Bean definition -->
-    <beans:bean id="hibernate4AnnotatedSessionFactory"
-                class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <beans:property name="dataSource" ref="dataSource" />
-        <beans:property name="annotatedClasses">
-            <beans:list>
-                <beans:value>com.diplom.sptor.domain.Equipment</beans:value>
-                <beans:value>com.diplom.sptor.domain.Subdivisions</beans:value>
-                <beans:value>com.diplom.sptor.domain.TypeOfEquipment</beans:value>
-                <beans:value>com.diplom.sptor.domain.Spares</beans:value>
-                <beans:value>com.diplom.sptor.domain.TechnologicalCard</beans:value>
-                <beans:value>com.diplom.sptor.domain.User</beans:value>
-                <beans:value>com.diplom.sptor.domain.RepairSheet</beans:value>
-                <beans:value>com.diplom.sptor.domain.UserProfile</beans:value>
-                <beans:value>com.diplom.sptor.domain.Components</beans:value>
-                <beans:value>com.diplom.sptor.domain.Parameters</beans:value>
-                <beans:value>com.diplom.sptor.domain.Measures</beans:value>
-                <beans:value>com.diplom.sptor.domain.WorkingHours</beans:value>
-                <beans:value>com.diplom.sptor.domain.Status</beans:value>
-                <beans:value>com.diplom.sptor.domain.TypeOfMaintenance</beans:value>
-                <beans:value>com.diplom.sptor.domain.DownTime</beans:value>
-                <beans:value>com.diplom.sptor.domain.StatusOfEquipment</beans:value>
-            </beans:list>
-        </beans:property>
-        <beans:property name="hibernateProperties">
-            <beans:props>
-                <beans:prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect
-                </beans:prop>
-                <beans:prop key="hibernate.show_sql">true</beans:prop>
-                <beans:prop key="hibernate.enable_lazy_load_no_trans">true</beans:prop>
-                <beans:prop key="current_session_context_class">thread</beans:prop>
-        </beans:props>
-        </beans:property>
+    <beans:bean id="multipartResolver"
+                class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <beans:property name="maxUploadSize" value="10000000" />
     </beans:bean>
 
-    <beans:bean id="equipmentDAO" class="com.diplom.sptor.dao.EquipmentDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    <beans:bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <!-- (this dependency is defined somewhere else) -->
+        <beans:property name="entityManagerFactory" ref="entityManagerFactory"/>
     </beans:bean>
+    <tx:annotation-driven/>
 
-    <beans:bean id="subdivisionDAO" class="com.diplom.sptor.dao.SubdivisionDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
+    <beans:bean id="persistenceExceptionTranslationPostProcessor"
+                class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
-    <beans:bean id="typeOfEquipmentDAO" class="com.diplom.sptor.dao.TypeOfEquipmentDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="spareDAO" class="com.diplom.sptor.dao.SpareDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="technologicalCardDAO" class="com.diplom.sptor.dao.TechnologicalCardDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="repairSheetDAO" class="com.diplom.sptor.dao.RepairSheetDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="userDao" class="com.diplom.sptor.dao.UserDaoImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="componentDao" class="com.diplom.sptor.dao.ComponentsDaoImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="parametersDao" class="com.diplom.sptor.dao.ParametersDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="workingHoursDAO" class="com.diplom.sptor.dao.WorkingHoursDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="typeOfMaintenanceDAO" class="com.diplom.sptor.dao.TypeOfMaintenanceDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="statusDAO" class="com.diplom.sptor.dao.StatusDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="downTimeDAO" class="com.diplom.sptor.dao.DownTimeDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="statusOfEqDAO" class="com.diplom.sptor.dao.StatusOfEqDAOImpl">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
-
-    <beans:bean id="EquipmentService" class="com.diplom.sptor.service.EquipmentServiceImpl">
-        <beans:property name="equipmentDAO" ref="equipmentDAO"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="SubdivisionService" class="com.diplom.sptor.service.SubdivisionServiceImpl">
-    <beans:property name="subdivisionDAO" ref="subdivisionDAO"></beans:property>
-</beans:bean>
-
-    <beans:bean id="TypeOfEquipmentService" class="com.diplom.sptor.service.TypeOfEquipmentServiceImpl">
-        <beans:property name="typeOfEquipmentDAO" ref="typeOfEquipmentDAO"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="SpareService" class="com.diplom.sptor.service.SpareServiceImpl">
-        <beans:property name="spareDAO" ref="spareDAO"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="TechnologicalCardService" class="com.diplom.sptor.service.TechnologicalCardServiceImpl">
-        <beans:property name="technologicalCardDAO" ref="technologicalCardDAO"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="RepairSheetService" class="com.diplom.sptor.service.RepairSheetServiceImpl">
-        <beans:property name="repairSheetDAO" ref="repairSheetDAO"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="UserService" class="com.diplom.sptor.service.UserServiceImpl">
-        <beans:property name="userDao" ref="userDao"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="ComponentService" class="com.diplom.sptor.service.ComponentServiceImpl">
-        <beans:property name="componentDao" ref="componentDao"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="ParametersService" class="com.diplom.sptor.service.ParametersServiceImpl">
-        <beans:property name="parametersDao" ref="parametersDao"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="WorkingHoursService" class="com.diplom.sptor.service.WorkingHoursServiceImpl">
-        <beans:property name="workingHoursDAO" ref="workingHoursDAO"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="TypeOfMaintenanceService" class="com.diplom.sptor.service.TypeOfMaintenanceServiceImpl">
-        <beans:property name="typeOfMaintenanceDAO" ref="typeOfMaintenanceDAO"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="StatusService" class="com.diplom.sptor.service.StatusServiceImpl">
-        <beans:property name="statusDAO" ref="statusDAO"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="DownTimeService" class="com.diplom.sptor.service.DownTimeServiceImpl">
-        <beans:property name="downTimeDAO" ref="downTimeDAO"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="StatusOfEqService" class="com.diplom.sptor.service.StatusOfEqServiceImpl">
-        <beans:property name="statusOfEqDAO" ref="statusOfEqDAO"></beans:property>
-    </beans:bean>
-
-    <beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </beans:bean>
+    <jpa:repositories base-package="com.diplom.sptor.repository" />
 
 </beans:beans>

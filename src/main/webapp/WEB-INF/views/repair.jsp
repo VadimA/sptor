@@ -33,6 +33,24 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js"></script>
 
+  <style>
+    .word
+    {
+      color:blue;
+    }
+    .word2
+    {
+      color:orange;
+    }
+    .word3
+    {
+      color:red;
+    }
+    .word4
+    {
+      color:green;
+    }
+  </style>
   <script type="text/javascript">
 
     function addRepairSheet () {
@@ -195,7 +213,7 @@
 
         <security:authorize access="hasRole('ROLE_ADMIN')">
         if(status==2) {
-          jQuery("#repairDialog").append("<center><div style=\"align-content: center;\"><p class=\"form-control-static\"> <b>Комментарий:</b></p><input id=\"manager_comment\"/>\n\
+          jQuery("#repairDialog").append("<center><div style=\"align-content: center;\"><p style=\"align-content: center;\"> <b>Комментарий:</b></p><input id=\"manager_comment\"/>\n\
                 <p id =\"manager_error\" style=\"color: red\"></p></br><button onclick=\"confirmRepair(2);\">Подтвердить</button><spacer width=\"100\" type=\"block\">" +
                   "<button onclick=\"rejectRepair(2);\">Отправить на пересмотр</button></div></center>");
         }
@@ -287,7 +305,7 @@
         else {
           var date = $("#datepicker4").val();
           var description = "";
-          var status = 5;
+          var status = 4;
           var that = this;
           $.ajax({
             type: "POST",
@@ -324,7 +342,7 @@
         else {
           var date = $("#datepicker3").val();
           var description = $("#reason").val();
-          var status = 4;
+          var status = 5;
           var that = this;
           $.ajax({
             type: "POST",
@@ -383,6 +401,7 @@
             toir_type: toir_type
           },
           success: function (returnData) {
+              alert("Акт сформирован");
             $(that).dialog("close");
           }
         });
@@ -397,6 +416,7 @@
             toir_type: toir_type
           },
           success: function (returnData) {
+              alert("Акт сформирован");
             $(that).dialog("close");
           }
         });
@@ -416,9 +436,6 @@
 
       if($("#equipments").val()=="0"){
         $("#error2").text("Укажите оборудование");
-      }
-      else if($("#components").val()=="0"||$("#components").val()=="- Выберите комплектующие -"){
-        $("#error10").text("Укажите компоненты");
       }
 
       else if($("#datepicker1").val()==""){
@@ -562,7 +579,7 @@
       </div>
     </div>
 
-    <div class="col-md-8" style="background:beige;min-height:600px;">
+    <div class="col-md-8" style="background:beige;min-height:800px;">
 
       <div class="content-box-large">
         <div class="panel-heading">
@@ -638,6 +655,7 @@
               </tr>
               <tr><td><br/></td><td><br/></td></tr>
               <tr>
+                <div style="align-content: center;">
                 <center>
                 <td colspan="2">
                   <input type="button"
@@ -645,6 +663,7 @@
                   <input type="button"
                          value="<spring:message text="Закрыть"/>" onclick="jQuery('#new_repair').dialog('close');"/>
                 </center>
+                </div>
                 </td>
               </tr>
             </table>
@@ -691,7 +710,18 @@
             <tr onclick="openRepair(${repair.repair_sheet_id})">
               <td><span class="glyphicon glyphicon-file"></span></td>
               <td>${repair.sheet_number}</td>
-              <td>${repair.status.status}</td>
+              <c:if test="${repair.status.status_id==1}">
+              <td><span class="word">${repair.status.status}</span></td>
+              </c:if>
+              <c:if test="${repair.status.status_id==2||repair.status.status_id==3}">
+                <td><span class="word2">${repair.status.status}</span></td>
+              </c:if>
+              <c:if test="${repair.status.status_id==4}">
+                <td><span class="word4">${repair.status.status}</span></td>
+              </c:if>
+              <c:if test="${repair.status.status_id==5}">
+                <td><span class="word3">${repair.status.status}</span></td>
+              </c:if>
               <td><fmt:formatDate value="${repair.start_date}" pattern="dd-MM-yyyy" /></td>
               <td>${repair.subdivision.subdivision_name}</td>
               <td>${repair.responsible_for_delivery.last_name}</td>

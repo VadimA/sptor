@@ -48,10 +48,13 @@
         for (var i = 0; i <= data.length - 1; i++) {
           var id = data[i].repair_sheet_id;
           var date = new Date(data[i].start_date);
+          var end_date = new Date(date);
+          end_date.setDate(end_date.getDate() + data[i].type_of_maintenance.duration);
           var mm = date.getMonth() + 1;
           var dtade = data[i].start_date;
+          var dtade2 = data[i].end_date;
           var desc = data[i].type_of_maintenance.type_of_maintenance_name + " " + data[i].equipment.type_of_equipment.type_of_equipment_name + " " + data[i].equipment.equipment_name;
-          var t = {id : id,start: dtade, title: desc, allDay: true, url: "/repair"};
+          var t = {id : id,start: dtade, end:dtade2, title: desc, allDay: true, url: "/repair"};
           mas.push(t);
         }
         console.log(mas);
@@ -210,7 +213,7 @@
     </div><!--/.container-fluid -->
   </nav>
 </div>
-<div class="row" style="background-color:lavender;min-height:600px;">
+<div class="row" style="background-color:lavender;min-height:800px;">
   <div class="col-md-2" style="overflow-y: scroll;">
     <div class="tree well" align="left">
       <ul id="all_equipments">

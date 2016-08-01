@@ -173,7 +173,6 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">План-график<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="<c:url value="/graphics"/>">Годовой</a></li>
                 <li><a href="<c:url value="/graphics"/>">Месячный</a></li>
               </ul>
             </li>
@@ -226,12 +225,11 @@
                 </ul>
               </li>
             </security:authorize>
-            <li><a href="<c:url value="/subdivisions"/>">О системе</a></li>
+            <li><a href="<c:url value="/about"/>">О системе</a></li>
 
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">${user}<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="<c:url value="/profile"/>">Профиль</a></li>
                 <li><a href="<c:url value="/logout"/>">Выйти</a></li>
               </ul>
             </li>
@@ -240,7 +238,7 @@
       </div><!--/.container-fluid -->
     </nav>
   </div>
-  <div class="row" style="background-color:lavender;min-height:600px;">
+  <div class="row" style="background-color:lavender;min-height:850px;">
     <div class="col-md-2" style="overflow-y: scroll;">
       <div class="tree well" align="left">
         <ul id="all_equipments">

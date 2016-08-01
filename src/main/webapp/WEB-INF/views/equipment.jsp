@@ -41,6 +41,13 @@
     <script src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
     <script src="http://www.google.com/jsapi?fake=.js"></script>
 
+
+    <style>
+        .about {
+            display:inline-block;
+        }
+    </style>
+
     <script type="text/javascript">
 
         google.load("visualization", "1", {packages:["corechart"]});
@@ -87,18 +94,18 @@
         dataType: 'json',
         mimeType: 'application/json',
       }).done(function( data ) {
-        jQuery("#result").html("          <div class=\"col-md-3\" style=\"margin-top: 45px;margin-left: 50px\">\n\
-            <p class=\"form-control-static\"> <b> Наименование:</b></p>\n\
-            <p class=\"form-control-static\"> <b> Тип оборудования:</b></p>\n\
-            <p class=\"form-control-static\"> <b> Местонахождение:</b></p>\n\
-            <p class=\"form-control-static\"> <b> Инвентарный номер:</b></p>\n\
-            <p class=\"form-control-static\"> <b> Год начала эксплуатации:</b></p>\n\
-            <p class=\"form-control-static\"> <b> Изготовитель:</b></p>\n\
-            <p class=\"form-control-static\"> <b> Описание:</b></p>\n\
-            <p class=\"form-control-static\"> <b> Статус:</b></p>\n\
+        jQuery("#result").html("          <div class='about' style=\"min-width:200px;margin-top: 45px;margin-left: 50px\">\n\
+            <p class=\"form-control-static\"><b>Наименование:</b></p>\n\
+            <p class=\"form-control-static\"><b>Тип оборудования:</b></p>\n\
+            <p class=\"form-control-static\"><b>Местонахождение:</b></p>\n\
+            <p class=\"form-control-static\"><b>Инвентарный номер:</b></p>\n\
+            <p class=\"form-control-static\"><b>Год выпуска:</b></p>\n\
+            <p class=\"form-control-static\"><b>Изготовитель:</b></p>\n\
+            <p class=\"form-control-static\"><b>Описание:</b></p>\n\
+            <p class=\"form-control-static\"><b>Статус:</b></p>\n\
           </div>\n\
 \n\
-          <div class=\"col-md-5\" style=\"margin-top: 45px;\" align=\"left\">\n\
+          <div class='about' style=\"min-width:200px;margin-top: 45px;\" align=\"left\">\n\
             <p class=\"form-control-static\" id=\"eq_name\"></p>\n\
 \n\
             <p class=\"form-control-static\" id=\"eq_type\"></p>\n\
@@ -186,7 +193,49 @@
       });
     }
 
-    function getRepairBySpare(component_id){
+        function getDocuments(equipment_id){
+            $.ajax({
+                type: "GET",
+                contentType: 'application/json',
+                url: "/documents/"+equipment_id,
+                dataType: 'json',
+                mimeType: 'application/json',
+            }).done(function( data) {
+                jQuery("#result").html("<center></br><h5>Оборудование: " + current_equipment_name + "</h5></br><button class=\"btn btn-default\"  type=\"button\" onclick=\"addDocuments();\">Добавить документ</button></br></center><table class=\"table table-hover\" id=\"params_t\">\n\
+<thead>\n\
+  <tr><th>&nbsp;</th><th>Наименование</th><th>Дата добавления</th><th>Описание</th></tr>\n\
+  </thead>\n\
+<tbody>");
+                for(var i =0;i<data.length;i++) {
+                    components_id = data[i].component_id;
+                    var date = new Date(data[i].date_of_adding);
+                    var mm = date.getMonth() + 1;
+                    var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
+                    $("#params_t").append("<tr><td onclick=\"openDocuments(this.innerHTML)\">" + data[i].document_id + "</td><td>" + data[i].document_name + "</td><td>" + dtade + "</td><td>" + data[i].description + "</td></tr>");
+
+                }
+                jQuery("#result").append("<table class=\"table table-hover\" id=\"repair_t\"></table>");
+            });
+        }
+
+        function addDocuments() {
+
+            jQuery("#new_doc").dialog({
+                        title: "Добавление нового документа",
+                        width:550,
+                        height: 470,
+                        resizable: false,
+                        cache: false,
+                        modal: true
+                    }
+            );
+        }
+
+        function openDocuments(document_id){
+            location.href = "/documents/download/"+document_id;
+        }
+
+        function getRepairBySpare(component_id){
       $.ajax({
         type: "GET",
         contentType: 'application/json',
@@ -479,7 +528,6 @@
         success: function(returnData){
           $(that).dialog("close");
         }});
-      refreshContent();
     }
 
     function openTechCard(techCardId){
@@ -549,7 +597,6 @@
               text: 'Закрыть',
               click: function() {
                 jQuery("#techCardDialog").dialog('close');
-                refreshContent();
               }}
           ]
         });
@@ -649,8 +696,8 @@
             </div><!--/.container-fluid -->
         </nav>
     </div>
-  <div class="row" style="background-color:lavender;min-height:600px;">
-    <div class="col-md-2" style="overflow-y: scroll;">
+  <div class="row" style="background-color:lavender;min-height:800px; min-width: 600px;">
+    <div class="col-md-2" style="overflow-y: scroll;overflow-x: scroll;max-height:1000px;">
 
       <div class="tree well" align="left">
         <li>
@@ -730,7 +777,7 @@
         </li>
       </div>
   </div>
-    <div class="col-md-8" style="background:beige;min-height:600px; text-align:  center">
+    <div class="col-md-8" style="background:beige;min-height:800px; min-width: 600px; text-align:  center">
       </br>
       <div class="text-center" style="display: table; margin: 0 auto; text-align: center;">
         <div class="btn-toolbar" \>
@@ -741,11 +788,12 @@
             <button class="btn btn-default" onclick="workedHours(current_equipment);">Наработка</button>
             <button class="btn btn-default" onclick="downTime(current_equipment);">Простой</button>
             <button class="btn btn-default" onclick="getTechCard(current_equipment);">Технологические карты</button>
+            <button class="btn btn-default"  onclick="getDocuments(current_equipment);">Документы</button>
           </div>
         </div>
       </div>
       <form class="form-horizontal">
-        <div class="form-group" id="result" align="left">
+        <div class="form-group" id="result" align="left" style="margin-left: 50px;margin-right: 50px;">
             <div style="display: table; margin: 0 auto; text-align: center;">
                 <div id="chart_div" style="width: 600px; height: 450px;margin-top: 20px"></div>
 
@@ -777,6 +825,39 @@
               </form>
           </div>
       </form>
+
+        <div id="new_doc" style="display: none">
+
+            <form:form method="post" action="/documents/save" commandName="document" enctype="multipart/form-data">
+                <form:errors path="*" cssClass="error"/>
+                <table>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><form:label path="document_name">Наименование &nbsp</form:label></td>
+                        <td><form:input path="document_name" /></td>
+                    </tr>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><form:label path="description">Описание &nbsp</form:label></td>
+                        <td><form:textarea path="description" /></td>
+                    </tr>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><form:label path="content">Документ &nbsp</form:label></td>
+                        <td><input type="file" name="file" id="file"></input></td>
+                    </tr>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><br/></td>
+                        <td>
+                            <center>
+                                <input type="submit" value="Добавить документ"/>
+                            </center>
+                        </td>
+                    </tr>
+                </table>
+            </form:form>
+        </div>
 
       <div id="new_tech_card"  title="Добавление новой технологической карты" style="display: none">
 

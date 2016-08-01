@@ -1,7 +1,6 @@
 package com.diplom.sptor.service;
 
 import com.diplom.sptor.dao.RepairSheetDAO;
-import com.diplom.sptor.dao.SpareDAO;
 import com.diplom.sptor.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

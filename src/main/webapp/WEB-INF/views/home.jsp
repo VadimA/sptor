@@ -38,18 +38,18 @@
         },
         xAxis: {
           categories: [
-            'Янв',
-            'Фев',
-            'Мар',
-            'Апр',
-            'Май',
-            'Июн',
             'Июл',
             'Авг',
             'Сен',
             'Окт',
             'Ноя',
-            'Дек'
+            'Дек',
+            'Янв',
+            'Фев',
+            'Мар',
+            'Апр',
+            'Май',
+            'Июн'
           ]
         },
         yAxis: {
@@ -74,11 +74,11 @@
         },
         series: [{
           name: 'Новые',
-          data: [12,3,4,23,12,0,3,6,8,12,12,25]
+          data: [12,3,4,23,12,6,3,6,8,12,12,16]
 
         },{
           name: 'Выполненные',
-          data: [11,2,4,19,12,0,3,5,4,11,10,28]
+          data: [11,2,4,19,12,4,3,5,4,11,10,15]
 
         }]
       });
@@ -175,7 +175,7 @@
     </div><!--/.container-fluid -->
   </nav>
 </div>
-  <div class="row" style="background-color:lavender;min-height:600px;">
+  <div class="row" style="background-color:lavender;min-height:800px;">
     <div class="col-md-2" style="overflow-y: scroll;">
       <div class="tree well" align="left">
         <ul id="all_equipments">

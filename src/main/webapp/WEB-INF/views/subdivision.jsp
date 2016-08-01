@@ -356,7 +356,7 @@
       </div><!--/.container-fluid -->
     </nav>
   </div>
-  <div class="row" style="background-color:lavender;min-height:600px;">
+  <div class="row" style="background-color:lavender;min-height:800px;">
     <div class="col-md-2" style="overflow-y: scroll;">
       <div class="tree well" align="left">
         <ul id="all_equipments">

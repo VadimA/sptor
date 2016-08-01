@@ -1,6 +1,5 @@
 package com.diplom.sptor.service;
 
-import com.diplom.sptor.dao.SpareDAO;
 import com.diplom.sptor.dao.StatusDAO;
 import com.diplom.sptor.domain.Status;
 import org.springframework.stereotype.Service;
