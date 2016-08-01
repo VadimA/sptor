@@ -235,7 +235,7 @@
             location.href = "/documents/download/"+document_id;
         }
 
-        function getRepairBySpare(component_id){
+    function getRepairBySpare(component_id){
       $.ajax({
         type: "GET",
         contentType: 'application/json',
@@ -366,11 +366,11 @@
                                 data: {value: value, equipment_id: current_equipment},
                                 success: function (returnData) {
                                     $(that).dialog("close");
-                                    SendGet(current_equipment);
-                                    workedHours(current_equipment);
                                     //window.location.reload(true);//$('#container').html(returnData);
                                 }
                             });
+                            SendGet(current_equipment);
+                            workedHours(current_equipment);
                         }
                         SendGet(current_equipment);
                         workedHours(current_equipment);
@@ -789,6 +789,11 @@
             <button class="btn btn-default" onclick="downTime(current_equipment);">Простой</button>
             <button class="btn btn-default" onclick="getTechCard(current_equipment);">Технологические карты</button>
             <button class="btn btn-default"  onclick="getDocuments(current_equipment);">Документы</button>
+           <!--   <script type="text/javascript">
+                  document.getElementById("doc_but").onclick = function () {
+                      location.href = "/documents/"+current_equipment;
+                  };
+              </script>-->
           </div>
         </div>
       </div>
@@ -897,6 +902,39 @@
         </form:form>
       </div>
       <div id="techCardDialog" style="display: none"></div>
+
+        <div id="new_doc" style="display: none">
+
+            <form:form method="post" action="/documents/save" commandName="document" enctype="multipart/form-data">
+                <form:errors path="*" cssClass="error"/>
+                <table>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><form:label path="document_name">Наименование </form:label></td>
+                        <td><form:input path="document_name" /></td>
+                    </tr>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><form:label path="description">Описание </form:label></td>
+                        <td><form:textarea path="description" /></td>
+                    </tr>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><form:label path="content">Документ </form:label></td>
+                        <td><input type="file" name="file" id="file"></input></td>
+                    </tr>
+                    <tr><td><br/></td><td><br/></td></tr>
+                    <tr>
+                        <td><br/></td>
+                        <td>
+                        <center>
+                            <input type="submit" value="Добавить документ"/>
+                        </center>
+                        </td>
+                    </tr>
+                </table>
+            </form:form>
+        </div>
     </div>
     <div class="col-md-2">
       <input type="text" class="form-control input-sm" placeholder="Поиск">
