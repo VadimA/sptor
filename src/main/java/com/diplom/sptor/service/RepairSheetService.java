@@ -1,31 +1,60 @@
 package com.diplom.sptor.service;
 
 import com.diplom.sptor.domain.*;
+import com.diplom.sptor.repository.RepairSheetRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by user on 16.12.2015.
  */
-public interface RepairSheetService {
+@Service
+@Transactional
+public class RepairSheetService {
 
-    public void addRepairSheet(RepairSheet repairSheet);
+    @Autowired
+    RepairSheetRepository repairSheetRepository;
 
-    public List<RepairSheet> listRepairSheets();
+    public RepairSheet addRepairSheet(RepairSheet repairSheet){
+        return repairSheetRepository.save(repairSheet);
+    }
 
-    public RepairSheet getRepairSheetById(int id);
+    public List<RepairSheet> getAllRepairSheets(){
+        return repairSheetRepository.findAll();
+    }
 
-    public void deleteRepairSheet(int id);
+    public RepairSheet getRepairSheetById(int id){
+        return repairSheetRepository.findOne(id);
+    }
 
-    public void updateRepairSheet(RepairSheet repairSheet);
+    public void deleteRepairSheet(int id){
+        repairSheetRepository.delete(id);
+    }
 
-    public List<RepairSheet> getRepairSheetByStatus(Status status);
+    public RepairSheet updateRepairSheet(RepairSheet repairSheet){
+        return repairSheetRepository.save(repairSheet);
+    }
 
-    public List<RepairSheet> getRepairSheetByResponsibleForDelivery(User user);
+    public List<RepairSheet> getRepairSheetByStatus(Status status){
+        return repairSheetRepository.findByStatus(status);
+    }
 
-    public List<RepairSheet> getRepairSheetByResponsibleAndStatus(User user, int status);
+    public List<RepairSheet> getRepairSheetByResponsibleForDelivery(User user){
+        return repairSheetRepository.findByResponsibleForDelivery(user);
+    }
 
-    public List<RepairSheet> getTypeOfMaintenanceOfRepairByEquipmentAndComponents(Equipment equipment, Components components);
+    public List<RepairSheet> getRepairSheetByResponsibleAndStatus(User user, Status status){
+        return repairSheetRepository.findByResponsibleForDeliveryAndStatus(user,status);
+    }
 
-    public List<RepairSheet> getRepairSheetByEquipment(Equipment equipment);
+    public List<RepairSheet> getTypeOfMaintenanceOfRepairByEquipmentAndComponents(Equipment equipment, Components component){
+        return repairSheetRepository.findByEquipmentAndComponent(equipment,component);
+    }
+
+    public List<RepairSheet> getRepairSheetByEquipment(Equipment equipment){
+        return repairSheetRepository.findByEquipment(equipment);
+    }
 }

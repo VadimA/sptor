@@ -22,7 +22,7 @@ public class Parameters {
 
     @ManyToOne()
     @JoinColumn(name = "type_of_equipment_id")
-    private TypeOfEquipment type_of_equipment_parameters;
+    private TypeOfEquipment typeOfEquipment;
 
     private String parameter_value;
 
@@ -33,10 +33,10 @@ public class Parameters {
     public Parameters() {
     }
 
-    public Parameters(Measures measure, String parameter_name, TypeOfEquipment type_of_equipment_parameters, String parameter_value) {
+    public Parameters(Measures measure, String parameter_name, TypeOfEquipment typeOfEquipment, String parameter_value) {
         this.measure = measure;
         this.parameter_name = parameter_name;
-        this.type_of_equipment_parameters = type_of_equipment_parameters;
+        this.typeOfEquipment = typeOfEquipment;
         this.parameter_value = parameter_value;
     }
 
@@ -56,12 +56,12 @@ public class Parameters {
         this.parameter_name = parameter_name;
     }
 
-    public TypeOfEquipment getType_of_equipment_parameters() {
-        return type_of_equipment_parameters;
+    public TypeOfEquipment getTypeOfEquipment() {
+        return typeOfEquipment;
     }
 
-    public void setType_of_equipment_parameters(TypeOfEquipment type_of_equipment_parameters) {
-        this.type_of_equipment_parameters = type_of_equipment_parameters;
+    public void setTypeOfEquipment(TypeOfEquipment typeOfEquipment) {
+        this.typeOfEquipment = typeOfEquipment;
     }
 
     public String getParameter_value() {
@@ -89,7 +89,7 @@ public class Parameters {
 
         if (getParameter_id() != that.getParameter_id()) return false;
         if (!getParameter_name().equals(that.getParameter_name())) return false;
-        if (!getType_of_equipment_parameters().equals(that.getType_of_equipment_parameters())) return false;
+        if (!getTypeOfEquipment().equals(that.getTypeOfEquipment())) return false;
         if (!getParameter_value().equals(that.getParameter_value())) return false;
         if (!getMeasure().equals(that.getMeasure())) return false;
 
@@ -100,7 +100,7 @@ public class Parameters {
     public int hashCode() {
         int result = getParameter_id();
         result = 31 * result + getParameter_name().hashCode();
-        result = 31 * result + getType_of_equipment_parameters().hashCode();
+        result = 31 * result + getTypeOfEquipment().hashCode();
         result = 31 * result + getParameter_value().hashCode();
         result = 31 * result + getMeasure().hashCode();
         return result;

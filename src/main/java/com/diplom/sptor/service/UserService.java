@@ -22,8 +22,8 @@ public class UserService {
         return userRepository.findById(id);
     };
 
-    public User getUserBySso(String sso){
-        return userRepository.findBySSO(sso);
+    public User getUserBySso(String ssoid){
+        return userRepository.findBySsoid(ssoid);
     }
 
     public User addUser(User user){

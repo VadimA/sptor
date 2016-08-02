@@ -27,7 +27,7 @@ public class SpareService {
     }
 
     public Spares getSpareById(int id){
-        return spareRepository.findSparesById(id);
+        return spareRepository.findOne(id);
     }
 
 }

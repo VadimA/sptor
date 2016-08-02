@@ -121,14 +121,14 @@
             <p class=\"form-control-static\" id=\"eq_desc\"></p>\n\
             <p class=\"form-control-static\" id=\"eq_status\"></p>\n\
           </div>");
-          var date = new Date(data.graduation_year);
+          var date = new Date(data.graduationYear);
           var year = date.getFullYear();
-        jQuery("#eq_name").text(data.equipment_name);
-        jQuery("#eq_type").text(data.type_of_equipment.type_of_equipment_name);
+        jQuery("#eq_name").text(data.equipmentName);
+        jQuery("#eq_type").text(data.typeOfEquipment.type_of_equipment_name);
         jQuery("#eq_sub").text(data.subdivision.subdivision_name);
-        jQuery("#eq_inv").text(data.inventory_number);
+        jQuery("#eq_inv").text(data.inventoryNumber);
         jQuery("#eq_year").text(year);
-        jQuery("#eq_prod").text(data.producer_of_equipment);
+        jQuery("#eq_prod").text(data.producerOfEquipment);
 
         if(data.description == null || data.description ==""){
             jQuery("#eq_desc").text("Отсутствует");
@@ -139,8 +139,8 @@
         jQuery("#eq_status").text(data.status.status);
 
         current_equipment = equipment_id;
-        current_equipment_name = data.equipment_name;
-        current_equipment_type = data.type_of_equipment.type_of_equipment_id;
+        current_equipment_name = data.equipmentName;
+        current_equipment_type = data.typeOfEquipment.type_of_equipment_id;
       });
     }
 
@@ -207,7 +207,7 @@
   </thead>\n\
 <tbody>");
                 for(var i =0;i<data.length;i++) {
-                    components_id = data[i].component_id;
+                    components_id = data[i].componentId;
                     var date = new Date(data[i].date_of_adding);
                     var mm = date.getMonth() + 1;
                     var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
@@ -579,11 +579,11 @@
         desc = data.description;
           jQuery("#repair_sheet_id").text(data.sheet_number);
           jQuery("#subdivision_id").text(data.subdivision.subdivision_name);
-          jQuery("#equipment_id").text(data.equipment.equipment_name);
+          jQuery("#equipment_id").text(data.equipment.equipmentName);
           jQuery("#type_of_maintenance_id").text(data.type_of_maintenance.type_of_maintenance_name);
           jQuery("#start_date").text(dtade);
           jQuery("#end_date").text(end_dtade);
-          jQuery("#responsible_for_delivery").text(data.responsible_for_delivery.last_name);
+          jQuery("#responsible_for_delivery").text(data.responsibleForDelivery.last_name);
           jQuery("#repair_title").text(desc);
           jQuery("#status").text(data.status.status);
         jQuery("#techCardDialog").dialog({
@@ -737,16 +737,16 @@
                 }).done(function( data ) {
                   for(var i =0;i<data.length;i++) {
                       if(data[i].status.status_id==1) {
-                          var html = "<li style='color: #228B22; list-style-type: square;'> <span style='color: green;' onclick=\"SendGet(" + data[i].equipment_id + ");\">" + data[i].equipment_name + "</span> </li>";
+                          var html = "<li style='color: #228B22; list-style-type: square;'> <span style='color: green;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
                       }
                       if(data[i].status.status_id==2) {
-                          var html = "<li style='color: orange; list-style-type: square;'> <span  style='color: orange;' onclick=\"SendGet(" + data[i].equipment_id + ");\">" + data[i].equipment_name + "</span> </li>";
+                          var html = "<li style='color: orange; list-style-type: square;'> <span  style='color: orange;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
                       }
                       if(data[i].status.status_id==3) {
-                          var html = "<li style='color: #FF4500; list-style-type: square;'> <span  style='color: red;' onclick=\"SendGet(" + data[i].equipment_id + ");\">" + data[i].equipment_name + "</span> </li>";
+                          var html = "<li style='color: #FF4500; list-style-type: square;'> <span  style='color: red;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
                       }
                       if(data[i].status.status_id==4) {
-                          var html = "<li style='color: #B0C4DE; list-style-type: square;'> <span  style='color: grey;' onclick=\"SendGet(" + data[i].equipment_id + ");\">" + data[i].equipment_name + "</span> </li>";
+                          var html = "<li style='color: #B0C4DE; list-style-type: square;'> <span  style='color: grey;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
                       }
                     if(data[i].subdivision.subdivision_id==1) {
                       jQuery("#myeq1").append(html);

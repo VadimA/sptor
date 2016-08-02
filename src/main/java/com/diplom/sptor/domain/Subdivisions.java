@@ -2,6 +2,8 @@ package com.diplom.sptor.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
@@ -33,6 +35,7 @@ public class Subdivisions implements Serializable{
 
     @OneToMany(mappedBy = "subdivision",fetch = FetchType.LAZY)
     @JsonIgnore
+    @LazyCollection(LazyCollectionOption.FALSE)
     private  Set<Equipment> equipments_sub = new HashSet<Equipment>();
 
     public Subdivisions(String subdivision_name, String abbreviation, String responsible, String description) {

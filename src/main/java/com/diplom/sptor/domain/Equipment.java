@@ -16,31 +16,36 @@ import java.util.Date;
 @Proxy(lazy=false)
 public class Equipment implements Serializable{
 
-    //@Column(name = "equipment_id")
     @Id
     @GenericGenerator(name="kaugen" , strategy="increment")
     @GeneratedValue(generator="kaugen")
-    private int equipment_id;
+    @Column(name = "equipment_id")
+    private int equipmentId;
 
-    private String equipment_name;
+    @Column(name = "equipment_name")
+    private String equipmentName;
 
     @ManyToOne()
     @JoinColumn(name = "type_of_equipment_id")
-    private TypeOfEquipment type_of_equipment;
+    private TypeOfEquipment typeOfEquipment;
 
     @ManyToOne()
     @JoinColumn(name = "subdivision_id")
     private Subdivisions subdivision;
 
-    private int inventory_number;
+    @Column(name = "inventory_number")
+    private int inventoryNumber;
 
-    private Date graduation_year;
+    @Column(name = "graduation_year")
+    private Date graduationYear;
 
-    private String producer_of_equipment;
+    @Column(name = "producer_of_equipment")
+    private String producerOfEquipment;
 
     private String description;
 
-    private double working_hours;
+    @Column(name = "working_hours")
+    private double workingHours;
 
     @ManyToOne()
     @JoinColumn(name = "status")
@@ -48,42 +53,42 @@ public class Equipment implements Serializable{
 
     public Equipment() {}
 
-    public Equipment(String equipment_name, TypeOfEquipment type_of_equipment, Subdivisions subdivision,
-                     int inventory_number, Date graduation_year, String producer_of_equipment, String description,
-                     double working_hours, StatusOfEquipment status) {
-        this.equipment_name = equipment_name;
-        this.type_of_equipment = type_of_equipment;
+    public Equipment(String equipmentName, TypeOfEquipment typeOfEquipment, Subdivisions subdivision,
+                     int inventoryNumber, Date graduationYear, String producerOfEquipment, String description,
+                     double workingHours, StatusOfEquipment status) {
+        this.equipmentName = equipmentName;
+        this.typeOfEquipment = typeOfEquipment;
         this.subdivision = subdivision;
-        this.inventory_number = inventory_number;
-        this.graduation_year = graduation_year;
-        this.producer_of_equipment = producer_of_equipment;
+        this.inventoryNumber = inventoryNumber;
+        this.graduationYear = graduationYear;
+        this.producerOfEquipment = producerOfEquipment;
         this.description = description;
-        this.working_hours = working_hours;
+        this.workingHours = workingHours;
         this.status = status;
     }
 
-    public int getEquipment_id() {
-        return equipment_id;
+    public int getEquipmentId() {
+        return equipmentId;
     }
 
-    public void setEquipment_id(int equipment_id) {
-        this.equipment_id = equipment_id;
+    public void setEquipmentId(int equipmentId) {
+        this.equipmentId = equipmentId;
     }
 
-    public String getEquipment_name() {
-        return equipment_name;
+    public String getEquipmentName() {
+        return equipmentName;
     }
 
-    public void setEquipment_name(String equipment_name) {
-        this.equipment_name = equipment_name;
+    public void setEquipmentName(String equipmentName) {
+        this.equipmentName = equipmentName;
     }
 
-    public TypeOfEquipment getType_of_equipment() {
-        return type_of_equipment;
+    public TypeOfEquipment getTypeOfEquipment() {
+        return typeOfEquipment;
     }
 
-    public void setType_of_equipment(TypeOfEquipment type_of_equipment) {
-        this.type_of_equipment = type_of_equipment;
+    public void setTypeOfEquipment(TypeOfEquipment typeOfEquipment) {
+        this.typeOfEquipment = typeOfEquipment;
     }
 
     public Subdivisions getSubdivision() {
@@ -94,28 +99,28 @@ public class Equipment implements Serializable{
         this.subdivision = subdivision;
     }
 
-    public int getInventory_number() {
-        return inventory_number;
+    public int getInventoryNumber() {
+        return inventoryNumber;
     }
 
-    public void setInventory_number(int inventory_number) {
-        this.inventory_number = inventory_number;
+    public void setInventoryNumber(int inventoryNumber) {
+        this.inventoryNumber = inventoryNumber;
     }
 
-    public Date getGraduation_year() {
-        return graduation_year;
+    public Date getGraduationYear() {
+        return graduationYear;
     }
 
-    public void setGraduation_year(Date graduation_year) {
-        this.graduation_year = graduation_year;
+    public void setGraduationYear(Date graduationYear) {
+        this.graduationYear = graduationYear;
     }
 
-    public String getProducer_of_equipment() {
-        return producer_of_equipment;
+    public String getProducerOfEquipment() {
+        return producerOfEquipment;
     }
 
-    public void setProducer_of_equipment(String producer_of_equipment) {
-        this.producer_of_equipment = producer_of_equipment;
+    public void setProducerOfEquipment(String producerOfEquipment) {
+        this.producerOfEquipment = producerOfEquipment;
     }
 
     public String getDescription() {
@@ -126,12 +131,12 @@ public class Equipment implements Serializable{
         this.description = description;
     }
 
-    public double getWorking_hours() {
-        return working_hours;
+    public double getWorkingHours() {
+        return workingHours;
     }
 
-    public void setWorking_hours(double working_hours) {
-        this.working_hours = working_hours;
+    public void setWorkingHours(double workingHours) {
+        this.workingHours = workingHours;
     }
 
     public StatusOfEquipment getStatus() {
@@ -149,15 +154,15 @@ public class Equipment implements Serializable{
 
         Equipment equipment = (Equipment) o;
 
-        if (getEquipment_id() != equipment.getEquipment_id()) return false;
-        if (getInventory_number() != equipment.getInventory_number()) return false;
-        if (Double.compare(equipment.getWorking_hours(), getWorking_hours()) != 0) return false;
-        if (!getEquipment_name().equals(equipment.getEquipment_name())) return false;
-        if (!getType_of_equipment().equals(equipment.getType_of_equipment())) return false;
+        if (getEquipmentId() != equipment.getEquipmentId()) return false;
+        if (getInventoryNumber() != equipment.getInventoryNumber()) return false;
+        if (Double.compare(equipment.getWorkingHours(), getWorkingHours()) != 0) return false;
+        if (!getEquipmentName().equals(equipment.getEquipmentName())) return false;
+        if (!getTypeOfEquipment().equals(equipment.getTypeOfEquipment())) return false;
         if (!getSubdivision().equals(equipment.getSubdivision())) return false;
-        if (getGraduation_year() != null ? !getGraduation_year().equals(equipment.getGraduation_year()) : equipment.getGraduation_year() != null)
+        if (getGraduationYear() != null ? !getGraduationYear().equals(equipment.getGraduationYear()) : equipment.getGraduationYear() != null)
             return false;
-        if (!getProducer_of_equipment().equals(equipment.getProducer_of_equipment())) return false;
+        if (!getProducerOfEquipment().equals(equipment.getProducerOfEquipment())) return false;
         if (getDescription() != null ? !getDescription().equals(equipment.getDescription()) : equipment.getDescription() != null)
             return false;
         return getStatus().equals(equipment.getStatus());
@@ -168,15 +173,15 @@ public class Equipment implements Serializable{
     public int hashCode() {
         int result;
         long temp;
-        result = getEquipment_id();
-        result = 31 * result + getEquipment_name().hashCode();
-        result = 31 * result + getType_of_equipment().hashCode();
+        result = getEquipmentId();
+        result = 31 * result + getEquipmentName().hashCode();
+        result = 31 * result + getTypeOfEquipment().hashCode();
         result = 31 * result + getSubdivision().hashCode();
-        result = 31 * result + getInventory_number();
-        result = 31 * result + (getGraduation_year() != null ? getGraduation_year().hashCode() : 0);
-        result = 31 * result + getProducer_of_equipment().hashCode();
+        result = 31 * result + getInventoryNumber();
+        result = 31 * result + (getGraduationYear() != null ? getGraduationYear().hashCode() : 0);
+        result = 31 * result + getProducerOfEquipment().hashCode();
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        temp = Double.doubleToLongBits(getWorking_hours());
+        temp = Double.doubleToLongBits(getWorkingHours());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + getStatus().hashCode();
         return result;

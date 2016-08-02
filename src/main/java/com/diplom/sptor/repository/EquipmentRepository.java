@@ -1,7 +1,9 @@
 package com.diplom.sptor.repository;
 
 import com.diplom.sptor.domain.Equipment;
-import com.diplom.sptor.domain.Spares;
+import java.util.List;
+
+import com.diplom.sptor.domain.StatusOfEquipment;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -12,5 +14,7 @@ import java.util.List;
 public interface EquipmentRepository extends CrudRepository<Equipment, Integer> {
 
     List<Equipment> findAll();
-    Equipment findByEquipmentId(int equipmentId);
+    List<Equipment> findBySubdivision(int subdivision);
+    List<Equipment> findBySubdivisionAndTypeOfEquipment(int subdivision, int type);
+    List<Equipment> findByStatus(StatusOfEquipment status);
 }

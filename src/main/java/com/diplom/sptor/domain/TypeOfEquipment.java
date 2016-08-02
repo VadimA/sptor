@@ -26,7 +26,7 @@ public class TypeOfEquipment implements Serializable {
     private String type_of_equipment_name;
     private String description;
 
-    @OneToMany(mappedBy = "type_of_equipment",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "typeOfEquipment",fetch = FetchType.LAZY)
     @JsonIgnore
     private final Set<Equipment> equipments_type = new HashSet<Equipment>();
 
@@ -68,7 +68,7 @@ public class TypeOfEquipment implements Serializable {
         return equipments_type;
     }
     public void addEquipments(Equipment equipment) {
-        equipment.setType_of_equipment(this);
+        equipment.setTypeOfEquipment(this);
         this.equipments_type.add(equipment);
     }
     @Override

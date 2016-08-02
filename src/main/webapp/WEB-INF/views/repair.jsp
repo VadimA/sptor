@@ -90,7 +90,7 @@
         }).done(function( data ) {
           var options = '';
           for(var i =0;i<data.length;i++) {
-            options += '<option value="' + data[i].equipment_id + '">' + data[i].equipment_name + '</option>';
+            options += '<option value="' + data[i].equipmentId + '">' + data[i].equipmentName + '</option>';
           }
           $('#equipments').html(options);
           $('#equipments').attr('disabled', false);
@@ -117,7 +117,7 @@
         }).done(function (data) {
           var options = '';
           for(var i =0;i<data.length;i++) {
-            options += '<option value="' + data[i].component_id + '">' + data[i].spare.spare_name + '</option>';
+            options += '<option value="' + data[i].componentId + '">' + data[i].spare.spare_name + '</option>';
           }
           $('#components').html(options);
           $('#components').attr('disabled', false);
@@ -181,10 +181,10 @@
         toir_id = data.type_of_maintenance.type_of_maintenance_id;
         jQuery("#repair_sheet_id").text(data.sheet_number);
         jQuery("#subdivision_id").text(data.subdivision.subdivision_name);
-        jQuery("#equipment_id").text(data.equipment.equipment_name);
+        jQuery("#equipment_id").text(data.equipment.equipmentName);
         jQuery("#type_of_maintenance_id").text(data.type_of_maintenance.type_of_maintenance_name);
         jQuery("#start_date").text(dtade);
-        jQuery("#responsible_for_delivery").text(data.responsible_for_delivery.last_name);
+        jQuery("#responsible_for_delivery").text(data.responsibleForDelivery.last_name);
         jQuery("#repair_title").text(desc);
         jQuery("#status").text(data.status.status);
 
@@ -609,7 +609,7 @@
               <tr>
                 <td><label><spring:message text="Оборудование: "/></label></td>
                 <td>
-                  <select class="form-control" path="equipment.equipment_id" name="equipments" id="equipments" disabled="disabled">
+                  <select class="form-control" path="equipment.equipmentId" name="equipments" id="equipments" disabled="disabled">
                     <option value="0">- Выберите оборудование -</option>
                   </select>
                   <p id ="error2" style="color: red"></p>
@@ -619,9 +619,9 @@
               <tr>
                 <td><label><spring:message text="Комплектующие: "/></label></td>
                 <td>
-                  <select class="form-control" path="component.component_id" name="components" id="components" disabled="disabled">
+                  <select class="form-control" path="component.componentId" name="components" id="components" disabled="disabled">
                     <c:forEach items="${components}" var="components">
-                      <option value="${components.component_id}">${components.spare.spare_name}</option>
+                      <option value="${components.componentId}">${components.spare.spare_name}</option>
                     </c:forEach>
                   </select>
                   <p id ="error10" style="color: red"></p>
@@ -724,7 +724,7 @@
               </c:if>
               <td><fmt:formatDate value="${repair.start_date}" pattern="dd-MM-yyyy" /></td>
               <td>${repair.subdivision.subdivision_name}</td>
-              <td>${repair.responsible_for_delivery.last_name}</td>
+              <td>${repair.responsibleForDelivery.last_name}</td>
               <td>${repair.description}</td>
             </tr>
           </c:forEach>

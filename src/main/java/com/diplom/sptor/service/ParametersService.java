@@ -2,23 +2,44 @@ package com.diplom.sptor.service;
 
 import com.diplom.sptor.domain.Parameters;
 import com.diplom.sptor.domain.TypeOfEquipment;
+import com.diplom.sptor.repository.ParametersRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by user on 02.03.2016.
  */
-public interface ParametersService {
+@Service
+@Transactional
+public class ParametersService {
 
-    public void addParameter(Parameters parameters);
+    @Autowired
+    ParametersRepository parametersRepository;
 
-    public List<Parameters> listParameters();
+    public Parameters addParameter(Parameters parameter){
+        return parametersRepository.save(parameter);
+    }
 
-    public Parameters getParameterById(int id);
+    public List<Parameters> getAllParameters(){
+        return parametersRepository.findAll();
+    }
 
-    public void deleteParameter(int id);
+    public Parameters getParameterById(int id){
+        return parametersRepository.findOne(id);
+    }
 
-    public void updateParameter(Parameters parameters);
+    public void deleteParameter(int id){
+        parametersRepository.delete(id);
+    }
 
-    public List<Parameters> getParametersByType(TypeOfEquipment type);
+    public Parameters updateParameter(Parameters parameter){
+        return parametersRepository.save(parameter);
+    }
+
+    public List<Parameters> getParametersByType(TypeOfEquipment type){
+        return parametersRepository.findByTypeOfEquipment(type);
+    }
 }

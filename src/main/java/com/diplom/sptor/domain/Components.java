@@ -16,7 +16,8 @@ public class Components {
     @Id
     @GenericGenerator(name="kaugen" , strategy="increment")
     @GeneratedValue(generator="kaugen")
-    private int component_id;
+    @Column(name = "component_id")
+    private int componentId;
 
     @ManyToOne()
     @JoinColumn(name = "spare_id")
@@ -24,25 +25,25 @@ public class Components {
 
     @ManyToOne()
     @JoinColumn(name = "type_of_equipment_id")
-    private TypeOfEquipment type_of_equipment_components;
+    private TypeOfEquipment typeOfEquipment;
 
     int amount;
 
     public Components() {
     }
 
-    public Components(Spares spare, int amount, TypeOfEquipment type_of_equipment_components) {
+    public Components(Spares spare, int amount, TypeOfEquipment typeOfEquipment) {
         this.spare = spare;
         this.amount = amount;
-        this.type_of_equipment_components = type_of_equipment_components;
+        this.typeOfEquipment = typeOfEquipment;
     }
 
-    public int getComponent_id() {
-        return component_id;
+    public int getComponentId() {
+        return componentId;
     }
 
-    public void setComponent_id(int component_id) {
-        this.component_id = component_id;
+    public void setComponentId(int componentId) {
+        this.componentId = componentId;
     }
 
     public Spares getSpare() {
@@ -53,12 +54,12 @@ public class Components {
         this.spare = spare;
     }
 
-    public TypeOfEquipment getType_of_equipment_components() {
-        return type_of_equipment_components;
+    public TypeOfEquipment getTypeOfEquipment() {
+        return typeOfEquipment;
     }
 
-    public void setType_of_equipment_components(TypeOfEquipment type_of_equipment_components) {
-        this.type_of_equipment_components = type_of_equipment_components;
+    public void setTypeOfEquipment(TypeOfEquipment typeOfEquipment) {
+        this.typeOfEquipment = typeOfEquipment;
     }
 
     public int getAmount() {
@@ -76,18 +77,18 @@ public class Components {
 
         Components that = (Components) o;
 
-        if (getComponent_id() != that.getComponent_id()) return false;
+        if (getComponentId() != that.getComponentId()) return false;
         if (getAmount() != that.getAmount()) return false;
         if (!getSpare().equals(that.getSpare())) return false;
-        return getType_of_equipment_components().equals(that.getType_of_equipment_components());
+        return getTypeOfEquipment().equals(that.getTypeOfEquipment());
 
     }
 
     @Override
     public int hashCode() {
-        int result = getComponent_id();
+        int result = getComponentId();
         result = 31 * result + getSpare().hashCode();
-        result = 31 * result + getType_of_equipment_components().hashCode();
+        result = 31 * result + getTypeOfEquipment().hashCode();
         result = 31 * result + getAmount();
         return result;
     }

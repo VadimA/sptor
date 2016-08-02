@@ -10,7 +10,4 @@ import java.util.List;
  */
 public interface SpareRepository extends CrudRepository<Spares, Integer> {
     List<Spares> findAll();
-    Spares save(Spares spare);
-    Spares findSparesById(int spare_id);
-    void delete(Spares spares);
 }

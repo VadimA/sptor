@@ -1,21 +1,40 @@
 package com.diplom.sptor.service;
 
 import com.diplom.sptor.domain.Status;
+import com.diplom.sptor.repository.StatusRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by user on 31.03.2016.
  */
-public interface StatusService {
+@Service
+@Transactional
+public class StatusService {
 
-    public void addStatus(Status spares);
+    @Autowired
+    StatusRepository statusRepository;
 
-    public List<Status> listStatus();
+    public Status addStatus(Status status){
+        return  statusRepository.save(status);
+    }
 
-    public Status getStatusById(int id);
+    public List<Status> getAllStatus(){
+        return statusRepository.findAll();
+    }
 
-    public void deleteStatus(int id);
+    public Status getStatusById(int id){
+        return statusRepository.findOne(id);
+    }
 
-    public void updateStatus(Status spares);
+    public void deleteStatus(int id){
+        statusRepository.delete(id);
+    }
+
+    public Status updateStatus(Status status){
+        return statusRepository.save(status);
+    }
 }

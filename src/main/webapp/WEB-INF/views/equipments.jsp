@@ -54,7 +54,7 @@
 
 
         for(var i =0;i<=data.length-1;i++) {
-          $("#params_t").append("<tr><td>" + data[i].inventory_number + "</td><td>" + data[i].equipment_name + "</td><td>" + data[i].type_of_equipment.type_of_equipment_name + "</td><td>" + data[i].subdivision.subdivision_name + "</td><td>" + data[i].working_hours +"</td></tr>");
+          $("#params_t").append("<tr><td>" + data[i].inventoryNumber + "</td><td>" + data[i].equipmentName + "</td><td>" + data[i].typeOfEquipment.type_of_equipment_name + "</td><td>" + data[i].subdivision.subdivision_name + "</td><td>" + data[i].workingHours +"</td></tr>");
         }
       });
     }

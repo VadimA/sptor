@@ -54,87 +54,65 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @Controller
 @Api( value = "sptor", description = "API os SPTOR system")
 public class ServiceController {
-	private EquipmentService EquipmentService;
-	private SubdivisionService SubdivisionService;
-	private TypeOfEquipmentService TypeOfEquipmentService;
-	private SpareService SpareService;
-	private TechnologicalCardService TechnologicalCardService;
-	private RepairSheetService RepairSheetService;
-	private TypeOfMaintenanceService TypeOfMaintenanceService;
-	private StatusService StatusService;
-	private DownTimeService DownTimeService;
-	private StatusOfEqService StatusOfEqService;
-
-	@Autowired
-	UserService userService;
 
 	@Autowired
 	SpareService spareService;
 
 	@Autowired
 	ComponentManager componentManager;
-	@Autowired(required=true)
-	public void setEquipmentService(EquipmentService EquipmentService){
-		this.EquipmentService = EquipmentService;
-	}
 
-	@Autowired(required=true)
-	public void setSubdivisionService(SubdivisionService SubdivisionService){
-		this.SubdivisionService = SubdivisionService;
-	}
+	@Autowired
+	EquipmentService equipmentService;
 
-	@Autowired(required=true)
-	public void setTypeOfEquipmentService(TypeOfEquipmentService TypeOfEquipmentService){
-		this.TypeOfEquipmentService = TypeOfEquipmentService;
-	}
+	@Autowired
+	UserService userService;
 
-	@Autowired(required=true)
-	public void setSpareService(SpareService SpareService){
-		this.SpareService = SpareService;
-	}
+	@Autowired
+	WorkingHoursService workingHoursService;
 
-	@Autowired(required=true)
-	public void setTechnologicalCardService(TechnologicalCardService TechnologicalCardService){
-		this.TechnologicalCardService = TechnologicalCardService;
-	}
+	@Autowired
+	DownTimeService downTimeService;
 
-	@Autowired(required=true)
-	public void setRepairSheetService(RepairSheetService RepairSheetService){
-		this.RepairSheetService = RepairSheetService;
-	}
+	@Autowired
+	SubdivisionService subdivisionService;
 
-	@Autowired(required=true)
-	public void setTypeOfMaintenanceService(TypeOfMaintenanceService TypeOfMaintenanceService) {
-		this.TypeOfMaintenanceService = TypeOfMaintenanceService;
-	}
+	@Autowired
+	TypeOfMaintenanceService typeOfMaintenanceService;
 
-	@Autowired(required=true)
-	public void setStatusService(StatusService StatusService) {
-		this.StatusService = StatusService;
-	}
+	@Autowired
+	StatusService statusService;
 
-	@Autowired(required=true)
-	public void setDownTimeService(DownTimeService DownTimeService) {
-		this.DownTimeService = DownTimeService;
-	}
+	@Autowired
+	ParametersService parametersService;
 
-	@Autowired(required=true)
-	public void setStatusOfEqService(StatusOfEqService StatusOfEqService) {
-		this.StatusOfEqService = StatusOfEqService;
-	}
+	@Autowired
+	DocumentService documentService;
+
+	@Autowired
+	RepairSheetService repairSheetService;
+
+	@Autowired
+	TypeOfEquipmentService typeOfEquipmentService;
+
+	@Autowired
+	TechnologicalCardService technologicalCardService;
+
+	@Autowired
+	StatusOfEqService statusOfEqService;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
 	@RequestMapping(value = "/sptor", method = RequestMethod.GET,
 			produces = "application/json")
 	public String getStarted(Model model) {
 		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
-		Status status1 = StatusService.getStatusById(1);
-		Status status2 = StatusService.getStatusById(2);
-		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
-		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
-		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
+		Status status1 = statusService.getStatusById(1);
+		Status status2 = statusService.getStatusById(2);
+		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		return "home";
 	}
 
@@ -143,11 +121,11 @@ public class ServiceController {
 	public String getAbout(Model model) {
 		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
-		Status status1 = StatusService.getStatusById(1);
-		Status status2 = StatusService.getStatusById(2);
-		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
-		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
-		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
+		Status status1 = statusService.getStatusById(1);
+		Status status2 = statusService.getStatusById(2);
+		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		return "orders";
 	}
 
@@ -189,8 +167,8 @@ public class ServiceController {
 	@RequestMapping(value = "/components/{equipmentId}", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody List<Components> getComponentsByType(@PathVariable(value = "equipmentId")int equipmentId, Model model) {
-		Equipment equipment = this.EquipmentService.getEquipmentById(equipmentId);
-		TypeOfEquipment typeOfEquipment = equipment.getType_of_equipment();
+		Equipment equipment = equipmentService.getEquipmentById(equipmentId);
+		TypeOfEquipment typeOfEquipment = equipment.getTypeOfEquipment();
 		//TypeOfEquipment typeOfEquipment=  TypeOfEquipmentService.getTypeById(typeId);
 		return componentManager.getComponentByType(typeOfEquipment);
 	}
@@ -198,9 +176,9 @@ public class ServiceController {
 	@RequestMapping(value = "/components/{componentId}/equipment/{equipmentId}", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody List<RepairSheet> getTypeOfMaintenanceByComponents(@PathVariable(value = "componentId")int componentId, @PathVariable(value = "equipmentId")int equipmentId,  Model model) {
-		Equipment equipment = this.EquipmentService.getEquipmentById(equipmentId);
+		Equipment equipment = equipmentService.getEquipmentById(equipmentId);
 		Components components = componentManager.getComponentById(componentId);
-		return this.RepairSheetService.getTypeOfMaintenanceOfRepairByEquipmentAndComponents(equipment, components);
+		return repairSheetService.getTypeOfMaintenanceOfRepairByEquipmentAndComponents(equipment, components);
 	}
 
 	@ApiOperation(value = "getSubdivisions", notes = "Get all subdivisions")
@@ -221,7 +199,7 @@ public class ServiceController {
 	public @ResponseBody Subdivisions getSubdivision(@ApiParam(value = "ID of subdivision that" +
 			"needs to be fetched", required = true,
 			defaultValue = "1")@PathVariable(value = "id")int id) {
-		return SubdivisionService.getSubdivisionById(id);
+		return subdivisionService.getSubdivisionById(id);
 	}
 
 	@ApiOperation(value = "addSubdivision", notes = "Add new subdivision")
@@ -235,7 +213,7 @@ public class ServiceController {
 					"  \"description\":\"Description\"\n" +
 					"}")@RequestBody Subdivisions subdivision){
 
-		this.SubdivisionService.addSubdivision(subdivision);
+		this.subdivisionService.addSubdivision(subdivision);
 		return "Added successfully";
 
 	}
@@ -245,23 +223,23 @@ public class ServiceController {
 			produces = "application/json")
 	public String RepairStart(Model model) {
 		model.addAttribute("repairSheet", new RepairSheet());
-		model.addAttribute("listRepair", this.RepairSheetService.listRepairSheets());
-		model.addAttribute("status_one", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(1)).size());
-		model.addAttribute("status_two", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(2)).size() + this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(3)).size());
-		model.addAttribute("status_three", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(4)).size());
-		model.addAttribute("status_four", this.RepairSheetService.getRepairSheetByStatus(this.StatusService.getStatusById(5)).size());
-		model.addAttribute("status_all", this.RepairSheetService.listRepairSheets().size());
-		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
+		model.addAttribute("listRepair", repairSheetService.getAllRepairSheets());
+		model.addAttribute("status_one", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(1)).size());
+		model.addAttribute("status_two", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(2)).size() + repairSheetService.getRepairSheetByStatus(statusService.getStatusById(3)).size());
+		model.addAttribute("status_three", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(4)).size());
+		model.addAttribute("status_four", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(5)).size());
+		model.addAttribute("status_all", repairSheetService.getAllRepairSheets().size());
+		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		model.addAttribute("components", componentManager.getAllComponents());
 		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
-		model.addAttribute("listEquipments", this.EquipmentService.listEquipments());
-		model.addAttribute("listTypeOfMaintenance", this.TypeOfMaintenanceService.listType());
-		Status status1 = StatusService.getStatusById(1);
-		Status status2 = StatusService.getStatusById(2);
-		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
-		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
-		model.addAttribute("listStatus", this.StatusService.listStatus());
+		model.addAttribute("listEquipments", equipmentService.getAllEquipment());
+		model.addAttribute("listTypeOfMaintenance", typeOfMaintenanceService.getAllTypes());
+		Status status1 = statusService.getStatusById(1);
+		Status status2 = statusService.getStatusById(2);
+		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+		model.addAttribute("listStatus", repairSheetService.getAllRepairSheets());
 		return "repair";
 	}
 
@@ -281,17 +259,17 @@ public class ServiceController {
 		Date end = formatter.parse(start_date);
 		DateTime dateTime = new DateTime(end);
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("mm-dd-yyyy");
-		DateTime end_date = dateTime.plusDays(this.TypeOfMaintenanceService.getTypeById(type_of_maintenance_id).getDuration());
-		Status status = this.StatusService.getStatusById(1);
+		DateTime end_date = dateTime.plusDays(typeOfMaintenanceService.getTypeById(type_of_maintenance_id).getDuration());
+		Status status = statusService.getStatusById(1);
 		User resp_for_delivery = userService.getUserById(1);
 		User resp_for_reception = userService.getUserById(1);
-		Equipment equipment = this.EquipmentService.getEquipmentById(equipment_id);
+		Equipment equipment = equipmentService.getEquipmentById(equipment_id);
 		Components components1 = componentManager.getComponentById(components);
-		Subdivisions subdivisions = this.SubdivisionService.getSubdivisionById(subdivision_id);
-		TypeOfMaintenance typeOfMaintenance = this.TypeOfMaintenanceService.getTypeById(type_of_maintenance_id);
+		Subdivisions subdivisions = subdivisionService.getSubdivisionById(subdivision_id);
+		TypeOfMaintenance typeOfMaintenance = typeOfMaintenanceService.getTypeById(type_of_maintenance_id);
 		int sheet_number = equipment_id + 33000;
 		int warranty_period = type_of_maintenance_id;
-		this.RepairSheetService.addRepairSheet(new RepairSheet(typeOfMaintenance, equipment,
+		repairSheetService.addRepairSheet(new RepairSheet(typeOfMaintenance, equipment,
 				components1, subdivisions, start, end_date.toDate(), sheet_number, warranty_period,
 				resp_for_delivery, resp_for_reception, description, status));
 
@@ -313,25 +291,25 @@ public class ServiceController {
 		switch (status.getStatus_id()){
 			case 1:
 				if(type==1||type==2||type==6||type==7||type==8){
-					equipment.setStatus(this.StatusOfEqService.getStatusById(2));
-					this.EquipmentService.updateEquipment(equipment);
+					equipment.setStatus(statusOfEqService.getStatusById(2));
+					equipmentService.updateEquipment(equipment);
 				}
 				else if(type==3||type==4||type==5){
-					equipment.setStatus(this.StatusOfEqService.getStatusById(3));
-					this.EquipmentService.updateEquipment(equipment);
+					equipment.setStatus(statusOfEqService.getStatusById(3));
+					equipmentService.updateEquipment(equipment);
 				}
 				else{
-					equipment.setStatus(this.StatusOfEqService.getStatusById(4));
-					this.EquipmentService.updateEquipment(equipment);
+					equipment.setStatus(statusOfEqService.getStatusById(4));
+					equipmentService.updateEquipment(equipment);
 				}
 				break;
 			case 4:
-				equipment.setStatus(this.StatusOfEqService.getStatusById(1));
-				this.EquipmentService.updateEquipment(equipment);
+				equipment.setStatus(statusOfEqService.getStatusById(1));
+				equipmentService.updateEquipment(equipment);
 				break;
 			case 5:
-				equipment.setStatus(this.StatusOfEqService.getStatusById(1));
-				this.EquipmentService.updateEquipment(equipment);
+				equipment.setStatus(statusOfEqService.getStatusById(1));
+				equipmentService.updateEquipment(equipment);
 				break;
 		}
 	}
@@ -340,14 +318,14 @@ public class ServiceController {
 	@RequestMapping(value = "/repair/{repairId}", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody RepairSheet getRepairById(@PathVariable("repairId") int repairId, Model model) {
-		return this.RepairSheetService.getRepairSheetById(repairId);
+		return repairSheetService.getRepairSheetById(repairId);
 	}
 
 	@ApiOperation(value = "getRepairSheetById", notes = "Get all equipments")
 	@RequestMapping(value = "/repair/equipment/{equipmentId}", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody List<RepairSheet> getRepairByEquipmentId(@PathVariable("equipmentId") int equipmentId, Model model) {
-		List<RepairSheet> repairSheets = this.RepairSheetService.getRepairSheetByEquipment(this.EquipmentService.getEquipmentById(equipmentId));
+		List<RepairSheet> repairSheets = repairSheetService.getRepairSheetByEquipment(equipmentService.getEquipmentById(equipmentId));
 		Iterator<RepairSheet> iterator = repairSheets.iterator();
 		while(iterator.hasNext()){
 			RepairSheet repairSheet = iterator.next();
@@ -357,14 +335,14 @@ public class ServiceController {
 			}
 		}
 
-		return this.RepairSheetService.getRepairSheetByEquipment(this.EquipmentService.getEquipmentById(equipmentId));
+		return repairSheetService.getRepairSheetByEquipment(equipmentService.getEquipmentById(equipmentId));
 	}
 
 	@ApiOperation(value = "getAllRepairSheet", notes = "Get all equipments")
 	@RequestMapping(value = "/repair/all", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody List<RepairSheet> getAllRepair(Model model) {
-		return this.RepairSheetService.listRepairSheets();
+		return repairSheetService.getAllRepairSheets();
 	}
 
 	@ApiOperation(value = "getRepairSheetById", notes = "Get all equipments")
@@ -374,8 +352,8 @@ public class ServiceController {
 								   						@RequestParam String date,
 														@RequestParam int status,
 														@RequestParam String description, Model model) throws ParseException  {
-		RepairSheet repairSheet= this.RepairSheetService.getRepairSheetById(repairId);
-		Status statusNew = this.StatusService.getStatusById(status);
+		RepairSheet repairSheet= repairSheetService.getRepairSheetById(repairId);
+		Status statusNew = statusService.getStatusById(status);
 		repairSheet.setStatus(statusNew);
 		repairSheet.setDescription(description);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -386,7 +364,7 @@ public class ServiceController {
 		else {
 			repairSheet.setConfirm_date(newDate);
 		}
-		this.RepairSheetService.updateRepairSheet(repairSheet);
+		repairSheetService.updateRepairSheet(repairSheet);
 
 		changeStatusOfEquipment(repairSheet.getEquipment(),statusNew, repairSheet.getType_of_maintenance());
 	}
@@ -397,13 +375,13 @@ public class ServiceController {
 	public void confirmRepair(@PathVariable("repairId") int repairId,
 								   @RequestParam int status,
 								   @RequestParam String description, Model model) throws ParseException  {
-		RepairSheet repairSheet= this.RepairSheetService.getRepairSheetById(repairId);
-		Status statusNew = this.StatusService.getStatusById(status);
+		RepairSheet repairSheet= repairSheetService.getRepairSheetById(repairId);
+		Status statusNew = statusService.getStatusById(status);
 		repairSheet.setStatus(statusNew);
 		if (description.length()!=0) {
 			repairSheet.addDescription(description);
 		}
-		this.RepairSheetService.updateRepairSheet(repairSheet);
+		repairSheetService.updateRepairSheet(repairSheet);
 	}
 
 	@RequestMapping(value = "/report/repair/act_in/{repairId}", method = RequestMethod.POST)
@@ -439,19 +417,19 @@ public class ServiceController {
 
 
 			List<RepairReport> reportItems = new ArrayList<RepairReport>();
-			RepairSheet repairSheet = RepairSheetService.getRepairSheetById(repairId);
+			RepairSheet repairSheet = repairSheetService.getRepairSheetById(repairId);
 			RepairReport repairReport = new RepairReport();
 			repairReport.setType_of_maintenance(repairSheet.getType_of_maintenance().getType_of_maintenance_name());
 			repairReport.setSubdivision(repairSheet.getSubdivision().getSubdivision_name());
 			repairReport.setSheet_number("" + repairSheet.getSheet_number());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
 			repairReport.setStart_date(dateFormat.format(repairSheet.getStart_date()));
-			repairReport.setEquipment(repairSheet.getEquipment().getEquipment_name());
-			repairReport.setProducer(repairSheet.getEquipment().getProducer_of_equipment());
-			repairReport.setType_of_equipment(repairSheet.getEquipment().getType_of_equipment().getType_of_equipment_name());
+			repairReport.setEquipment(repairSheet.getEquipment().getEquipmentName());
+			repairReport.setProducer(repairSheet.getEquipment().getProducerOfEquipment());
+			repairReport.setType_of_equipment(repairSheet.getEquipment().getTypeOfEquipment().getType_of_equipment_name());
 			String lastRepair="";
-			if(this.RepairSheetService.getRepairSheetByEquipment(repairSheet.getEquipment()).size()>1){
-				RepairSheet lastRepairSheet = this.RepairSheetService.getRepairSheetByEquipment(repairSheet.getEquipment()).get(1);
+			if(repairSheetService.getRepairSheetByEquipment(repairSheet.getEquipment()).size()>1){
+				RepairSheet lastRepairSheet = repairSheetService.getRepairSheetByEquipment(repairSheet.getEquipment()).get(1);
 				lastRepair = lastRepairSheet.getType_of_maintenance().getType_of_maintenance_name() + ", "+
 						dateFormat.format(lastRepairSheet.getEnd_date());
 			}
@@ -542,20 +520,20 @@ public class ServiceController {
 
 
 			List<RepairReport> reportItems = new ArrayList<RepairReport>();
-			RepairSheet repairSheet = RepairSheetService.getRepairSheetById(repairId);
+			RepairSheet repairSheet = repairSheetService.getRepairSheetById(repairId);
 			RepairReport repairReport = new RepairReport();
 			repairReport.setType_of_maintenance(repairSheet.getType_of_maintenance().getType_of_maintenance_name());
 			repairReport.setSubdivision(repairSheet.getSubdivision().getSubdivision_name());
 			repairReport.setSheet_number("" + repairSheet.getSheet_number());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
 			repairReport.setStart_date(dateFormat.format(repairSheet.getStart_date()));
-			repairReport.setEquipment(repairSheet.getEquipment().getEquipment_name());
-			repairReport.setProducer(repairSheet.getEquipment().getProducer_of_equipment());
-			repairReport.setType_of_equipment(repairSheet.getEquipment().getType_of_equipment().getType_of_equipment_name());
+			repairReport.setEquipment(repairSheet.getEquipment().getEquipmentName());
+			repairReport.setProducer(repairSheet.getEquipment().getProducerOfEquipment());
+			repairReport.setType_of_equipment(repairSheet.getEquipment().getTypeOfEquipment().getType_of_equipment_name());
 			repairReport.setCategory("" + repairSheet.getSheet_number() / 10000);
 			String lastRepair="";
-			if(this.RepairSheetService.getRepairSheetByEquipment(repairSheet.getEquipment()).size()>1){
-				RepairSheet lastRepairSheet = this.RepairSheetService.getRepairSheetByEquipment(repairSheet.getEquipment()).get(1);
+			if(repairSheetService.getRepairSheetByEquipment(repairSheet.getEquipment()).size()>1){
+				RepairSheet lastRepairSheet = repairSheetService.getRepairSheetByEquipment(repairSheet.getEquipment()).get(1);
 				lastRepair = lastRepairSheet.getType_of_maintenance().getType_of_maintenance_name() + ","+
 						dateFormat.format(lastRepairSheet.getEnd_date());
 			}
@@ -694,13 +672,13 @@ public class ServiceController {
 	@RequestMapping(value = "/graphics", method = RequestMethod.GET,
 			produces = "application/json")
 	public String startGraphics(Model model) {
-		Status status1 = StatusService.getStatusById(1);
-		Status status2 = StatusService.getStatusById(2);
-		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
-		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
+		Status status1 = statusService.getStatusById(1);
+		Status status2 = statusService.getStatusById(2);
+		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
 		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
-		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
+		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		return "graphics";
 	}
 	/**
@@ -717,10 +695,10 @@ public class ServiceController {
 					"  \"responsible\":\"Ivanov\",\n" +
 					"  \"description\":\"Description\"\n" +
 					"}")@RequestBody Subdivisions subdivision, @PathVariable(value = "subdivisionId")int subdivisionId) {
-		if(SubdivisionService.getSubdivisionById(subdivisionId) !=null){
+		if(subdivisionService.getSubdivisionById(subdivisionId) !=null){
 			Subdivisions updateSubdivision = subdivision;
 			updateSubdivision.setSubdivision_id(subdivisionId);
-			SubdivisionService.updateSubdivision(updateSubdivision);
+			subdivisionService.updateSubdivision(updateSubdivision);
 		};
 		return "Update successfully";
 	}
@@ -735,7 +713,7 @@ public class ServiceController {
 	public @ResponseBody String deleteSubdivision(@ApiParam(value = "ID of subdivision that" +
 			"needs to be fetched", required = true,
 			defaultValue = "1")@PathVariable(value = "id")int id) {
-		SubdivisionService.deleteSubdivision(id);
+		subdivisionService.deleteSubdivision(id);
 		return "Deleted successfully";
 	}
 
@@ -744,14 +722,14 @@ public class ServiceController {
 	@RequestMapping(value = "/cards", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody List<TechnologicalCard> getCards() {
-		return TechnologicalCardService.listCards();
+		return technologicalCardService.getAllCards();
 	}
 
 	@ApiOperation(value = "getCards", notes = "Get all technological cards")
 	@RequestMapping(value = "/cards/{id}", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody TechnologicalCard getCardById(@PathVariable(value = "id")int id) {
-		return TechnologicalCardService.getCardById(id);
+		return technologicalCardService.getCardById(id);
 	}
 
 	@ApiOperation(value = "getCard", notes = "Get technological card by ID")
@@ -760,8 +738,8 @@ public class ServiceController {
 	public @ResponseBody List<TechnologicalCard> getCard(@ApiParam(value = "ID of question that" +
 			"needs to be fetched", required = true,
 			defaultValue = "1")@PathVariable(value = "id")int id) {
-		Equipment equipment = this.EquipmentService.getEquipmentById(id);
-		return TechnologicalCardService.getTechCardByEquipment(equipment);
+		Equipment equipment = equipmentService.getEquipmentById(id);
+		return technologicalCardService.getTechCardByEquipment(equipment);
 	}
 
 
@@ -774,8 +752,8 @@ public class ServiceController {
 			@RequestParam String start_date,
 			@RequestParam String description) throws ParseException{
 		TechnologicalCard technologicalCard = new TechnologicalCard();
-		technologicalCard.setType_of_maintenance(this.TypeOfMaintenanceService.getTypeById(type_of_maintenance_id));
-		technologicalCard.setEquipment(this.EquipmentService.getEquipmentById(equipment_id));
+		technologicalCard.setType_of_maintenance(typeOfMaintenanceService.getTypeById(type_of_maintenance_id));
+		technologicalCard.setEquipment(equipmentService.getEquipmentById(equipment_id));
 		technologicalCard.setTechnological_card_number(22000 + equipment_id);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		technologicalCard.setStart_date(formatter.parse(start_date));
@@ -783,7 +761,7 @@ public class ServiceController {
 		technologicalCard.setResponsible_for_delivery(userService.getUserBySso(getPrincipal()));
 		technologicalCard.setResponsible_for_reception(userService.getUserBySso(getPrincipal()));
 		technologicalCard.setDescription(description);
-		TechnologicalCardService.addCard(technologicalCard);
+		technologicalCardService.addCard(technologicalCard);
 		return "redirect:/equipments";
 
 	}
@@ -792,10 +770,10 @@ public class ServiceController {
 	@RequestMapping(value = "/cards/{cardId}", method = RequestMethod.PUT,
 			produces = "application/json")
 	public @ResponseBody String updateCard(@PathVariable("cardId") int cardId, TechnologicalCard technologicalCard){
-		if(TechnologicalCardService.getCardById(cardId)!= null){
+		if(technologicalCardService.getCardById(cardId)!= null){
 			TechnologicalCard updatetechnologicalCard = technologicalCard;
 			updatetechnologicalCard.setTechnological_card_id(cardId);
-			TechnologicalCardService.updateCard(updatetechnologicalCard);
+			technologicalCardService.updateCard(updatetechnologicalCard);
 		}
 		return "Update successfully";
 	}
@@ -806,7 +784,7 @@ public class ServiceController {
 	public @ResponseBody String deleteCard(@ApiParam(value = "ID of card that" +
 			"needs to be fetched", required = true,
 			defaultValue = "1")@PathVariable(value = "cardId")int id) {
-		TechnologicalCardService.deleteCard(id);
+		technologicalCardService.deleteCard(id);
 		return "Deleted successfully";
 	}
 
@@ -815,11 +793,11 @@ public class ServiceController {
 			produces = "application/json")
 	public String getManual(Model model) {
 		model.addAttribute("userForm", new UserFormModel());
-		Status status1 = StatusService.getStatusById(1);
-		Status status2 = StatusService.getStatusById(2);
-		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
-		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
-		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
+		Status status1 = statusService.getStatusById(1);
+		Status status2 = statusService.getStatusById(2);
+		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
 		return "manual";
@@ -837,14 +815,14 @@ public class ServiceController {
 	@RequestMapping(value = "/users", method = RequestMethod.GET,
 			produces = "application/json")
 	public String getUsersView(Model model) {
-		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
+		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		model.addAttribute("userForm", new UserFormModel());
 		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
-		Status status1 = StatusService.getStatusById(1);
-		Status status2 = StatusService.getStatusById(2);
-		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
-		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
+		Status status1 = statusService.getStatusById(1);
+		Status status2 = statusService.getStatusById(2);
+		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
 		return "users";
 	}
 
@@ -873,24 +851,24 @@ public class ServiceController {
 	@RequestMapping(value = "/equipment/all", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody List<Equipment> getEquipments(Model model) {
-		return EquipmentService.listEquipments();
+		return equipmentService.getAllEquipment();
 	}
 
 	@ApiOperation(value = "getEquipments", notes = "Get all technological cards")
 	@RequestMapping(value = "/equipment", method = RequestMethod.GET,
 			produces = "application/json")
 	public String getEquipmentView(Model model) {
-		model.addAttribute("eqType", this.TypeOfEquipmentService.listType());
-		model.addAttribute("eqSub", this.SubdivisionService.listSubdivisions());
+		model.addAttribute("eqType", typeOfEquipmentService.getAllTypes());
+		model.addAttribute("eqSub", subdivisionService.getAllSubdivisions());
 		model.addAttribute("eqResp", this.userService.getUsers());
-		model.addAttribute("eqStatus", this.StatusOfEqService.listStatus());
-		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
+		model.addAttribute("eqStatus", statusOfEqService.listStatus());
+		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
-		Status status1 = StatusService.getStatusById(1);
-		Status status2 = StatusService.getStatusById(2);
-		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
-		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
+		Status status1 = statusService.getStatusById(1);
+		Status status2 = statusService.getStatusById(2);
+		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
 		return "equipments";
 	}
 
@@ -909,16 +887,16 @@ public class ServiceController {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
 		Date date = formatter.parse(String.valueOf(graduation_year));
 		Equipment equipment = new Equipment();
-		equipment.setEquipment_name(equipment_name);
-		equipment.setType_of_equipment(this.TypeOfEquipmentService.getTypeById(type_of_equipment_id));
-		equipment.setSubdivision(this.SubdivisionService.getSubdivisionById(subdivision_id));
-		equipment.setInventory_number(inventory_number);
-		equipment.setGraduation_year(date);
-		equipment.setProducer_of_equipment(producer_of_equipment);
-		equipment.setWorking_hours(working_hours);
-		equipment.setStatus(this.StatusOfEqService.getStatusById(status));
+		equipment.setEquipmentName(equipment_name);
+		equipment.setTypeOfEquipment(typeOfEquipmentService.getTypeById(type_of_equipment_id));
+		equipment.setSubdivision(subdivisionService.getSubdivisionById(subdivision_id));
+		equipment.setInventoryNumber(inventory_number);
+		equipment.setGraduationYear(date);
+		equipment.setProducerOfEquipment(producer_of_equipment);
+		equipment.setWorkingHours(working_hours);
+		equipment.setStatus(statusOfEqService.getStatusById(status));
 		equipment.setDescription(description);
-		this.EquipmentService.addEquipment(equipment);
+		equipmentService.addEquipment(equipment);
 		return "manual";
 	}
 
@@ -933,13 +911,13 @@ public class ServiceController {
 	@RequestMapping(value = "/spare", method = RequestMethod.GET,
 			produces = "application/json")
 	public String getSpareView(Model model) {
-		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
+		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
-		Status status1 = StatusService.getStatusById(1);
-		Status status2 = StatusService.getStatusById(2);
-		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
-		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
+		Status status1 = statusService.getStatusById(1);
+		Status status2 = statusService.getStatusById(2);
+		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
 		return "spare";
 	}
 
@@ -965,20 +943,20 @@ public class ServiceController {
 	@RequestMapping(value = "/subdivision/all", method = RequestMethod.GET,
 			produces = "application/json")
 	public @ResponseBody List<Subdivisions> getSubdivision(Model model) {
-		return SubdivisionService.listSubdivisions();
+		return subdivisionService.getAllSubdivisions();
 	}
 
 	@ApiOperation(value = "getEquipments", notes = "Get all technological cards")
 	@RequestMapping(value = "/subdivision", method = RequestMethod.GET,
 			produces = "application/json")
 	public String getSubdivisionView(Model model) {
-		model.addAttribute("subdivisions", this.SubdivisionService.listSubdivisions());
+		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
-		Status status1 = StatusService.getStatusById(1);
-		Status status2 = StatusService.getStatusById(2);
-		model.addAttribute("active_req", this.RepairSheetService.getRepairSheetByStatus(status1).size());
-		model.addAttribute("confirm_req", this.RepairSheetService.getRepairSheetByStatus(status2).size());
+		Status status1 = statusService.getStatusById(1);
+		Status status2 = statusService.getStatusById(2);
+		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
 		return "subdivisions";
 	}
 
@@ -994,14 +972,14 @@ public class ServiceController {
 		subdivisions.setAbbreviation(abbreviation);
 		subdivisions.setResponsible(responsible);
 		subdivisions.setDescription(description);
-		this.SubdivisionService.addSubdivision(subdivisions);
+		subdivisionService.addSubdivision(subdivisions);
 		return "manual";
 	}
 
 	@RequestMapping(value = "/type_of_equipment", method = RequestMethod.GET)
 	public String listTypes(Model model) {
 		model.addAttribute("type_of_equipment", new TypeOfEquipment());
-		model.addAttribute("listTypes", this.TypeOfEquipmentService.listType());
+		model.addAttribute("listTypes", typeOfEquipmentService.getAllTypes());
 		return "type_of_equipment";
 	}
 
@@ -1009,10 +987,10 @@ public class ServiceController {
 	public String addType(@ModelAttribute("type_of_equipment") TypeOfEquipment typeOfEquipment, Model model){
 		if(typeOfEquipment.getType_of_equipment_id() == 0){
 			//new person, add it
-			this.TypeOfEquipmentService.addType(typeOfEquipment);
+			typeOfEquipmentService.addType(typeOfEquipment);
 		}else{
 			//existing person, call update
-			this.TypeOfEquipmentService.updateType(typeOfEquipment);
+			typeOfEquipmentService.updateType(typeOfEquipment);
 		}
 		model.addAttribute("type_of_equipment", new TypeOfEquipment());
 		return "type_of_equipment";

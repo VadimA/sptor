@@ -1,15 +1,28 @@
 package com.diplom.sptor.service;
 
 import com.diplom.sptor.domain.StatusOfEquipment;
+import com.diplom.sptor.repository.StatusOfEqRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by user on 24.05.2016.
  */
-public interface StatusOfEqService {
+@Service
+@Transactional
+public class StatusOfEqService {
 
-    public List<StatusOfEquipment> listStatus();
+    @Autowired
+    StatusOfEqRepository statusOfEqRepository;
 
-    public StatusOfEquipment getStatusById(int id);
+    public List<StatusOfEquipment> listStatus(){
+        return statusOfEqRepository.findAll();
+    }
+
+    public StatusOfEquipment getStatusById(int id){
+        return statusOfEqRepository.findOne(id);
+    }
 }

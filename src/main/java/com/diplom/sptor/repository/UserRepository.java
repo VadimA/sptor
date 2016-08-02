@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Integer> {
 
     User findById(int id);
-    User findBySSO(String sso);
+    User findBySsoid(String ssoid);
     User save(User user);
     List<User> findAll();
 }

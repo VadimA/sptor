@@ -47,7 +47,7 @@
     <beans:bean id="documentationConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
 
     <beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <beans:property name="packagesToScan" value="com.diplom.sptor.domain.jpa"/>
+        <beans:property name="packagesToScan" value="com.diplom.sptor.domain"/>
         <beans:property name="dataSource" ref="dataSource"/>
         <beans:property name="jpaVendorAdapter">
             <beans:bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>

@@ -45,11 +45,11 @@ public class RepairSheet implements Serializable {
 
     @ManyToOne()
     @JoinColumn(name = "responsible_for_delivery")
-    private  User responsible_for_delivery;
+    private  User responsibleForDelivery;
 
     @ManyToOne()
     @JoinColumn(name = "responsible_for_reception")
-    private  User responsible_for_reception;
+    private  User responsibleForReception;
     private  String description;
 
     @ManyToOne()
@@ -58,7 +58,9 @@ public class RepairSheet implements Serializable {
 
     public RepairSheet() {}
 
-    public RepairSheet(TypeOfMaintenance type_of_maintenance, Equipment equipment, Components component, Subdivisions subdivision, Date start_date, Date end_date, long sheet_number, int warranty_period, User responsible_for_delivery, User responsible_for_reception, String description, Status status) {
+    public RepairSheet(TypeOfMaintenance type_of_maintenance, Equipment equipment, Components component,
+                       Subdivisions subdivision, Date start_date, Date end_date, long sheet_number, int warranty_period,
+                       User responsibleForDelivery, User responsibleForReception, String description, Status status) {
         this.type_of_maintenance = type_of_maintenance;
         this.equipment = equipment;
         this.component = component;
@@ -67,8 +69,8 @@ public class RepairSheet implements Serializable {
         this.end_date = end_date;
         this.sheet_number = sheet_number;
         this.warranty_period = warranty_period;
-        this.responsible_for_delivery = responsible_for_delivery;
-        this.responsible_for_reception = responsible_for_reception;
+        this.responsibleForDelivery = responsibleForDelivery;
+        this.responsibleForReception = responsibleForReception;
         this.description = description;
         this.status = status;
     }
@@ -145,20 +147,20 @@ public class RepairSheet implements Serializable {
         this.warranty_period = warranty_period;
     }
 
-    public User getResponsible_for_delivery() {
-        return responsible_for_delivery;
+    public User getResponsibleForDelivery() {
+        return responsibleForDelivery;
     }
 
-    public void setResponsible_for_delivery(User responsible_for_delivery) {
-        this.responsible_for_delivery = responsible_for_delivery;
+    public void setResponsibleForDelivery(User responsibleForDelivery) {
+        this.responsibleForDelivery = responsibleForDelivery;
     }
 
-    public User getResponsible_for_reception() {
-        return responsible_for_reception;
+    public User getResponsibleForReception() {
+        return responsibleForReception;
     }
 
-    public void setResponsible_for_reception(User responsible_for_reception) {
-        this.responsible_for_reception = responsible_for_reception;
+    public void setResponsibleForReception(User responsibleForReception) {
+        this.responsibleForReception = responsibleForReception;
     }
 
     public String getDescription() {
@@ -207,8 +209,8 @@ public class RepairSheet implements Serializable {
         if (!getStart_date().equals(that.getStart_date())) return false;
         if (getEnd_date() != null ? !getEnd_date().equals(that.getEnd_date()) : that.getEnd_date() != null)
             return false;
-        if (!getResponsible_for_delivery().equals(that.getResponsible_for_delivery())) return false;
-        if (getResponsible_for_reception() != null ? !getResponsible_for_reception().equals(that.getResponsible_for_reception()) : that.getResponsible_for_reception() != null)
+        if (!getResponsibleForDelivery().equals(that.getResponsibleForDelivery())) return false;
+        if (getResponsibleForReception() != null ? !getResponsibleForReception().equals(that.getResponsibleForReception()) : that.getResponsibleForReception() != null)
             return false;
         if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
             return false;
@@ -227,8 +229,8 @@ public class RepairSheet implements Serializable {
         result = 31 * result + (getEnd_date() != null ? getEnd_date().hashCode() : 0);
         result = 31 * result + (int) (getSheet_number() ^ (getSheet_number() >>> 32));
         result = 31 * result + getWarranty_period();
-        result = 31 * result + getResponsible_for_delivery().hashCode();
-        result = 31 * result + (getResponsible_for_reception() != null ? getResponsible_for_reception().hashCode() : 0);
+        result = 31 * result + getResponsibleForDelivery().hashCode();
+        result = 31 * result + (getResponsibleForReception() != null ? getResponsibleForReception().hashCode() : 0);
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         result = 31 * result + getStatus().hashCode();
         return result;
