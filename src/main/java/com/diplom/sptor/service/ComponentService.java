@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class ComponentManager {
+public class ComponentService {
 
     @Autowired
     private ComponentRepository componentRepository;
