@@ -3,6 +3,13 @@ package com.diplom.sptor.web;
 import com.diplom.sptor.domain.*;
 import com.diplom.sptor.model.UserFormModel;
 import com.diplom.sptor.service.*;
+import com.stormpath.sdk.lang.Strings;
+import com.twilio.sdk.TwilioRestClient;
+import com.twilio.sdk.TwilioRestException;
+import com.twilio.sdk.resource.factory.MessageFactory;
+import com.twilio.sdk.resource.instance.Message;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -42,6 +49,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.sql.DriverManager;
 import java.util.*;
+import org.apache.log4j.Logger;
 
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
@@ -102,9 +110,30 @@ public class ServiceController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
+	private Logger logger = Logger.getLogger(ServiceController.class);
+
 	@RequestMapping(value = "/sptor", method = RequestMethod.GET,
 			produces = "application/json")
 	public String getStarted(Model model) {
+
+		/** Add twilio service in auth. **/
+		//try {
+		//	TwilioRestClient client = new TwilioRestClient("AC80ff21ef923177f41a3baaa31baf8e60", "ef641481fe97cc6a96e6d2a79cbde021");
+//
+		//	List<NameValuePair> params = new ArrayList<NameValuePair>();
+		//	params.add(new BasicNameValuePair("To", "+79878358881"));
+		//	params.add(new BasicNameValuePair("From", "+13346978168"));
+		//	params.add(new BasicNameValuePair("Body", "New login for: vadim@gmail.ru from:  192.168.0.1"));
+//
+		//	MessageFactory messageFactory = client.getAccount().getMessageFactory();
+		//	try {
+		//		Message message = messageFactory.create(params);
+		//		System.out.println("Message successfuly sent via Twilio. Sid: {}" + message.getSid());
+		//	} catch (TwilioRestException e) {
+		//		System.out.println("Error communicating with Twilio: {}" + e.getErrorMessage());
+		//	}
+		//}catch (Exception e){System.out.println(e);}
+
 		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = statusService.getStatusById(1);
