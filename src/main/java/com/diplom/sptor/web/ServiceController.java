@@ -63,9 +63,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class ServiceController {
 
 	@Autowired
-	SpareService spareService;
-
-	@Autowired
 	ComponentService componentService;
 
 	@Autowired
@@ -73,12 +70,6 @@ public class ServiceController {
 
 	@Autowired
 	UserService userService;
-
-	@Autowired
-	WorkingHoursService workingHoursService;
-
-	@Autowired
-	DownTimeService downTimeService;
 
 	@Autowired
 	SubdivisionService subdivisionService;
@@ -90,22 +81,13 @@ public class ServiceController {
 	StatusService statusService;
 
 	@Autowired
-	ParametersService parametersService;
-
-	@Autowired
 	DocumentService documentService;
 
 	@Autowired
 	RepairSheetService repairSheetService;
 
 	@Autowired
-	TypeOfEquipmentService typeOfEquipmentService;
-
-	@Autowired
 	TechnologicalCardService technologicalCardService;
-
-	@Autowired
-	StatusOfEqService statusOfEqService;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -141,7 +123,7 @@ public class ServiceController {
 		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
 		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
 		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
-		return "home";
+		return "homePage";
 	}
 
 	@RequestMapping(value = "/about", method = RequestMethod.GET,
