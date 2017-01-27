@@ -87,7 +87,7 @@ public class RepairController {
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
         model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
         model.addAttribute("listStatus", repairSheetService.getAllRepairSheets());
-        return "repair";
+        return "repairPage";
     }
 
 
@@ -123,7 +123,7 @@ public class RepairController {
         deleteComponentInStock(components1);
         changeStatusOfEquipment(equipment, status, typeOfMaintenance);
 
-        return "redirect:/repair";
+        return "repairPage";
 
     }
 
