@@ -89,8 +89,8 @@ public class ServiceController {
 	@Autowired
 	TechnologicalCardService technologicalCardService;
 
-	@Autowired
-	PasswordEncoder passwordEncoder;
+	//@Autowired
+	//PasswordEncoder passwordEncoder;
 
 	private Logger logger = Logger.getLogger(ServiceController.class);
 
@@ -116,7 +116,7 @@ public class ServiceController {
 		//	}
 		//}catch (Exception e){System.out.println(e);}
 
-		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+		model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = statusService.getStatusById(1);
 		Status status2 = statusService.getStatusById(2);
@@ -129,7 +129,7 @@ public class ServiceController {
 	@RequestMapping(value = "/about", method = RequestMethod.GET,
 			produces = "application/json")
 	public String getAbout(Model model) {
-		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+		model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = statusService.getStatusById(1);
 		Status status2 = statusService.getStatusById(2);
@@ -520,7 +520,7 @@ public class ServiceController {
 		Status status2 = statusService.getStatusById(2);
 		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
 		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
-		model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+		model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
 		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		return "graphics";

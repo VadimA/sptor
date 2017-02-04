@@ -26,7 +26,7 @@
   <script>
 
     $(function () {
-      $('#container').highcharts({
+      $('#charts').highcharts({
         chart: {
           type: 'column'
         },
@@ -87,4 +87,4 @@
   </script>
 </head>
 
-      <div id="container" ></div>
+      <div id="charts" ></div>

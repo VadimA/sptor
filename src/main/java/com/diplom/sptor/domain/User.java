@@ -2,8 +2,10 @@ package com.diplom.sptor.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,17 +22,19 @@ public class User {
     @GeneratedValue(generator="kaugen")
     private int id;
 
- private String ssoid;
+    @NotEmpty(message = "Пожалуйтса введите ssoid")
+    @Size(min=2, max=8, message = "ССОИД должен содержать не менее 2 символов")
+    private String ssoid;
 
 
-
- private String password;
-
-private String first_name;
-
- private String last_name;
-
-private String email;
+    @NotEmpty(message = "Пожалуйтса введите пароль")
+    private String password;
+    @NotEmpty(message = "Пожалуйтса введите имя")
+    private String first_name;
+    @NotEmpty(message = "Пожалуйтса введите фамилию")
+    private String last_name;
+    @NotEmpty(message = "Пожалуйтса введите email")
+    private String email;
 
 
     @ManyToMany(fetch = FetchType.EAGER)

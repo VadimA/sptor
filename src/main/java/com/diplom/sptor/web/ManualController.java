@@ -9,8 +9,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -65,7 +67,8 @@ public class ManualController {
     @RequestMapping(value = "/manual", method = RequestMethod.GET,
             produces = "application/json")
     public String getManual(Model model) {
-        model.addAttribute("userForm", new UserFormModel());
+        model.addAttribute("userForm", new User());
+        model.addAttribute("spareForm", new User());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
@@ -90,8 +93,8 @@ public class ManualController {
             produces = "application/json")
     public String getUsersView(Model model) {
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
-        model.addAttribute("userForm", new UserFormModel());
-        model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+        model.addAttribute("userForm", new User());
+        model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
                 userService.getUserBySso(getPrincipal()).getFirst_name());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);
@@ -103,22 +106,17 @@ public class ManualController {
     @ApiOperation(value = "addUser", notes = "Get all technological cards")
     @RequestMapping(value = "/users", method = RequestMethod.POST,
             produces = "application/json")
-    public String addUsers(@RequestParam String ssoid,
-                           @RequestParam String first_name,
-                           @RequestParam String last_name,
-                           @RequestParam String password,
-                           @RequestParam String email) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public String addUsers(@Valid User user, BindingResult bindingResult) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+        if(bindingResult.hasErrors()){
+            return "redirect:/users";
+        }
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(password.getBytes("UTF-8"));
+        md.update(user.getPassword().getBytes("UTF-8"));
         byte [] digest = md.digest();
-        User user = new User();
-        user.setFirst_name(first_name);
-        user.setLast_name(last_name);
-        user.setEmail(email);
-        user.setssoid(ssoid);
         user.setPassword(String.format("%064x", new java.math.BigInteger(1, digest)));
         userService.addUser(user);
-        return "manual";
+        return "redirect:/users";
     }
 
     @ApiOperation(value = "getEquipments", notes = "Get all technological cards")
@@ -137,7 +135,7 @@ public class ManualController {
         model.addAttribute("eqResp", this.userService.getUsers());
         model.addAttribute("eqStatus", statusOfEqService.listStatus());
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
-        model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+        model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
                 userService.getUserBySso(getPrincipal()).getFirst_name());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);
@@ -186,31 +184,26 @@ public class ManualController {
             produces = "application/json")
     public String getSpareView(Model model) {
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
-        model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+        model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
                 userService.getUserBySso(getPrincipal()).getFirst_name());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
         model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
-        return "spare";
+        model.addAttribute("spareForm", new Spares());
+        return "spares";
     }
 
     @ApiOperation(value = "addEquipment", notes = "Get all technological cards")
     @RequestMapping(value = "/spare", method = RequestMethod.POST,
             produces = "application/json")
-    public String addSpare(@RequestParam String spare_name,
-                           @RequestParam String spare_producer,
-                           @RequestParam double price,
-                           @RequestParam int amount_in_stock,
-                           @RequestParam String description) throws ParseException {
-        Spares spare = new Spares();
-        spare.setSpare_name(spare_name);
-        spare.setSpare_producer(spare_producer);
-        spare.setPrice(price);
-        spare.setAmount_in_stock(amount_in_stock);
-        spare.setDescription(description);
-        spareService.saveSpare(spare);
-        return "manual";
+    public String addSpare(@Valid Spares spares, BindingResult bindingResult) throws ParseException {
+
+        if(bindingResult.hasErrors()){
+            return "redirect:/spare";
+        }
+        spareService.saveSpare(spares);
+        return "redirect:/spare";
     }
 
     @ApiOperation(value = "getEquipments", notes = "Get all technological cards")
@@ -225,7 +218,7 @@ public class ManualController {
             produces = "application/json")
     public String getSubdivisionView(Model model) {
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
-        model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
+        model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
                 userService.getUserBySso(getPrincipal()).getFirst_name());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);

@@ -3,14 +3,13 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
+<%@ taglib prefix="t" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ page session="false" isELIgnored="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-
-<!DOCTYPE html>
 
 <html>
 <head>
-  <title>ИС ПТОР Оборудование</title>
-  <!-- Latest compiled and minified CSS -->
+  <title>ActionTest</title>
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
   <!-- Optional theme -->
@@ -35,32 +34,39 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js"></script>
 
-  <script>
-    $(document).ready(function() {
-      $("#datepicker1").datepicker({ dateFormat: 'yy-mm-dd' });
-      $("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });
-
-    });
-  </script>
-
-  <style>
-    .error {
-      color: red; font-weight: bold;
-    }
-  </style>
-
+  <script src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>
+  <script src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
+  <script src="http://www.google.com/jsapi?fake=.js"></script>
+  <script type="text/javascript" charset="utf8" src="/resources/myScripts.js"></script>
 </head>
+<body>
 
-      <div class="text-center" style="display: table; margin: 0 auto; text-align: center;">
-        <div class="btn-toolbar" \>
-          <div class="btn-group">
-            <button class="btn btn-default"><a href="/users">Пользователи</a></button>
-            <button class="btn btn-default"><a href="/equipment">Оборудование</a></button>
-            <button class="btn btn-default"><a href="/spare">Запчасти</a></button>
-            <button class="btn btn-default"><a href="/subdivision">Цеха</a></button>
-          </div>
-        </div>
-      </div>
+<div id="container">
+  <div id="header" class="col-md-12">
+    <t:insertAttribute name="header" />
+  </div>
+  <div class="row" style="background-color:lavender;min-height:800px;">
+    <div id="menu_left" class="col-md-2" style="overflow-y: scroll;">
+      <t:insertAttribute name="menu_left" />
+    </div>
+    <div id="content" class="col-md-8" style="background:beige;min-height:600px; text-align:  center">
+          <t:insertAttribute name="body" />
+     </div>
 
+    <div id="menu_right"class="col-md-2">
+      <t:insertAttribute name="menu_right" />
+    </div>
+
+    <script src="js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script src="js/jquery.ba-cond.min.js"></script>
+    <script src="js/jquery.slitslider.js"></script>
+  </div>
 </body>
+</html>
