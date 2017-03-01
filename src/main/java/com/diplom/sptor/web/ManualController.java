@@ -23,9 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by user on 05.08.2016.
- */
 @Controller
 public class ManualController {
 
