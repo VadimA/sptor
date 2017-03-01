@@ -70,75 +70,10 @@
               }
       );
     }
-
-    function refreshContent()
-    {
-      history.go(0);
-    }
-
-    function addSubdivision() {
-
-      $("#error1").text("");
-      $("#error2").text("");
-      $("#error3").text("");
-
-      if ($("#work_hour1").val() == "") {
-        $("#error1").text("Укажите наименование");
-      }
-      else if($("#work_hour2").val() == "") {
-        $("#error2").text("Укажите аббревиатуру");
-      }
-      else if($("#work_hour3").val() == "") {
-        $("#error3").text("Укажите ответственного");
-      }
-      else {
-        subdivision_name = $("#work_hour1").val();
-        abbreviation = $("#work_hour2").val();
-        responsible = $("#work_hour3").val();
-        description = $("#work_hour4").val();
-
-        var that = this;
-        $.ajax({
-          type: "POST",
-          url: "/subdivision",
-          content: "application/json",
-          data: {
-            subdivision_name: subdivision_name,
-            abbreviation: abbreviation,
-            responsible: responsible,
-            description: description
-          },
-          success: function (returnData) {
-            $(that).dialog("close");
-          }
-        });
-        refreshContent();
-      }
-    }
-
-    function refreshContent()
-    {
-      history.go(0);
-    }
-
   </script>
-
-  <script>
-    $(document).ready(function() {
-      $("#datepicker1").datepicker({ dateFormat: 'yy-mm-dd' });
-      $("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });
-
-    });
-  </script>
-
-  <style>
-    .error {
-      color: red; font-weight: bold;
-    }
-  </style>
 
 </head>
-
+<body onload="getSubdivision();">
       <center>
         <div class="text-center" style="display: table; margin: 0 auto; text-align: center;">
           <div class="btn-toolbar" \>
@@ -155,44 +90,44 @@
       <div id="new_subdivision"  title="Добавление цеха"  style="display: none">
         <div class="col-md-5" style="margin-top: 45px;margin-left: 50px">
           <table>
-            <form>
+            <form:form method="POST" modelAttribute="subForm" >
               <tr>
                 <td><label><spring:message text="Цех "/></label></td>
-                <td><input id="work_hour1" />
+                <td><form:input  path="subdivision_name" id="work_hour1" />
                   <p id ="error1" style="color: red"></p>
                 </td>
               </tr>
               <tr><td><br/></td><td><br/></td></tr>
               <tr>
                 <td><label><spring:message text="Аббревиатура "/></label></td>
-                <td><input id="work_hour2" />
+                <td><form:input path="abbreviation" id="work_hour2" />
                   <p id ="error2" style="color: red"></p>
                 </td>
               </tr>
               <tr><td><br/></td><td><br/></td></tr>
               <tr>
                 <td><label><spring:message text="Ответственный "/></label></td>
-                <td><input id="work_hour3" />
+                <td><form:input path="responsible" id="work_hour3" />
                   <p id ="error3" style="color: red"></p>
                 </td>
               </tr>
               <tr><td><br/></td><td><br/></td></tr>
               <tr>
                 <td><label><spring:message text="Описание "/></label></td>
-                <td><input id="work_hour4" />
+                <td><form:input path="description" id="work_hour4" />
                   <p id ="error4" style="color: red"></p>
                 </td>
               </tr>
               <tr><td><br/></td><td><br/></td></tr>
               <tr>
-                <td align="center"><input type="button" value="<spring:message text="Добавить"/>"
-                                          onclick="addSubdivision()"/></td>
+                <td align="center"><input type="submit" value="<spring:message text="Добавить"/>"/></td>
                 <td align="center"><input type="button"
                                           value="<spring:message text="Закрыть"/>" onclick="jQuery('#new_subdivision').dialog('close');"/></td>
 
               </tr>
               <tr><td><br/></td><td><br/></td></tr>
-            </form>
+            </form:form>
           </table>
         </div>
       </div>
+</body>

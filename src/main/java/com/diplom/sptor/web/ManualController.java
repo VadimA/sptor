@@ -5,11 +5,13 @@ import com.diplom.sptor.model.UserFormModel;
 import com.diplom.sptor.service.*;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -61,6 +63,13 @@ public class ManualController {
             userName = principal.toString();
         }
         return userName;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+        sdf.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
     }
 
     @ApiOperation(value = "getUsers", notes = "Get all technological cards")
@@ -130,6 +139,7 @@ public class ManualController {
     @RequestMapping(value = "/equipment", method = RequestMethod.GET,
             produces = "application/json")
     public String getEquipmentView(Model model) {
+        model.addAttribute("equipmentForm", new Equipment());
         model.addAttribute("eqType", typeOfEquipmentService.getAllTypes());
         model.addAttribute("eqSub", subdivisionService.getAllSubdivisions());
         model.addAttribute("eqResp", this.userService.getUsers());
@@ -147,29 +157,24 @@ public class ManualController {
     @ApiOperation(value = "addEquipment", notes = "Get all technological cards")
     @RequestMapping(value = "/equipment", method = RequestMethod.POST,
             produces = "application/json")
-    public String addEquipment(@RequestParam String equipment_name,
-                               @RequestParam int type_of_equipment_id,
-                               @RequestParam int subdivision_id,
-                               @RequestParam int inventory_number,
-                               @RequestParam int graduation_year,
-                               @RequestParam String producer_of_equipment,
-                               @RequestParam double working_hours,
-                               @RequestParam int status,
-                               @RequestParam String description) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
-        Date date = formatter.parse(String.valueOf(graduation_year));
-        Equipment equipment = new Equipment();
-        equipment.setEquipmentName(equipment_name);
-        equipment.setTypeOfEquipment(typeOfEquipmentService.getTypeById(type_of_equipment_id));
-        equipment.setSubdivision(subdivisionService.getSubdivisionById(subdivision_id));
-        equipment.setInventoryNumber(inventory_number);
-        equipment.setGraduationYear(date);
-        equipment.setProducerOfEquipment(producer_of_equipment);
-        equipment.setWorkingHours(working_hours);
-        equipment.setStatus(statusOfEqService.getStatusById(status));
-        equipment.setDescription(description);
+    public String addEquipment(@Valid Equipment equipment, BindingResult bindingResult) throws ParseException {
+        if(bindingResult.hasErrors()){
+            System.out.println("VAAN Good name " + equipment.getEquipmentName() + " desc " + equipment.getDescription()
+                    + " type " + equipment.getTypeOfEquipment().getType_of_equipment_id() + " sub " + equipment.getSubdivision().getSubdivision_id() + "stat" + equipment.getStatus().getStatus_id()
+                    + " 1 " + equipment.getWorkingHours() + " DATA = " + equipment.getGraduationYear() + " 3 " + equipment.getInventoryNumber() + equipment.getProducerOfEquipment());
+            System.out.println("Binding error");
+            return "redirect:/equipment";
+        }
+        System.out.println("VAAN Good name " + equipment.getEquipmentName() + " desc " + equipment.getDescription()
+        + " type "  + equipment.getTypeOfEquipment().getType_of_equipment_id()  + " DATA = " + equipment.getGraduationYear() + " 3 " + " sub " + equipment.getSubdivision().getSubdivision_id() + "stat" + equipment.getStatus().getStatus_id()
+        + " 1 " + equipment.getWorkingHours() + equipment.getInventoryNumber() + equipment.getProducerOfEquipment());
+        equipment.setSubdivision(subdivisionService.getSubdivisionById(equipment.getSubdivision().getSubdivision_id()));
+        equipment.setStatus(statusOfEqService.getStatusById(equipment.getStatus().getStatus_id()));
+        equipment.setTypeOfEquipment(typeOfEquipmentService.getTypeById(equipment.getTypeOfEquipment().getType_of_equipment_id()));
         equipmentService.addEquipment(equipment);
-        return "manual";
+        System.out.println("VAAN 2 = " + equipment.getSubdivision() + " 2 " + equipment.getStatus() +
+        " 3 " + equipment.getTypeOfEquipment());
+        return "redirect:/equipment";
     }
 
     @ApiOperation(value = "getEquipments", notes = "Get all technological cards")
@@ -217,6 +222,7 @@ public class ManualController {
     @RequestMapping(value = "/subdivision", method = RequestMethod.GET,
             produces = "application/json")
     public String getSubdivisionView(Model model) {
+        model.addAttribute("subForm", new Subdivisions());
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
         model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
                 userService.getUserBySso(getPrincipal()).getFirst_name());
@@ -230,17 +236,12 @@ public class ManualController {
     @ApiOperation(value = "addEquipment", notes = "Get all technological cards")
     @RequestMapping(value = "/subdivision", method = RequestMethod.POST,
             produces = "application/json")
-    public String addSubdivision(@RequestParam String subdivision_name,
-                                 @RequestParam String abbreviation,
-                                 @RequestParam String responsible,
-                                 @RequestParam String description) throws ParseException {
-        Subdivisions subdivisions = new Subdivisions();
-        subdivisions.setSubdivision_name(subdivision_name);
-        subdivisions.setAbbreviation(abbreviation);
-        subdivisions.setResponsible(responsible);
-        subdivisions.setDescription(description);
+    public String addSubdivision(@Valid Subdivisions subdivisions, BindingResult bindingResult) throws ParseException {
+        if(bindingResult.hasErrors()){
+            return "redirect:/subdivision";
+        }
         subdivisionService.addSubdivision(subdivisions);
-        return "manual";
+        return "redirect:/subdivision";
     }
 
     @RequestMapping(value = "/type_of_equipment", method = RequestMethod.GET)
