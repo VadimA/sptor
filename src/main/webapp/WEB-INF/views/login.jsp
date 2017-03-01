@@ -37,7 +37,7 @@
           method='POST'>
       <h2 class="form-signin-heading">Пожалуйста, войдите в систему</h2>
       <label for="inputEmail" class="sr-only">Ваш логин</label>
-      <input type="email" id="inputEmail" class="form-control" name='ssoid' placeholder="Email-адрес" required autofocus>
+      <input type="text" id="inputEmail" class="form-control" name='ssoid' placeholder="Email-адрес" required autofocus>
       <label for="inputPassword" class="sr-only">Ваш пароль</label>
       <input type="password" id="inputPassword" class="form-control" name='password' placeholder="Пароль" required>
 

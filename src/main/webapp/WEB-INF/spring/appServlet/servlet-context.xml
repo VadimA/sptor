@@ -12,93 +12,91 @@
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
-    <annotation-driven validator="validator"/>
+<annotation-driven validator="validator"/>
 
-    <aop:aspectj-autoproxy />
+<aop:aspectj-autoproxy />
 
-    <jpa:repositories base-package="com.diplom.sptor.repository" />
+<jpa:repositories base-package="com.diplom.sptor.repository" />
 
-    <default-servlet-handler/>
+<default-servlet-handler/>
 
-    <context:component-scan base-package="com.diplom.sptor" />
+<context:component-scan base-package="com.diplom.sptor" />
 
-    <resources mapping="/resources/**" location="/resources/" />
+<resources mapping="/resources/**" location="/resources/" />
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+<tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <beans:bean id ="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+<beans:bean id ="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
     <beans:property name="validationMessageSource" ref="messageSource"/>
-    </beans:bean>
+</beans:bean>
 
-    <beans:bean
-            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <beans:property name="prefix" value="/WEB-INF/views/" />
-        <beans:property name="suffix" value=".jsp" />
-        <beans:property name="order" value="2" />
-    </beans:bean>
+<beans:bean
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <beans:property name="prefix" value="/WEB-INF/views/" />
+    <beans:property name="suffix" value=".jsp" />
+    <beans:property name="order" value="2" />
+</beans:bean>
 
-    <beans:bean id="messageSource"
-          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <beans:property name="basenames" value="/WEB-INF/messages" />
-        <beans:property name="defaultEncoding" value="UTF-8" />
-    </beans:bean>
+<beans:bean id="messageSource"
+            class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <beans:property name="basenames" value="/WEB-INF/messages" />
+    <beans:property name="defaultEncoding" value="UTF-8" />
+</beans:bean>
 
-    <beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <beans:property name="defaultLocale" value="ru" />
-    </beans:bean>
+<beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+    <beans:property name="defaultLocale" value="ru" />
+</beans:bean>
 
-    <resources mapping="/resources/**" location="/resources/" />
+<beans:bean id="documentationConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
 
-    <beans:bean id="documentationConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
+<beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <beans:property name="packagesToScan" value="com.diplom.sptor.domain"/>
+    <beans:property name="dataSource" ref="dataSource"/>
+    <beans:property name="jpaVendorAdapter">
+        <beans:bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+    </beans:property>
+    <beans:property name="jpaProperties" >
+        <beans:props>
+            <beans:prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</beans:prop>
+        </beans:props>
+    </beans:property>
+</beans:bean>
 
-    <beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <beans:property name="packagesToScan" value="com.diplom.sptor.domain"/>
-        <beans:property name="dataSource" ref="dataSource"/>
-        <beans:property name="jpaVendorAdapter">
-            <beans:bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
-        </beans:property>
-        <beans:property name="jpaProperties" >
-            <beans:props>
-                <beans:prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</beans:prop>
-            </beans:props>
-        </beans:property>
-    </beans:bean>
+<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+    <beans:property name="driverClassName" value="org.postgresql.Driver" />
+    <beans:property name="url"
+                    value="jdbc:postgresql://localhost:5432/zaprib3" />
+    <beans:property name="username" value="Vadim" />
+    <beans:property name="password" value="wadim888" />
+</beans:bean>
 
-    <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <beans:property name="driverClassName" value="org.postgresql.Driver" />
-        <beans:property name="url"
-                        value="jdbc:postgresql://localhost:5432/zaprib3" />
-        <beans:property name="username" value="Vadim" />
-        <beans:property name="password" value="wadim888" />
-    </beans:bean>
+<beans:bean id="multipartResolver"
+            class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <!-- one of the properties available; the maximum file size in bytes -->
+    <beans:property name="maxUploadSize" value="10000000" />
+</beans:bean>
 
-    <beans:bean id="multipartResolver"
-                class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <!-- one of the properties available; the maximum file size in bytes -->
-        <beans:property name="maxUploadSize" value="10000000" />
-    </beans:bean>
+<beans:bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <beans:property name="entityManagerFactory" ref="entityManagerFactory"/>
+</beans:bean>
+<tx:annotation-driven/>
 
-    <beans:bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <beans:property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </beans:bean>
-    <tx:annotation-driven/>
+<!--   <beans:bean id="persistenceExceptionTranslationPostProcessor"
+              class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+-->
+<beans:bean id="testAspect" class="com.diplom.sptor.aop.TestAspect" />
 
-    <!--   <beans:bean id="persistenceExceptionTranslationPostProcessor"
-                  class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-    -->
-    <beans:bean id="testAspect" class="com.diplom.sptor.aop.TestAspect" />
+<beans:bean id="viewResolver" class=
+        "org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+    <beans:property name="order" value="1" />
+</beans:bean>
+<beans:bean class=
+                    "org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+    <beans:property name="definitions">
+        <beans:list>
+            <beans:value>/WEB-INF/views/tiles/views.xml</beans:value>
+        </beans:list>
+    </beans:property>
+</beans:bean>
 
-    <beans:bean id="viewResolver" class=
-                  "org.springframework.web.servlet.view.tiles3.TilesViewResolver">
-        <beans:property name="order" value="1" />
-    </beans:bean>
-    <beans:bean class=
-                  "org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-        <beans:property name="definitions">
-            <beans:list>
-                <beans:value>/WEB-INF/views/views.xml</beans:value>
-            </beans:list>
-        </beans:property>
-    </beans:bean>
-
-  </beans:beans>
+</beans:beans>

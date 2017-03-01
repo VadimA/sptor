@@ -99,7 +99,7 @@ public class EquipmentController {
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
         model.addAttribute("workingHours", new WorkingHours());
         model.addAttribute("allRepair", repairSheetService.getAllRepairSheets());
-        model.addAttribute("user", userService.getUserBySso(username).getLast_name() + " " +
+        model.addAttribute("current_user", userService.getUserBySso(username).getLast_name() + " " +
         userService.getUserBySso(username).getFirst_name());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);

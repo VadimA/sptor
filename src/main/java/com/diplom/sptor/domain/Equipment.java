@@ -67,6 +67,20 @@ public class Equipment implements Serializable{
         this.status = status;
     }
 
+    public Equipment(String equipmentName, int typeOfEquipment, int subdivision,
+                     int inventoryNumber, Date graduationYear, String producerOfEquipment, String description,
+                     double workingHours, int status) {
+        this.equipmentName = equipmentName;
+        this.typeOfEquipment.setType_of_equipment_id(typeOfEquipment);
+        this.subdivision.setSubdivision_id(subdivision);
+        this.inventoryNumber = inventoryNumber;
+        this.graduationYear = graduationYear;
+        this.producerOfEquipment = producerOfEquipment;
+        this.description = description;
+        this.workingHours = workingHours;
+        this.status.setStatus_id(status);
+    }
+
     public int getEquipmentId() {
         return equipmentId;
     }

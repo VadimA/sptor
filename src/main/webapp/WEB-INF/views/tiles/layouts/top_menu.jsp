@@ -87,7 +87,7 @@
           <li><a href="<c:url value="/about"/>">О системе</a></li>
 
           <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${user}<span class="caret"></span></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${current_user}<span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="<c:url value="/logout"/>">Выйти</a></li>
             </ul>

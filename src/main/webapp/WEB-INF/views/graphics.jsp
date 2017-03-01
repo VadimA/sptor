@@ -97,31 +97,6 @@
 
   </script>
 
-  <style>
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-      font-size: 14px;
-    }
-
-    #top {
-      background: #eee;
-      border-bottom: 1px solid #ddd;
-      padding: 0 10px;
-      line-height: 40px;
-      font-size: 12px;
-    }
-
-    #calendar {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 10px;
-    }
-
-  </style>
-
 </head>
 
     <div id="calendar"></div>
