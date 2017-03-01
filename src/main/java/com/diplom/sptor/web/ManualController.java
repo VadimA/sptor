@@ -159,21 +159,12 @@ public class ManualController {
             produces = "application/json")
     public String addEquipment(@Valid Equipment equipment, BindingResult bindingResult) throws ParseException {
         if(bindingResult.hasErrors()){
-            System.out.println("VAAN Good name " + equipment.getEquipmentName() + " desc " + equipment.getDescription()
-                    + " type " + equipment.getTypeOfEquipment().getType_of_equipment_id() + " sub " + equipment.getSubdivision().getSubdivision_id() + "stat" + equipment.getStatus().getStatus_id()
-                    + " 1 " + equipment.getWorkingHours() + " DATA = " + equipment.getGraduationYear() + " 3 " + equipment.getInventoryNumber() + equipment.getProducerOfEquipment());
-            System.out.println("Binding error");
             return "redirect:/equipment";
         }
-        System.out.println("VAAN Good name " + equipment.getEquipmentName() + " desc " + equipment.getDescription()
-        + " type "  + equipment.getTypeOfEquipment().getType_of_equipment_id()  + " DATA = " + equipment.getGraduationYear() + " 3 " + " sub " + equipment.getSubdivision().getSubdivision_id() + "stat" + equipment.getStatus().getStatus_id()
-        + " 1 " + equipment.getWorkingHours() + equipment.getInventoryNumber() + equipment.getProducerOfEquipment());
         equipment.setSubdivision(subdivisionService.getSubdivisionById(equipment.getSubdivision().getSubdivision_id()));
         equipment.setStatus(statusOfEqService.getStatusById(equipment.getStatus().getStatus_id()));
         equipment.setTypeOfEquipment(typeOfEquipmentService.getTypeById(equipment.getTypeOfEquipment().getType_of_equipment_id()));
         equipmentService.addEquipment(equipment);
-        System.out.println("VAAN 2 = " + equipment.getSubdivision() + " 2 " + equipment.getStatus() +
-        " 3 " + equipment.getTypeOfEquipment());
         return "redirect:/equipment";
     }
 
