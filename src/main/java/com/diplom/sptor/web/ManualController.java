@@ -1,7 +1,6 @@
 package com.diplom.sptor.web;
 
 import com.diplom.sptor.domain.*;
-import com.diplom.sptor.model.UserFormModel;
 import com.diplom.sptor.service.*;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
