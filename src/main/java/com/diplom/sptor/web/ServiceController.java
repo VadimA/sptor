@@ -1,7 +1,6 @@
 package com.diplom.sptor.web;
 
 import com.diplom.sptor.domain.*;
-import com.diplom.sptor.model.UserFormModel;
 import com.diplom.sptor.service.*;
 import com.stormpath.sdk.lang.Strings;
 import com.twilio.sdk.TwilioRestClient;
