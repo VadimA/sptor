@@ -1,7 +1,6 @@
 package com.diplom.sptor.web;
 
 import com.diplom.sptor.domain.*;
-import com.diplom.sptor.model.UserFormModel;
 import com.diplom.sptor.service.*;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by user on 05.08.2016.
- */
 @Controller
 public class ManualController {
 
