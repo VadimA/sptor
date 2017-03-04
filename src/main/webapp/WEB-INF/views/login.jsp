@@ -43,8 +43,6 @@
 
       <button class="submitLogin" name="submit" type="submit">Войти</button>
 
-      <input type="hidden" name="${_csrf.parameterName}"
-             value="${_csrf.token}" />
     </form>
   </div>
 </body>
