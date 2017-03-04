@@ -17,7 +17,7 @@ import java.util.Set;
  * Created by user on 03.12.2015.
  */
 @Entity
-@Table(name = "toir.subdivisions")
+@Table(name = "subdivisions")
 @Proxy(lazy=false)
 public class Subdivisions implements Serializable{
 
