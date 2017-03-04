@@ -52,18 +52,18 @@
 
 <beans:bean id="documentationConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
 
-<!--<beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">-->
-    <!--<beans:property name="packagesToScan" value="com.diplom.sptor.domain"/>-->
-    <!--<beans:property name="dataSource" ref="dataSource"/>-->
-    <!--<beans:property name="jpaVendorAdapter">-->
-        <!--<beans:bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>-->
-    <!--</beans:property>-->
-    <!--<beans:property name="jpaProperties" >-->
-        <!--<beans:props>-->
-            <!--<beans:prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</beans:prop>-->
-        <!--</beans:props>-->
-    <!--</beans:property>-->
-<!--</beans:bean>-->
+<beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <beans:property name="packagesToScan" value="com.diplom.sptor.domain"/>
+    <beans:property name="dataSource" ref="dataSource"/>
+    <beans:property name="jpaVendorAdapter">
+        <beans:bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+    </beans:property>
+    <beans:property name="jpaProperties" >
+        <beans:props>
+            <beans:prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</beans:prop>
+        </beans:props>
+    </beans:property>
+</beans:bean>
 
 <!--<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">-->
     <!--<beans:property name="driverClassName" value="org.postgresql.Driver" />-->
@@ -72,38 +72,6 @@
     <!--<beans:property name="username" value="Vadim" />-->
     <!--<beans:property name="password" value="wadim888" />-->
 <!--</beans:bean>-->
-
-    <beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-          p:dataSource-ref="dataSource"
-          p:packagesToScan="com.diplom.sptor.domain">
-        <!--p:persistenceUnitName="persistenceUnit">-->
-
-        <beans:property name="jpaPropertyMap">
-            <beans:map>
-                <beans:entry key="#{T(org.hibernate.cfg.AvailableSettings).FORMAT_SQL}" value="${hibernate.format_sql}"/>
-                <beans:entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SQL_COMMENTS}"
-                       value="${hibernate.use_sql_comments}"/>
-                <!--<entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_AUTO}" value="${hibernate.hbm2ddl.auto}"/>-->
-
-                <beans:entry key="#{T(org.hibernate.cfg.AvailableSettings).CACHE_REGION_FACTORY}" value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory"/>
-                <beans:entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SECOND_LEVEL_CACHE}" value="true"/>
-                <beans:entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_QUERY_CACHE}" value="false"/> <!--default-->
-                <beans:entry key="#{T(org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory).NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME}" value="cache/ehcache.xml"/>
-                <!--
-                                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_SCRIPTS_ACTION}" value="drop-and-create"/>
-                                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_SCRIPTS_CREATE_TARGET}" value="${TOPJAVA_ROOT}/config/ddl/create.ddl"/>
-                                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_SCRIPTS_DROP_TARGET}" value="${TOPJAVA_ROOT}/config/ddl/drop.ddl"/>
-                                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_AUTO}" value="create"/>
-                -->
-            </beans:map>
-        </beans:property>
-
-        <beans:property name="jpaVendorAdapter">
-            <beans:bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-                  p:showSql="${jpa.showSql}">
-            </beans:bean>
-        </beans:property>
-    </beans:bean>
 
         <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
 
