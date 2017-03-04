@@ -13,7 +13,7 @@ import java.util.Set;
  * Created by user on 31.01.2016.
  */
 @Entity
-@Table(name="toir.users")
+@Table(name="users")
 @Proxy(lazy=false)
 public class User {
 
