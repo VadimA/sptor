@@ -114,7 +114,6 @@ public class ServiceController {
 		//		System.out.println("Error communicating with Twilio: {}" + e.getErrorMessage());
 		//	}
 		//}catch (Exception e){System.out.println(e);}
-
 		model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
 				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = statusService.getStatusById(1);
