@@ -76,7 +76,7 @@
         <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
 
         <beans:bean id="dataSource"
-              class="org.apache.tomcat.jdbc.pool.DataSource"
+              class="org.apache.commons.dbcp.BasicDataSource"
               p:driverClassName="org.postgresql.Driver"
               p:url="${database.url}"
               p:username="${database.username}"
