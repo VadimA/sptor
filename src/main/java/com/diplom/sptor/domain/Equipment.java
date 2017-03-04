@@ -12,7 +12,7 @@ import java.util.Date;
  * Created by user on 25.11.2015.
  */
 @Entity
-@Table(name = "toir.equipment")
+@Table(name = "equipment")
 @Proxy(lazy=false)
 public class Equipment implements Serializable{
 
