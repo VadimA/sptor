@@ -13,7 +13,7 @@ import java.util.List;
  * Created by user on 16.12.2015.
  */
 @Entity
-@Table(name = "toir.repair_sheet")
+@Table(name = "repair_sheet")
 @Proxy(lazy=false)
 public class RepairSheet implements Serializable {
 

@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by user on 14.04.2016.
  */
 @Entity
-@Table(name = "toir.downtime")
+@Table(name = "downtime")
 @Proxy(lazy=false)
 public class DownTime {
 
