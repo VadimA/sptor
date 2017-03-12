@@ -38,7 +38,7 @@ public class User {
 
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "toir.user_user_profile",
+    @JoinTable(name = "user_user_profile",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "user_profile_id") })
     private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
