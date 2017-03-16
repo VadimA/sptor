@@ -40,12 +40,12 @@
         jQuery("#result").html("<center></br><button class=\"btn btn-info\"  type=\"button\" onclick=\"openUsers()\">Добавить пользователя</button></br><table class=\"table table-hover\" id=\"params_t\">\n\
                </br>\
 <thead>\n\
-  <tr><th>ssoid</th><th>Имя</th><th>Фамилия</th><th>Почта</th></tr>\n\
+  <tr><th>ssoid</th><th>Имя</th><th>Фамилия</th><th>Почта</th><th></th></tr>\n\
   </thead>\n\
 <tbody>\n");
 
         for(var i =0;i<=data.length-1;i++) {
-          $("#params_t").append("<tr><td>" + data[i].ssoid + "</td><td>" + data[i].first_name + "</td><td>" + data[i].last_name + "</td><td>" + data[i].email +"</td></tr>");
+          $("#params_t").append("<tr><td>" + data[i].ssoid + "</td><td>" + data[i].first_name + "</td><td>" + data[i].last_name + "</td><td>" + data[i].email +"</td><td><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></td></tr>");
         }
       });
     }

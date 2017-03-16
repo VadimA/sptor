@@ -5,8 +5,8 @@ notifications:
 script: "mvn clean install"
 sudo: false
 deploy: 
-provider: heroku
-api_key: 
+  provider: heroku
+  api_key: 
     secure: hBWlS1P9+qHopPqwEMuNFWFlNUFVaTeJzL+Bwi8MYUZcDCD5VWfF7HwK7IPsS1dg1XYodnAz7pEYNloribdBsBAShooDSSBVg7gwWLeqOUGNkXlLYf9fIXZdnLdu0zUkSvMsw7thn+OOdpnRLFT7UftMlVcG3UKqvU6haQHWSwK+pZHOFQJYKXQRQDh6CXCfATRYB6IFVKomEL/oXZDmj9v2viY4xnBBflvllMtMKnOrixxCCW0332Er3PnMUTEmwjCYwx70uxJNeYkY+V+Z2N5uzPhFsLTDiORF8665lVKqAzT+FLSMFWEpnavcnFHXfpNlHoJWuDtJlTtXCt7PJkQ9dhloA1k1IfOxkd3f3f9Sx8Z2F9qYJ4tGskq7vpePNVt/idunIghUnz/4zqJ/scVJP52cH5Z7K1aoT93hxSFF+wK9x+1rLrKYTas3f9jJ+XA8TjTRgahEXVKMaeHe1oelu7WX7MzyzGxga+pBvwL9MMowKcwKB5+v1FQIrxOwXr7pLUCPl+arrt0IVh/FpLd1xKQN37+UQosMudKQVHTcwL8rLbve1qgan/gPyMAkhxq+z3pVq1MjAznvy11C44dbSoqdUbDPL/ICuaNasYHtipswXgdVlnevJMn4AGn0hghZI/GMHyBJHJgY7Ntrqk+lowijenRzDIhiJhhzgvM=
-on:
-    all_branches: true
+  app: sptor
+  on: production
