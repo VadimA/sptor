@@ -34,12 +34,12 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
- <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js"></script>
+ <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js"></script>
 
-    <script src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>
-    <script src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
-    <script src="http://www.google.com/jsapi?fake=.js"></script>
+    <script src="https://canvg.googlecode.com/svn/trunk/canvg.js"></script>
+    <script src="https://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
+    <script src="https://www.google.com/jsapi?fake=.js"></script>
 
 
     <style>
