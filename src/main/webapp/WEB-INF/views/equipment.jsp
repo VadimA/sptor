@@ -25,8 +25,8 @@
 
   <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
 
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
   <script type="text/javascript" src="charts/sources/jscharts.js"></script>
 
@@ -34,12 +34,12 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
- <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js"></script>
+ <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js"></script>
 
-    <script src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>
-    <script src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
-    <script src="http://www.google.com/jsapi?fake=.js"></script>
+    <script src="https://canvg.googlecode.com/svn/trunk/canvg.js"></script>
+    <script src="https://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
+    <script src="https://www.google.com/jsapi?fake=.js"></script>
 
 
     <style>
@@ -241,3 +241,4 @@
     <script src="js/jquery.ba-cond.min.js"></script>
     <script src="js/jquery.slitslider.js"></script>
   </div>
+</html>

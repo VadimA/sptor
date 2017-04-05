@@ -28,10 +28,10 @@
   <link rel='stylesheet' href='http://fullcalendar.io/js/fullcalendar-2.6.1/lib/cupertino/jquery-ui.min.css' />
   <link href='http://fullcalendar.io/js/fullcalendar-2.6.1/fullcalendar.css' rel='stylesheet' />
   <link href='http://fullcalendar.io/js/fullcalendar-2.6.1/fullcalendar.print.css' rel='stylesheet' media='print' />
-  <script src='http://fullcalendar.io/js/fullcalendar-2.6.1/lib/moment.min.js'></script>
-  <script src='http://fullcalendar.io/js/fullcalendar-2.6.1/lib/jquery.min.js'></script>
-  <script src='http://fullcalendar.io/js/fullcalendar-2.6.1/fullcalendar.min.js'></script>
-  <script src='http://fullcalendar.io/js/fullcalendar-2.6.1/lang-all.js'></script>
+  <script src='https://fullcalendar.io/js/fullcalendar-2.6.1/lib/moment.min.js'></script>
+  <script src='https://fullcalendar.io/js/fullcalendar-2.6.1/lib/jquery.min.js'></script>
+  <script src='https://fullcalendar.io/js/fullcalendar-2.6.1/fullcalendar.min.js'></script>
+  <script src='https://fullcalendar.io/js/fullcalendar-2.6.1/lang-all.js'></script>
 
 
   <style>

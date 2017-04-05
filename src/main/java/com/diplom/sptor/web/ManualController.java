@@ -99,8 +99,6 @@ public class ManualController {
     public String getUsersView(Model model) {
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
         model.addAttribute("userForm", new User());
-        model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
-                userService.getUserBySso(getPrincipal()).getFirst_name());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
@@ -141,8 +139,6 @@ public class ManualController {
         model.addAttribute("eqResp", this.userService.getUsers());
         model.addAttribute("eqStatus", statusOfEqService.listStatus());
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
-        model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
-                userService.getUserBySso(getPrincipal()).getFirst_name());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
@@ -176,8 +172,6 @@ public class ManualController {
             produces = "application/json")
     public String getSpareView(Model model) {
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
-        model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
-                userService.getUserBySso(getPrincipal()).getFirst_name());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
@@ -211,8 +205,6 @@ public class ManualController {
     public String getSubdivisionView(Model model) {
         model.addAttribute("subForm", new Subdivisions());
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
-        model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
-                userService.getUserBySso(getPrincipal()).getFirst_name());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
