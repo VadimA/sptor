@@ -9,7 +9,7 @@ import javax.persistence.*;
  * Created by user on 25.02.2016.
  */
 @Entity
-@Table(name = "toir.components")
+@Table(name = "components")
 @Proxy(lazy=false)
 public class Components {
 

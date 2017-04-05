@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by user on 15.12.2015.
  */
 @Entity
-@Table(name = "toir.technological_card")
+@Table(name = "technological_card")
 @Proxy(lazy=false)
 public class TechnologicalCard implements Serializable{
 

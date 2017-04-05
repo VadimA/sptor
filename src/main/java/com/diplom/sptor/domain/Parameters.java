@@ -9,7 +9,7 @@ import javax.persistence.*;
  * Created by user on 02.03.2016.
  */
 @Entity
-@Table(name = "toir.parameters")
+@Table(name = "parameters")
 @Proxy(lazy=false)
 public class Parameters {
 

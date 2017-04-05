@@ -16,7 +16,7 @@
                 username-parameter="ssoid"
                 password-parameter="password" />
         <logout logout-success-url="/login?logout"  />
-        <!-- enable csrf protection -->
+
     </http>
 
     <authentication-manager >
