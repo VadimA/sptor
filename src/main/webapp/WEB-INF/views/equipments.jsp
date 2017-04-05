@@ -8,68 +8,6 @@
 <html>
 <head>
   <title>ИС ПТОР Оборудование</title>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
-
-  <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
-
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-
-  <script type="text/javascript" src="charts/sources/jscharts.js"></script>
-
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-
-  <script type="text/javascript">
-
-    function getEquipment(){
-      $.ajax({
-        type: "GET",
-        contentType: 'application/json',
-        url: "/equipment/all",
-        dataType: 'json',
-        mimeType: 'application/json',
-      }).done(function( data ) {
-        jQuery("#result").html("</br><button class=\"btn btn-info\"  type=\"button\" onclick=\"openEquipment()\">Добавить оборудование</button></br><table class=\"table table-hover\" id=\"params_t\">\n\
-               </br>\
-<thead>\n\
-  <tr><th>Инвентарный номер</th><th>Наименование</th><th>Тип</th><th>Цех</th><th>Наработка</th></tr>\n\
-  </thead>\n\
-<tbody>");
-
-
-        for(var i =0;i<=data.length-1;i++) {
-          $("#params_t").append("<tr><td>" + data[i].inventoryNumber + "</td><td>" + data[i].equipmentName + "</td><td>" + data[i].typeOfEquipment.type_of_equipment_name + "</td><td>" + data[i].subdivision.subdivision_name + "</td><td>" + data[i].workingHours +"</td></tr>");
-        }
-      });
-    }
-
-    function openEquipment() {
-      jQuery("#new_equipment").dialog({
-                title: "Добавление оборудования",
-                width:500,
-                height: 520,
-                resizable:false,
-                cache: false,
-                modal: true
-              }
-      );
-    }
-
-  </script>
 
   <script>
     $(document).ready(function() {

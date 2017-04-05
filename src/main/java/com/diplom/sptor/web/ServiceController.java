@@ -58,6 +58,7 @@ import net.sf.jasperreports.export.SimpleHtmlReportConfiguration;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
+@SessionAttributes("current_user")
 @Api( value = "sptor", description = "API os SPTOR system")
 public class ServiceController {
 
@@ -95,7 +96,7 @@ public class ServiceController {
 
 	@RequestMapping(value = "/sptor", method = RequestMethod.GET,
 			produces = "application/json")
-	public String getStarted(Model model) {
+	public String getStarted(Model model, HttpServletRequest request) {
 
 		/** Add twilio service in auth. **/
 		//try {
@@ -127,8 +128,6 @@ public class ServiceController {
 	@RequestMapping(value = "/about", method = RequestMethod.GET,
 			produces = "application/json")
 	public String getAbout(Model model) {
-		model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
-				userService.getUserBySso(getPrincipal()).getFirst_name());
 		Status status1 = statusService.getStatusById(1);
 		Status status2 = statusService.getStatusById(2);
 		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
@@ -511,8 +510,6 @@ public class ServiceController {
 		Status status2 = statusService.getStatusById(2);
 		model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
 		model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
-		model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
-				userService.getUserBySso(getPrincipal()).getFirst_name());
 		model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
 		return "graphics";
 	}

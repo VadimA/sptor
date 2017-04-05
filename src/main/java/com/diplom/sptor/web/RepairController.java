@@ -78,8 +78,6 @@ public class RepairController {
         model.addAttribute("status_all", repairSheetService.getAllRepairSheets().size());
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
         model.addAttribute("components", componentService.getAllComponents());
-        model.addAttribute("current_user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
-                userService.getUserBySso(getPrincipal()).getFirst_name());
         model.addAttribute("listEquipments", equipmentService.getAllEquipment());
         model.addAttribute("listTypeOfMaintenance", typeOfMaintenanceService.getAllTypes());
         Status status1 = statusService.getStatusById(1);
