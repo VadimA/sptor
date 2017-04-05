@@ -61,7 +61,7 @@
         }).done(function( data ) {
           var options = '';
           for(var i =0;i<data.length;i++) {
-            options += '<option value="' + data[i].equipment_id + '">' + data[i].equipment_name + '</option>';
+            options += '<option value="' + data[i].equipmentId + '">' + data[i].equipmentName + '</option>';
           }
           $('#equipments').html(options);
           $('#equipments').attr('disabled', false);
@@ -154,7 +154,7 @@
         desc = data.description;
         jQuery("#repair_sheet_id").text(data.sheet_number);
         jQuery("#subdivision_id").text(data.subdivision.subdivision_name);
-        jQuery("#equipment_id").text(data.equipment.equipment_name);
+        jQuery("#equipment_id").text(data.equipment.equipmentName);
         jQuery("#type_of_maintenance_id").text(data.type_of_maintenance.type_of_maintenance_name);
         jQuery("#start_date").text(dtade);
         jQuery("#responsible_for_delivery").text(data.responsible_for_delivery.last_name);

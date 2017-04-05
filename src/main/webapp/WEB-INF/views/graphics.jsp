@@ -51,12 +51,10 @@
           var mm = date.getMonth() + 1;
           var dtade = data[i].start_date;
           var end_date = date.setDate(date.getDate() + data[i].type_of_maintenance.duration);
-          alert(end_date);
           var desc = data[i].type_of_maintenance.type_of_maintenance_name + " " + data[i].equipment.typeOfEquipment.type_of_equipment_name + " " + data[i].equipment.equipmentName;
           var t = {id : id,start: dtade, end: end_date, title: desc, allDay: true, url: "/repair"};
           mas.push(t);
         }
-        console.log(mas);
 
         var date = new Date();
         var d = date.getDate();

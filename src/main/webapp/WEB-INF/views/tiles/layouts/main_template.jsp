@@ -40,7 +40,10 @@
   <script src="https://canvg.googlecode.com/svn/trunk/canvg.js"></script>
   <script src="https://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
   <script src="https://www.google.com/jsapi?fake=.js"></script>
-  <script type="text/javascript" charset="utf8" src="/resources/myScripts.js"></script>
+  <script type="text/javascript" charset="utf8" src="/resources/general.js"></script>
+  <script>
+  </script>
+
 </head>
 <body>
 
