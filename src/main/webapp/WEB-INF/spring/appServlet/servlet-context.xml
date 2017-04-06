@@ -66,22 +66,22 @@
     </beans:property>
 </beans:bean>
 
-<!--<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">-->
-    <!--<beans:property name="driverClassName" value="org.postgresql.Driver" />-->
-    <!--<beans:property name="url"-->
-                    <!--value="jdbc:postgresql://localhost:5432/zaprib3" />-->
-    <!--<beans:property name="username" value="Vadim" />-->
-    <!--<beans:property name="password" value="wadim888" />-->
-<!--</beans:bean>-->
+<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+    <beans:property name="driverClassName" value="org.postgresql.Driver" />
+    <beans:property name="url"
+                    value="jdbc:postgresql://localhost:5432/zaprib" />
+    <beans:property name="username" value="Vadim" />
+    <beans:property name="password" value="wadim888" />
+</beans:bean>
 
-        <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
+        <!--<context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>-->
 
-        <beans:bean id="dataSource"
-              class="org.apache.tomcat.jdbc.pool.DataSource"
-              p:driverClassName="org.postgresql.Driver"
-              p:url="${database.url}"
-              p:username="${database.username}"
-              p:password="${database.password}"/>
+        <!--<beans:bean id="dataSource"-->
+              <!--class="org.apache.tomcat.jdbc.pool.DataSource"-->
+              <!--p:driverClassName="org.postgresql.Driver"-->
+              <!--p:url="${database.url}"-->
+              <!--p:username="${database.username}"-->
+              <!--p:password="${database.password}"/>-->
 
 <beans:bean id="multipartResolver"
             class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
