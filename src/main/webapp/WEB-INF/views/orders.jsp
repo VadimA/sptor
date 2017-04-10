@@ -61,6 +61,36 @@
 
 </head>
 
+<body ng-app="userApp" class="ng-cloak">
+<div class="generic-container" ng-controller="UserController as ctrl">
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><span class="lead">List of Users </span></div>
+        <div class="tablecontainer">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>ID.</th>
+                    <th>Name</th>
+                    <th>Last</th>
+                    <th>Email</th>
+                    <th width="20%"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="u in ctrl.users">
+                    <td><span ng-bind="u.id"></span></td>
+                    <td><span ng-bind="u.first_name"></span></td>
+                    <td><span ng-bind="u.last_name"></span></td>
+                    <td><span ng-bind="u.email"></span></td>
+                    <td><button type="button" confirmed-click="ctrl.remove(u.id)" class="btn btn-danger custom-width" ng-confirm-click="Вы действительно хотите удалить пользователя {{u.last_name}} ?">Удалить</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
     </br>
     В системе управления планированием технического обслуживания и ремонта «СПТОР» реализован следующий функционал:</br>
     –	учет состава оборудования, ведение эксплуатационной и ремонтной документации по нему (паспортов оборудования, ремонтных карт);</br>
@@ -73,3 +103,10 @@
     –	учет состава и истории замен деталей и узлов оборудования и его элементов;</br>
     –	формирование отчетности (акты ввода/вывода оборудования в/из ре-монта, отчеты о проведенных ТОиР);</br>
     –	регистрация и авторизация пользователей. В веб-приложении суще-ствует возможность добавления, удаления, редактирования пользователей (сотрудников предприятия);</br>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+<script src="<c:url value='/resources/angular/users/user_service.js' />"></script>
+<script src="<c:url value='/resources/angular/users/user_controller.js' />"></script>
+</body>
+
