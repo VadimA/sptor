@@ -5,6 +5,8 @@ import com.diplom.sptor.service.*;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -120,6 +122,20 @@ public class ManualController {
         user.setPassword(String.format("%064x", new java.math.BigInteger(1, digest)));
         userService.addUser(user);
         return "redirect:/users";
+    }
+
+    @ApiOperation(value = "deleteUser", notes = "Delete current user")
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE,
+            produces = "application/json")
+    public ResponseEntity<User> deleteUsers(@PathVariable("userId") int userId){
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            System.out.println("Unable to delete. User with id " + user + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+
+        userService.deleteUserById(userId);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 
     @ApiOperation(value = "getEquipments", notes = "Get all technological cards")
