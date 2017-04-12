@@ -25,9 +25,9 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
 
-  <link rel='stylesheet' href='http://fullcalendar.io/js/fullcalendar-2.6.1/lib/cupertino/jquery-ui.min.css' />
-  <link href='http://fullcalendar.io/js/fullcalendar-2.6.1/fullcalendar.css' rel='stylesheet' />
-  <link href='http://fullcalendar.io/js/fullcalendar-2.6.1/fullcalendar.print.css' rel='stylesheet' media='print' />
+  <link rel='stylesheet' href='https://fullcalendar.io/js/fullcalendar-2.6.1/lib/cupertino/jquery-ui.min.css' />
+  <link href='https://fullcalendar.io/js/fullcalendar-2.6.1/fullcalendar.css' rel='stylesheet' />
+  <link href='https://fullcalendar.io/js/fullcalendar-2.6.1/fullcalendar.print.css' rel='stylesheet' media='print' />
   <script src='https://fullcalendar.io/js/fullcalendar-2.6.1/lib/moment.min.js'></script>
   <script src='https://fullcalendar.io/js/fullcalendar-2.6.1/lib/jquery.min.js'></script>
   <script src='https://fullcalendar.io/js/fullcalendar-2.6.1/fullcalendar.min.js'></script>
