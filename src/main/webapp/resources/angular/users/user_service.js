@@ -2,7 +2,7 @@ var App = angular.module('userApp',[]);
 
 angular.module('userApp').factory('UserService', ['$http', '$q', function($http, $q){
 
-    var REST_SERVICE_URI = 'https://localhost:8081/users/';
+    var REST_SERVICE_URI = '/users/';
 
     var factory = {
         fetchAllUsers: fetchAllUsers,
