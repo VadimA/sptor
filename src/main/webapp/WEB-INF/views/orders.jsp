@@ -59,11 +59,25 @@
 
   </style>
 
+    <script type="text/javascript">
+
+        function openUsers() {
+            jQuery("#formcontainer").dialog({
+                        title: "Добавление пользователя",
+                        width:500,
+                        height: 520,
+                        resizable:false,
+                        cache: false,
+                        modal: true
+                    }
+            );
+        }
+    </script>
 </head>
 
 <body ng-app="userApp" class="ng-cloak">
 <div class="generic-container" ng-controller="UserController as ctrl">
-    <div class="panel panel-default">
+    <div class="panel panel-default" style="display: none">
         <div class="panel-heading"><span class="lead">User Registration Form </span></div>
         <div class="formcontainer">
             <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
@@ -132,6 +146,7 @@
             </form>
         </div>
     </div>
+    <button class="btn btn-info"  type="button" onclick="openUsers()">Добавить пользователя</button>
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">List of Users </span></div>
