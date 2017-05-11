@@ -35,14 +35,14 @@
 
     function openUsers() {
       jQuery("#new_users").dialog({
-                title: "Добавление пользователя",
-                width:500,
-                height: 520,
-                resizable:false,
-                cache: false,
-                modal: true
-              }
-      );
+              title: "Добавление пользователя",
+              width:500,
+              height: 520,
+              resizable:false,
+              cache: false,
+              modal: true
+            }
+    );
     }
   </script>
 
