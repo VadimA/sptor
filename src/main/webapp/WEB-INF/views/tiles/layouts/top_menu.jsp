@@ -29,12 +29,9 @@
             <li><a href="<c:url value="/equipments"/>">Оборудование</a></li>
           </security:authorize>
           <li><a href="<c:url value="/repair"/>">Заявки</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">План-график<span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="<c:url value="/graphics"/>">Месячный</a></li>
-            </ul>
-          </li>
+          <security:authorize access="hasRole('ROLE_ADMIN')">
+            <li><a href="<c:url value="/graphics"/>">План-график</a></li>
+          </security:authorize>
           <security:authorize access="hasRole('ROLE_ADMIN')">
             <li><a href="<c:url value="/users"/>">Справочники</a></li>
           </security:authorize>
