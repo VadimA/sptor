@@ -29,9 +29,9 @@
 
 <tx:annotation-driven transaction-manager="transactionManager"/>
 
-<beans:bean id ="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-    <beans:property name="validationMessageSource" ref="messageSource"/>
-</beans:bean>
+    <beans:bean id ="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <beans:property name="validationMessageSource" ref="messageSource"/>
+    </beans:bean>
 
 <beans:bean
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -40,17 +40,15 @@
     <beans:property name="order" value="2" />
 </beans:bean>
 
-<beans:bean id="messageSource"
-            class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-    <beans:property name="basenames" value="/WEB-INF/messages" />
-    <beans:property name="defaultEncoding" value="UTF-8" />
-</beans:bean>
+    <beans:bean id="messageSource"
+                class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <beans:property name="basenames" value="/WEB-INF/messages" />
+        <beans:property name="defaultEncoding" value="UTF-8" />
+    </beans:bean>
 
 <beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
     <beans:property name="defaultLocale" value="ru" />
 </beans:bean>
-
-<beans:bean id="documentationConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
 
 <beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
     <beans:property name="packagesToScan" value="com.diplom.sptor.domain"/>
@@ -74,14 +72,10 @@
     <!--<beans:property name="password" value="wadim888" />-->
 <!--</beans:bean>-->
 
-        <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
+    <beans:bean id="documentationConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
 
-        <beans:bean id="dataSource"
-              class="org.apache.tomcat.jdbc.pool.DataSource"
-              p:driverClassName="org.postgresql.Driver"
-              p:url="${database.url}"
-              p:username="${database.username}"
-              p:password="${database.password}"/>
+
+    <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
 
 <beans:bean id="multipartResolver"
             class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -112,4 +106,24 @@
     </beans:property>
 </beans:bean>
 
+    <beans:beans profile="prod">
+        <beans:bean id="dataSource"
+                    class="org.apache.tomcat.jdbc.pool.DataSource"
+                    p:driverClassName="org.postgresql.Driver"
+                    p:url="${prod.database.url}"
+                    p:username="${prod.database.username}"
+                    p:password="${prod.database.password}"/>
+    </beans:beans>
+
+
+    <beans:beans profile="dev">
+        <beans:bean id="dataSource"
+                    class="org.apache.tomcat.jdbc.pool.DataSource"
+                    p:driverClassName="org.postgresql.Driver"
+                    p:url="${dev.database.url}"
+                    p:username="${dev.database.username}"
+                    p:password="${dev.database.password}"/>
+    </beans:beans>
+
 </beans:beans>
+

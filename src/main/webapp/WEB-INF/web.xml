@@ -10,6 +10,10 @@
 			/WEB-INF/spring/spring-security.xml</param-value>
 	</context-param>
 
+	<context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>dev</param-value>
+	</context-param>
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
@@ -23,7 +27,10 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
-
+		</init-param>
+		<init-param>
+			<param-name>spring.profiles.active</param-name>
+			<param-value>dev</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
