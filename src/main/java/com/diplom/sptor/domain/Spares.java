@@ -13,7 +13,7 @@ import java.util.Set;
  * Created by user on 14.12.2015.
  */
 @Entity
-@Table(name = "spares")
+@Table(name = "toir.spares")
 @Proxy(lazy=false)
 public class Spares implements Serializable{
 

@@ -13,7 +13,7 @@ import java.util.Set;
  * Created by user on 31.01.2016.
  */
 @Entity
-@Table(name="users")
+@Table(name="toir.users")
 @Proxy(lazy=false)
 public class User {
 
@@ -38,7 +38,7 @@ public class User {
 
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_user_profile",
+    @JoinTable(name = "toir.user_user_profile",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "user_profile_id") })
     private Set<UserProfile> userProfiles = new HashSet<UserProfile>();

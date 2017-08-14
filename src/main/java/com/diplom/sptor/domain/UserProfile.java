@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="user_profile")
+@Table(name="toir.user_profile")
 @Proxy(lazy=false)
 public class UserProfile {
 

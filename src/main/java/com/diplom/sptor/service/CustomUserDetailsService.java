@@ -3,6 +3,7 @@ package com.diplom.sptor.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,9 +22,11 @@ public class CustomUserDetailsService implements UserDetailsService{
     @Autowired
     private UserService userService;
 
+    Logger logger = Logger.getLogger(CustomUserDetailsService.class);
     @Transactional(readOnly=true)
     public UserDetails loadUserByUsername(String ssoId)
             throws UsernameNotFoundException {
+        logger.warn(" in loadUserByUsername with " + ssoId);
         User user = userService.getUserBySso(ssoId);
         System.out.println("Users" + userService.getUsers().size());
         if(userService.getUsers().get(1) != null){

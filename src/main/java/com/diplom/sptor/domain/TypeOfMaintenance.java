@@ -13,7 +13,7 @@ import java.io.Serializable;
  * Created by user on 25.03.2016.
  */
 @Entity
-@Table(name = "type_of_maintenance")
+@Table(name = "toir.type_of_maintenance")
 @Proxy(lazy=false)
 public class TypeOfMaintenance implements Serializable{
 

@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by user on 14.03.2016.
  */
 @Entity
-@Table(name = "working_hours_of_eq")
+@Table(name = "toir.working_hours_of_eq")
 @Proxy(lazy=false)
 public class WorkingHours implements Serializable {
 

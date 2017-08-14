@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * Created by user on 02.03.2016.
  */
 @Entity
-@Table(name = "measures")
+@Table(name = "toir.measures")
 @Proxy(lazy=false)
 public class Measures {
     @Id

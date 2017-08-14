@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * Created by user on 11.03.2016.
  */
 @Entity
-@Table(name = "status_of_request")
+@Table(name = "toir.status_of_request")
 @Proxy(lazy=false)
 public class Status {
 

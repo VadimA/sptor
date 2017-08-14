@@ -15,7 +15,7 @@ import java.util.Set;
  * Created by user on 03.12.2015.
  */
 @Entity
-@Table(name = "type_of_equipment")
+@Table(name = "toir.type_of_equipment")
 @Proxy(lazy=false)
 public class TypeOfEquipment implements Serializable {
 

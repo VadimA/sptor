@@ -139,6 +139,7 @@ public class ServiceController {
 	@RequestMapping(value = {"","/", "/login"}, method = RequestMethod.GET,
 			produces = "application/json")
 	public String login(Model model) {
+		logger.warn("Start application. Login page");
 		return "login";
 	}
 
@@ -437,14 +438,14 @@ public class ServiceController {
 
 		File file = new File("C:\\Users\\user\\Dropbox\\MyProjects\\SPTOR\\acts\\ppr.doc");
 
-		if(!file.exists()){
-			String errorMessage = "Sorry. The file you are looking for does not exist";
-			System.out.println(errorMessage);
-			OutputStream outputStream = response.getOutputStream();
-			outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
-			outputStream.close();
-			return;
-		}
+		//if(!file.exists()){
+		//	String errorMessage = "Sorry. The file you are looking for does not exist";
+		//	System.out.println(errorMessage);
+		//	OutputStream outputStream = response.getOutputStream();
+		//	outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
+		//	outputStream.close();
+		//	return;
+		//}
 
 		String mimeType= URLConnection.guessContentTypeFromName(file.getName());
 		if(mimeType==null){
