@@ -41,8 +41,8 @@
         function openUsers() {
             jQuery("#formcontainer").dialog({
                         title: "Добавление пользователя",
-                        width:500,
-                        height: 520,
+                        width: 'auto',
+                        height:'auto',
                         resizable:false,
                         cache: false,
                         modal: true
@@ -56,12 +56,11 @@
 <div class="generic-container" ng-controller="UserController as ctrl">
     <div class="panel panel-default" style="display: none">
         <div class="panel-heading"><span class="lead">User Registration Form </span></div>
-        <div class="formcontainer">
+        <div class="formcontainer" id="formcontainer">
             <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
                 <input type="hidden" ng-model="ctrl.user.id" />
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="first_name">First Name</label>
+                <div layout="row" layout-align="center" style="margin: 0 auto">
+                        <label class="col-md-3 control-lable" for="first_name">First Name</label>
                         <div class="col-md-7">
                             <input type="text" ng-model="ctrl.user.first_name" id="first_name" class="username form-control input-sm" placeholder="Enter your name" required ng-minlength="3"/>
                             <div class="has-error" ng-show="myForm.$dirty">
@@ -70,22 +69,18 @@
                                 <span ng-show="myForm.first_name.$invalid">This field is invalid </span>
                             </div>
                         </div>
-                    </div>
                 </div>
 
 
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="last_name">Last Name</label>
+                <div class="row" layout-align="center" style="margin: 0 auto">
+                        <label class="col-md-3 control-lable" for="last_name">Last Name</label>
                         <div class="col-md-7">
                             <input type="text" ng-model="ctrl.user.last_name" id="last_name" class="form-control input-sm" placeholder="Enter your Last Name. [This field is validation free]"/>
                         </div>
-                    </div>
                 </div>
 
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="email">Email</label>
+                <div class="row" layout-align="center" style="margin: 0 auto">
+                        <label class="col-md-3 control-lable" for="email">Email</label>
                         <div class="col-md-7">
                             <input type="email" ng-model="ctrl.user.email" id="email" class="email form-control input-sm" placeholder="Enter your Email" required/>
                             <div class="has-error" ng-show="myForm.$dirty">
@@ -93,28 +88,23 @@
                                 <span ng-show="myForm.email.$invalid">This field is invalid </span>
                             </div>
                         </div>
-                    </div>
                 </div>
 
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="password">Password</label>
+                <div class="row" layout-align="center" style="margin: 0 auto">
+                        <label class="col-md-3 control-lable" for="password">Password</label>
                         <div class="col-md-7">
                             <input type="text" ng-model="ctrl.user.password" id="password" class="form-control input-sm" placeholder="Enter your Password. [This field is validation free]"/>
                         </div>
-                    </div>
                 </div>
 
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="ssoid">Ssoid</label>
+                <div class="row" layout-align="center" style="margin: 0 auto">
+                        <label class="col-md-3 control-lable" for="ssoid">Ssoid</label>
                         <div class="col-md-7">
                             <input type="text" ng-model="ctrl.user.ssoid" id="ssoid" class="form-control input-sm" placeholder="Enter your ssoid. [This field is validation free]"/>
                         </div>
-                    </div>
                 </div>
 
-                <div class="row">
+                <div class="row" layout-align="center" style="margin: 0 auto">
                     <div class="form-actions floatRight">
                         <input type="submit"  value="{{!ctrl.user.id ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">
                         <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Reset Form</button>

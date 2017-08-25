@@ -111,8 +111,8 @@ public class ManualController {
     @ApiOperation(value = "addUser", notes = "Get all technological cards")
     @RequestMapping(value = "/users", method = RequestMethod.POST,
             produces = "application/json")
-    public String addUsers(@Valid User user, BindingResult bindingResult) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-
+    public String addUsers(@RequestBody User user, BindingResult bindingResult) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        System.out.println("Add new user " + user.getLast_name());
         if(bindingResult.hasErrors()){
             return "redirect:/users";
         }

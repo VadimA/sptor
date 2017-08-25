@@ -64,13 +64,9 @@
     </beans:property>
 </beans:bean>
 
-<!--<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">-->
-    <!--<beans:property name="driverClassName" value="org.postgresql.Driver" />-->
-    <!--<beans:property name="url"-->
-                    <!--value="jdbc:postgresql://localhost:5432/zaprib3" />-->
-    <!--<beans:property name="username" value="Vadim" />-->
-    <!--<beans:property name="password" value="wadim888" />-->
-<!--</beans:bean>-->
+    <!--<beans:bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">-->
+        <!--<beans:property name="jndiName" value="java:jboss/datasources/zaprib3" />-->
+    <!--</beans:bean>-->
 
     <beans:bean id="documentationConfig" class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
 
@@ -116,7 +112,7 @@
     </beans:beans>
 
 
-    <beans:beans profile="dev">
+   <beans:beans profile="dev">
         <beans:bean id="dataSource"
                     class="org.apache.tomcat.jdbc.pool.DataSource"
                     p:driverClassName="org.postgresql.Driver"
