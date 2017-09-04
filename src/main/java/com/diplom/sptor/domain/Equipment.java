@@ -47,6 +47,12 @@ public class Equipment implements Serializable{
     @Column(name = "working_hours")
     private double workingHours;
 
+    @Column(name = "last_date_of_repair")
+    private Date lastDateOfRepair;
+
+    @Column(name = "downtime")
+    private double downtime;
+
     @ManyToOne()
     @JoinColumn(name = "status")
     private StatusOfEquipment status;
@@ -55,7 +61,7 @@ public class Equipment implements Serializable{
 
     public Equipment(String equipmentName, TypeOfEquipment typeOfEquipment, Subdivisions subdivision,
                      int inventoryNumber, Date graduationYear, String producerOfEquipment, String description,
-                     double workingHours, StatusOfEquipment status) {
+                     double workingHours, Date lastDateOfRepair, double downtime, StatusOfEquipment status) {
         this.equipmentName = equipmentName;
         this.typeOfEquipment = typeOfEquipment;
         this.subdivision = subdivision;
@@ -64,6 +70,8 @@ public class Equipment implements Serializable{
         this.producerOfEquipment = producerOfEquipment;
         this.description = description;
         this.workingHours = workingHours;
+        this.lastDateOfRepair = lastDateOfRepair;
+        this.downtime = downtime;
         this.status = status;
     }
 
@@ -161,43 +169,64 @@ public class Equipment implements Serializable{
         this.status = status;
     }
 
+    public Date getLastDateOfRepair() {
+        return lastDateOfRepair;
+    }
+
+    public void setLastDateOfRepair(Date lastDateOfRepair) {
+        this.lastDateOfRepair = lastDateOfRepair;
+    }
+
+    public double getDowntime() {
+        return downtime;
+    }
+
+    public void setDowntime(double downtime) {
+        this.downtime = downtime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Equipment)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Equipment equipment = (Equipment) o;
 
-        if (getEquipmentId() != equipment.getEquipmentId()) return false;
-        if (getInventoryNumber() != equipment.getInventoryNumber()) return false;
-        if (Double.compare(equipment.getWorkingHours(), getWorkingHours()) != 0) return false;
-        if (!getEquipmentName().equals(equipment.getEquipmentName())) return false;
-        if (!getTypeOfEquipment().equals(equipment.getTypeOfEquipment())) return false;
-        if (!getSubdivision().equals(equipment.getSubdivision())) return false;
-        if (getGraduationYear() != null ? !getGraduationYear().equals(equipment.getGraduationYear()) : equipment.getGraduationYear() != null)
+        if (equipmentId != equipment.equipmentId) return false;
+        if (inventoryNumber != equipment.inventoryNumber) return false;
+        if (Double.compare(equipment.workingHours, workingHours) != 0) return false;
+        if (Double.compare(equipment.downtime, downtime) != 0) return false;
+        if (!equipmentName.equals(equipment.equipmentName)) return false;
+        if (!typeOfEquipment.equals(equipment.typeOfEquipment)) return false;
+        if (!subdivision.equals(equipment.subdivision)) return false;
+        if (graduationYear != null ? !graduationYear.equals(equipment.graduationYear) : equipment.graduationYear != null)
             return false;
-        if (!getProducerOfEquipment().equals(equipment.getProducerOfEquipment())) return false;
-        if (getDescription() != null ? !getDescription().equals(equipment.getDescription()) : equipment.getDescription() != null)
+        if (!producerOfEquipment.equals(equipment.producerOfEquipment)) return false;
+        if (description != null ? !description.equals(equipment.description) : equipment.description != null)
             return false;
-        return getStatus().equals(equipment.getStatus());
-
+        if (lastDateOfRepair != null ? !lastDateOfRepair.equals(equipment.lastDateOfRepair) : equipment.lastDateOfRepair != null)
+            return false;
+        return status.equals(equipment.status);
     }
 
     @Override
     public int hashCode() {
         int result;
         long temp;
-        result = getEquipmentId();
-        result = 31 * result + getEquipmentName().hashCode();
-        result = 31 * result + getTypeOfEquipment().hashCode();
-        result = 31 * result + getSubdivision().hashCode();
-        result = 31 * result + getInventoryNumber();
-        result = 31 * result + (getGraduationYear() != null ? getGraduationYear().hashCode() : 0);
-        result = 31 * result + getProducerOfEquipment().hashCode();
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        temp = Double.doubleToLongBits(getWorkingHours());
+        result = equipmentId;
+        result = 31 * result + equipmentName.hashCode();
+        result = 31 * result + typeOfEquipment.hashCode();
+        result = 31 * result + subdivision.hashCode();
+        result = 31 * result + inventoryNumber;
+        result = 31 * result + (graduationYear != null ? graduationYear.hashCode() : 0);
+        result = 31 * result + producerOfEquipment.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        temp = Double.doubleToLongBits(workingHours);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + getStatus().hashCode();
+        result = 31 * result + (lastDateOfRepair != null ? lastDateOfRepair.hashCode() : 0);
+        temp = Double.doubleToLongBits(downtime);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + status.hashCode();
         return result;
     }
 }

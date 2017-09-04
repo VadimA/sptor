@@ -12,8 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -90,37 +92,35 @@ public class RepairController {
 
 
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST,
+            produces = "application/json")
     public String addRepairSheet(
-            @RequestParam int subdivision_id,
-            @RequestParam int equipment_id,
-            @RequestParam int components,
-            @RequestParam int type_of_maintenance_id,
-            @RequestParam String start_date,
-            @RequestParam String description
-    ) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date start = formatter.parse(start_date);
-        Date end = formatter.parse(start_date);
-        DateTime dateTime = new DateTime(end);
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("mm-dd-yyyy");
-        DateTime end_date = dateTime.plusDays(typeOfMaintenanceService.getTypeById(type_of_maintenance_id).getDuration());
-        Status status = statusService.getStatusById(1);
-        User resp_for_delivery = userService.getUserById(1);
-        User resp_for_reception = userService.getUserById(1);
-        Equipment equipment = equipmentService.getEquipmentById(equipment_id);
-        Components components1 = componentService.getComponentById(components);
-        Subdivisions subdivisions = subdivisionService.getSubdivisionById(subdivision_id);
-        TypeOfMaintenance typeOfMaintenance = typeOfMaintenanceService.getTypeById(type_of_maintenance_id);
-        int sheet_number = equipment_id + 33000;
-        int warranty_period = type_of_maintenance_id;
-        repairSheetService.addRepairSheet(new RepairSheet(typeOfMaintenance, equipment,
-                components1, subdivisions, start, end_date.toDate(), sheet_number, warranty_period,
-                resp_for_delivery, resp_for_reception, description, status));
-
-        deleteComponentInStock(components1);
-        changeStatusOfEquipment(equipment, status, typeOfMaintenance);
-
+            @Valid RepairSheet repairSheet, BindingResult bindingResult) throws ParseException {
+        if(bindingResult.hasErrors()){
+            return "redirect:/subdivision";
+        }
+        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        //Date start = formatter.parse(start_date);
+        //Date end = formatter.parse(start_date);
+        //DateTime dateTime = new DateTime(end);
+        //DateTimeFormatter dtf = DateTimeFormat.forPattern("mm-dd-yyyy");
+        //DateTime end_date = dateTime.plusDays(typeOfMaintenanceService.getTypeById(type_of_maintenance_id).getDuration());
+        //Status status = statusService.getStatusById(1);
+        //User resp_for_delivery = userService.getUserById(1);
+        //User resp_for_reception = userService.getUserById(1);
+        //Equipment equipment = equipmentService.getEquipmentById(equipment_id);
+        //Components components1 = componentService.getComponentById(components);
+        //Subdivisions subdivisions = subdivisionService.getSubdivisionById(subdivision_id);
+        //TypeOfMaintenance typeOfMaintenance = typeOfMaintenanceService.getTypeById(type_of_maintenance_id);
+        //int sheet_number = equipment_id + 33000;
+        //int warranty_period = type_of_maintenance_id;
+        //repairSheetService.addRepairSheet(new RepairSheet(typeOfMaintenance, equipment,
+        //        components1, subdivisions, start, end_date.toDate(), sheet_number, warranty_period,
+        //        resp_for_delivery, resp_for_reception, description, status));
+//
+        //deleteComponentInStock(components1);
+        //changeStatusOfEquipment(equipment, status, typeOfMaintenance);
+        repairSheetService.addRepairSheet(repairSheet);
         return "repairPage";
 
     }

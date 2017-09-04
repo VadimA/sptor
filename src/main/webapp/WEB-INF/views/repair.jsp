@@ -461,7 +461,7 @@
 
         <div id="new_repair"  title="Добавление новой заявки" style="display: none">
 
-          <form:form  modelAttribute="repairSheet" >
+          <form:form method="POST" modelAttribute="repairSheet">
             <table>
               <tr>
                 <td><label><spring:message text="Цех: "/></label></td>
@@ -527,8 +527,7 @@
                 <div style="align-content: center;">
                 <center>
                 <td colspan="2">
-                  <input type="button"
-                         value="<spring:message text="Добавить"/>" onclick="addRepair()"/>
+                  <input type="submit" value="<spring:message text="Добавить"/>"/>
                   <input type="button"
                          value="<spring:message text="Закрыть"/>" onclick="jQuery('#new_repair').dialog('close');"/>
                 </center>
