@@ -6,7 +6,6 @@
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <http auto-config="true" access-denied-page="/auth/denied" use-expressions="true">
-        <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/favicon.ico" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/equipments/**" access="hasRole('ROLE_ADMIN')" />

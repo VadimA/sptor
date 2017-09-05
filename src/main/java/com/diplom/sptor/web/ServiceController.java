@@ -136,7 +136,7 @@ public class ServiceController {
 		return "orders";
 	}
 
-	@RequestMapping(value = {"","/", "/login"}, method = RequestMethod.GET,
+	@RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET,
 			produces = "application/json")
 	public String login(Model model) {
 		logger.warn("Start application. Login page");
