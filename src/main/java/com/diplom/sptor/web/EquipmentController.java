@@ -1,6 +1,7 @@
 package com.diplom.sptor.web;
 
 import com.diplom.sptor.domain.*;
+import com.diplom.sptor.planning.PlanningUtils;
 import com.diplom.sptor.service.*;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -139,6 +140,17 @@ public class EquipmentController {
        List<WorkingHours> workingHourses = workingHoursService.getWorkingHoursByEquipment(equipment);
        return workingHourses;
    }
+
+    @RequestMapping(value = "/working_hours/year/{equipmentId}", method = RequestMethod.GET,
+            produces = "application/json")
+    public @ResponseBody
+    Double getWorkingHoursByEquipmentInYear(@ApiParam(value = "ID of equipment that" +
+            "needs to be fetched", required = true,
+            defaultValue = "1")@PathVariable("equipmentId")int equipmentId, Model model) {
+        Equipment equipment = equipmentService.getEquipmentById(equipmentId);
+        return getWorkingHoursByEquipmentInYear(equipment);
+    }
+
    @RequestMapping(value = "/working_hours/add",  method = RequestMethod.POST)
    public String addWorkingHours(
            @RequestParam double value,
@@ -363,6 +375,29 @@ public class EquipmentController {
        documentService.deleteDocument(documentId);
        return "documents";
    }
+
+    public Double getWorkingHoursByEquipmentInYear(Equipment equipment){
+        Double sum = 0.0;
+        List<WorkingHours>workingHoursList = workingHoursService.getWorkingHoursByEquipment(equipment);
+        for(WorkingHours workingHours : workingHoursList){
+            if(workingHours.getDate_of_adding().getYear() == new Date().getYear()) {
+                sum += workingHours.getValue();
+            }
+        }
+        return sum;
+    }
+
+    public Double getWorkingHoursByEquipmentInMonth(Equipment equipment){
+        Double sum = 0.0;
+        List<WorkingHours>workingHoursList = workingHoursService.getWorkingHoursByEquipment(equipment);
+        for(WorkingHours workingHours : workingHoursList){
+            if(workingHours.getDate_of_adding().getYear() == new Date().getYear()
+                    && workingHours.getDate_of_adding().getMonth() == new Date().getMonth() ) {
+                sum += workingHours.getValue();
+            }
+        }
+        return sum;
+    }
 }
 
 

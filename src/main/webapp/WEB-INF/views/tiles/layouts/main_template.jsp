@@ -17,31 +17,30 @@
 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 
   <script type="text/javascript" charset="utf8" src="https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
 
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-
   <script type="text/javascript" src="charts/sources/jscharts.js"></script>
 
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-
-  <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/jquery-ui-i18n.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.oesmith.co.uk/morris-0.5.1.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.0/morris.min.js"></script>
 
   <script src="https://canvg.googlecode.com/svn/trunk/canvg.js"></script>
   <script src="https://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
   <script src="https://www.google.com/jsapi?fake=.js"></script>
   <script type="text/javascript" charset="utf8" src="/resources/general.js"></script>
 
+  <script src='https://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
+  <script src='https://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
+ <style>
+   .morris-hover{position:absolute;z-index:1000}.morris-hover.morris-default-style{border-radius:10px;padding:6px;color:#666;background:rgba(255,255,255,0.8);border:solid 2px rgba(230,230,230,0.8);font-family:sans-serif;font-size:12px;text-align:center}.morris-hover.morris-default-style .morris-hover-row-label{font-weight:bold;margin:0.25em 0}
+   .morris-hover.morris-default-style .morris-hover-point{white-space:nowrap;margin:0.1em 0}
+ </style>
 </head>
 <body>
 
@@ -61,13 +60,6 @@
       <t:insertAttribute name="menu_right" />
     </div>
 
-    <script src="js/vendor/jquery-1.9.1.min.js"></script>
-    <script src="js/vendor/jquery-1.9.1.min.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
-
-    <script src="js/jquery.ba-cond.min.js"></script>
-    <script src="js/jquery.slitslider.js"></script>
   </div>
 </body>
 </html>

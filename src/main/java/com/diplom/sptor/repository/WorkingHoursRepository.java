@@ -4,6 +4,7 @@ import com.diplom.sptor.domain.Equipment;
 import com.diplom.sptor.domain.WorkingHours;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Date;
 import java.util.List;
 
 /**

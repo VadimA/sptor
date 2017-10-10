@@ -181,26 +181,42 @@ function workedHours(equipment_id){
             mas.push(t);
         }
         console.log(mas);
-        new Morris.Line({
-            // ID of the element in which to draw the chart.
-            element: 'myfirstchart',
-            // Chart data records -- each entry in this array corresponds to a point on
-            // the chart.
-            data: mas,
-            // The name of the data record attribute that contains x-values.
-            xkey: 'year',
-            // A list of names of data record attributes that contain y-values.
-            ykeys: ['value'],
-            // Labels for the ykeys -- will be displayed when you hover over the
-            // chart.
-            labels: ['Наработка']
-        });
-        for(var i =0;i<=data.length-1;i++) {
-            var date = new Date(data[i].date_of_adding);
-            var mm = date.getMonth() + 1;
-            var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
-            $("#params_t").append("<tr><td>" + data[i].responsible.last_name + "</td><td>" + dtade + "</td><td>" + data[i].value +"</td></tr>");
+            config = {
+                data: mas,
+                xkey: 'year',
+                ykeys: ['value'],
+                labels: ['Значение'],
+                fillOpacity: 0.6,
+                hideHover: 'auto',
+                behaveLikeLine: true,
+                resize: true,
+                pointFillColors:['#ffffff'],
+                pointStrokeColors: ['black'],
+                lineColors:['#6495ED']
+            };
+        config.element = 'myfirstchart';
+        Morris.Area(config);
+
+        if(data.length <1){
+            $("#myfirstchart").append("<h4>По данному образцу оборудования не имеется истории показателя наработки</h4>");
         }
+        else {
+            for (var i = 0; i <= data.length - 1; i++) {
+                var date = new Date(data[i].date_of_adding);
+                var mm = date.getMonth() + 1;
+                var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
+                $("#params_t").append("<tr><td>" + data[i].responsible.last_name + "</td><td>" + dtade + "</td><td>" + data[i].value + "</td></tr>");
+            }
+        }
+    });
+    $.ajax({
+        type: "GET",
+        contentType: 'application/json',
+        url: "/working_hours/year/"+equipment_id,
+        dataType: 'json',
+        mimeType: 'application/json',
+    }).done(function( data ) {
+        $("#result").append("<h3>Наработка за год: </h3> " + data);
     });
 }
 
@@ -375,25 +391,32 @@ function downTime(equipment_id){
             mas.push(t);
         }
         console.log(mas);
-        new Morris.Line({
-            // ID of the element in which to draw the chart.
-            element: 'myfirstchart',
-            // Chart data records -- each entry in this array corresponds to a point on
-            // the chart.
+        config = {
             data: mas,
-            // The name of the data record attribute that contains x-values.
             xkey: 'year',
-            // A list of names of data record attributes that contain y-values.
             ykeys: ['value'],
-            // Labels for the ykeys -- will be displayed when you hover over the
-            // chart.
-            labels: ['Простой']
-        });
-        for(var i =0;i<=data.length-1;i++) {
-            var date = new Date(data[i].date_of_adding);
-            var mm = date.getMonth() + 1;
-            var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
-            $("#params_t").append("<tr><td>" + data[i].responsible.last_name + "</td><td>" + dtade + "</td><td>" + data[i].value +"</td></tr>");
+            labels: ['Значение'],
+            fillOpacity: 0.6,
+            hideHover: 'auto',
+            behaveLikeLine: true,
+            resize: true,
+            pointFillColors:['#ffffff'],
+            pointStrokeColors: ['black'],
+            lineColors:['#AB6C6C']
+        };
+        config.element = 'myfirstchart';
+        Morris.Area(config);
+
+        if(data.length <1){
+            $("#myfirstchart").append("<h4>По данному образцу оборудования не имеется истории показателя наработки</h4>");
+        }
+        else {
+            for (var i = 0; i <= data.length - 1; i++) {
+                var date = new Date(data[i].date_of_adding);
+                var mm = date.getMonth() + 1;
+                var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
+                $("#params_t").append("<tr><td>" + data[i].responsible.last_name + "</td><td>" + dtade + "</td><td>" + data[i].value + "</td></tr>");
+            }
         }
     });
 }

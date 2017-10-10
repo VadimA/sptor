@@ -5,7 +5,11 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
+    <global-method-security secured-annotations="enabled">
+    </global-method-security>
+
     <http auto-config="true" access-denied-page="/auth/denied" use-expressions="true">
+        <intercept-url pattern="/login" access="isAnonymous()" />
         <intercept-url pattern="/favicon.ico" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/equipments/**" access="hasRole('ROLE_ADMIN')" />
