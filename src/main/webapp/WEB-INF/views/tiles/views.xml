@@ -39,6 +39,9 @@
     <definition name="orders" extends="template"> <!-- Шаблон главной страницы -->
         <put-attribute name="body" value="/WEB-INF/views/orders.jsp" />
     </definition>
+    <definition name="planning" extends="template"> <!-- Шаблон главной страницы -->
+        <put-attribute name="body" value="/WEB-INF/views/planning.jsp" />
+    </definition>
     <definition name="spares" extends="template"> <!-- Шаблон главной страницы -->
         <put-attribute name="body" value="/WEB-INF/views/spare.jsp" />
     </definition>

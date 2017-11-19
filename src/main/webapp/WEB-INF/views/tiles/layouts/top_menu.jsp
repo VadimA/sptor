@@ -31,9 +31,8 @@
           <li><a href="<c:url value="/repair"/>">Заявки</a></li>
           <security:authorize access="hasRole('ROLE_ADMIN')">
             <li><a href="<c:url value="/graphics"/>">План-график</a></li>
-          </security:authorize>
-          <security:authorize access="hasRole('ROLE_ADMIN')">
             <li><a href="<c:url value="/users"/>">Справочники</a></li>
+            <li><a href="<c:url value="/planning"/>">Планирование</a></li>
           </security:authorize>
         </ul>
         <ul class="nav navbar-nav navbar-right">

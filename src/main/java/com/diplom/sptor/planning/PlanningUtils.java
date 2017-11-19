@@ -21,14 +21,28 @@ public class PlanningUtils {
     EquipmentService equipmentService;
 
     @Autowired
-    static WorkingHoursService workingHoursService;
+    WorkingHoursService workingHoursService;
 
-    Map<Equipment,Date> lastDateOfRepairMap = null;
-
-    private Map<Equipment,Date> getLastDateOfRepairByEquipments(){
-        for(Equipment equipment : equipmentService.getAllEquipment()){
-            lastDateOfRepairMap.put(equipment, equipment.getLastDateOfRepair());
+    public Double getWorkingHoursByEquipmentInYear(Equipment equipment){
+        Double sum = 0.0;
+        List<WorkingHours>workingHoursList = workingHoursService.getWorkingHoursByEquipment(equipment);
+        for(WorkingHours workingHours : workingHoursList){
+            if(workingHours.getDate_of_adding().getYear() == new Date().getYear()) {
+                sum += workingHours.getValue();
+            }
         }
-        return lastDateOfRepairMap;
+        return sum;
+    }
+
+    public Double getWorkingHoursByEquipmentInMonth(Equipment equipment){
+        Double sum = 0.0;
+        List<WorkingHours>workingHoursList = workingHoursService.getWorkingHoursByEquipment(equipment);
+        for(WorkingHours workingHours : workingHoursList){
+            if(workingHours.getDate_of_adding().getYear() == new Date().getYear()
+                    && workingHours.getDate_of_adding().getMonth() == new Date().getMonth() ) {
+                sum += workingHours.getValue();
+            }
+        }
+        return sum;
     }
 }

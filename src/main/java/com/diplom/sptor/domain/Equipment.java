@@ -47,9 +47,6 @@ public class Equipment implements Serializable{
     @Column(name = "working_hours")
     private double workingHours;
 
-    @Column(name = "last_date_of_repair")
-    private Date lastDateOfRepair;
-
     @Column(name = "downtime")
     private double downtime;
 
@@ -61,7 +58,7 @@ public class Equipment implements Serializable{
 
     public Equipment(String equipmentName, TypeOfEquipment typeOfEquipment, Subdivisions subdivision,
                      int inventoryNumber, Date graduationYear, String producerOfEquipment, String description,
-                     double workingHours, Date lastDateOfRepair, double downtime, StatusOfEquipment status) {
+                     double workingHours, double downtime, StatusOfEquipment status) {
         this.equipmentName = equipmentName;
         this.typeOfEquipment = typeOfEquipment;
         this.subdivision = subdivision;
@@ -70,7 +67,6 @@ public class Equipment implements Serializable{
         this.producerOfEquipment = producerOfEquipment;
         this.description = description;
         this.workingHours = workingHours;
-        this.lastDateOfRepair = lastDateOfRepair;
         this.downtime = downtime;
         this.status = status;
     }
@@ -169,14 +165,6 @@ public class Equipment implements Serializable{
         this.status = status;
     }
 
-    public Date getLastDateOfRepair() {
-        return lastDateOfRepair;
-    }
-
-    public void setLastDateOfRepair(Date lastDateOfRepair) {
-        this.lastDateOfRepair = lastDateOfRepair;
-    }
-
     public double getDowntime() {
         return downtime;
     }
@@ -204,8 +192,6 @@ public class Equipment implements Serializable{
         if (!producerOfEquipment.equals(equipment.producerOfEquipment)) return false;
         if (description != null ? !description.equals(equipment.description) : equipment.description != null)
             return false;
-        if (lastDateOfRepair != null ? !lastDateOfRepair.equals(equipment.lastDateOfRepair) : equipment.lastDateOfRepair != null)
-            return false;
         return status.equals(equipment.status);
     }
 
@@ -223,7 +209,6 @@ public class Equipment implements Serializable{
         result = 31 * result + (description != null ? description.hashCode() : 0);
         temp = Double.doubleToLongBits(workingHours);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (lastDateOfRepair != null ? lastDateOfRepair.hashCode() : 0);
         temp = Double.doubleToLongBits(downtime);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + status.hashCode();

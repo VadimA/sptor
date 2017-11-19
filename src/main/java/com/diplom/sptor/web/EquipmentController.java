@@ -69,6 +69,8 @@ public class EquipmentController {
     @Autowired
     TypeOfEquipmentService typeOfEquipmentService;
 
+    @Autowired
+    PlanningUtils planningUtils;
     /**
      * GET list of all equipments.
      * @return list
@@ -148,7 +150,7 @@ public class EquipmentController {
             "needs to be fetched", required = true,
             defaultValue = "1")@PathVariable("equipmentId")int equipmentId, Model model) {
         Equipment equipment = equipmentService.getEquipmentById(equipmentId);
-        return getWorkingHoursByEquipmentInYear(equipment);
+        return planningUtils.getWorkingHoursByEquipmentInYear(equipment);
     }
 
    @RequestMapping(value = "/working_hours/add",  method = RequestMethod.POST)
@@ -375,29 +377,6 @@ public class EquipmentController {
        documentService.deleteDocument(documentId);
        return "documents";
    }
-
-    public Double getWorkingHoursByEquipmentInYear(Equipment equipment){
-        Double sum = 0.0;
-        List<WorkingHours>workingHoursList = workingHoursService.getWorkingHoursByEquipment(equipment);
-        for(WorkingHours workingHours : workingHoursList){
-            if(workingHours.getDate_of_adding().getYear() == new Date().getYear()) {
-                sum += workingHours.getValue();
-            }
-        }
-        return sum;
-    }
-
-    public Double getWorkingHoursByEquipmentInMonth(Equipment equipment){
-        Double sum = 0.0;
-        List<WorkingHours>workingHoursList = workingHoursService.getWorkingHoursByEquipment(equipment);
-        for(WorkingHours workingHours : workingHoursList){
-            if(workingHours.getDate_of_adding().getYear() == new Date().getYear()
-                    && workingHours.getDate_of_adding().getMonth() == new Date().getMonth() ) {
-                sum += workingHours.getValue();
-            }
-        }
-        return sum;
-    }
 }
 
 

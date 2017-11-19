@@ -136,6 +136,12 @@ public class ServiceController {
 		return "orders";
 	}
 
+	@RequestMapping(value = "/planning", method = RequestMethod.GET,
+			produces = "application/json")
+	public String getPlanning(Model model) {
+		return "planning";
+	}
+
 	@RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET,
 			produces = "application/json")
 	public String login(Model model) {
