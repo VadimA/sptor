@@ -1,6 +1,7 @@
 package com.diplom.sptor.planning;
 
 import com.diplom.sptor.domain.Equipment;
+import com.diplom.sptor.domain.TypeOfMainToEquipment;
 import com.diplom.sptor.domain.WorkingHours;
 import com.diplom.sptor.service.EquipmentService;
 import com.diplom.sptor.service.WorkingHoursService;
