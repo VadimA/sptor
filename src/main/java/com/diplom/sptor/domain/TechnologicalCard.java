@@ -22,7 +22,7 @@ public class TechnologicalCard implements Serializable{
 
     @ManyToOne()
     @JoinColumn(name = "type_of_maintenance_id")
-    private TypeOfMaintenance type_of_maintenance;
+    private TypeOfMaintenance typeOfMaintenance;
 
     @ManyToOne()
     @JoinColumn(name = "equipment_id")
@@ -34,7 +34,7 @@ public class TechnologicalCard implements Serializable{
 
     @ManyToOne()
     @JoinColumn(name = "responsible_for_delivery")
-    private User responsible_for_delivery;
+    private Organization responsible_for_delivery;
 
     @ManyToOne()
     @JoinColumn(name = "responsible_for_reception")
@@ -45,9 +45,9 @@ public class TechnologicalCard implements Serializable{
     public TechnologicalCard(){}
 
     public TechnologicalCard(TypeOfMaintenance type_of_maintenance, Equipment equipment, long technological_card_number,
-                             Date start_date, Date end_date, User responsible_for_delivery, User responsible_for_reception,
+                             Date start_date, Date end_date, Organization responsible_for_delivery, User responsible_for_reception,
                              String description) {
-        this.type_of_maintenance = type_of_maintenance;
+        this.typeOfMaintenance = type_of_maintenance;
         this.equipment = equipment;
         this.technological_card_number = technological_card_number;
         this.start_date = start_date;
@@ -66,11 +66,11 @@ public class TechnologicalCard implements Serializable{
     }
 
     public TypeOfMaintenance getType_of_maintenance() {
-        return type_of_maintenance;
+        return typeOfMaintenance;
     }
 
     public void setType_of_maintenance(TypeOfMaintenance type_of_maintenance) {
-        this.type_of_maintenance = type_of_maintenance;
+        this.typeOfMaintenance = type_of_maintenance;
     }
 
     public Equipment getEquipment() {
@@ -105,11 +105,11 @@ public class TechnologicalCard implements Serializable{
         this.end_date = end_date;
     }
 
-    public User getResponsible_for_delivery() {
+    public Organization getResponsible_for_delivery() {
         return responsible_for_delivery;
     }
 
-    public void setResponsible_for_delivery(User responsible_for_delivery) {
+    public void setResponsible_for_delivery(Organization responsible_for_delivery) {
         this.responsible_for_delivery = responsible_for_delivery;
     }
 

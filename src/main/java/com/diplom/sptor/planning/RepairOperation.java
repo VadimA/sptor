@@ -2,16 +2,24 @@ package com.diplom.sptor.planning;
 
 
 import com.diplom.sptor.domain.Equipment;
+import com.diplom.sptor.domain.Organization;
 import com.diplom.sptor.domain.TypeOfMaintenance;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 public class RepairOperation {
 
-    public Equipment equipment;
+    private Equipment equipment;
 
-    public TypeOfMaintenance typeOfMaintenance;
+    private TypeOfMaintenance typeOfMaintenance;
+
+    private Organization organization;
+
+    private Date date;
+
+    private double duration;
 
     public RepairOperation() {}
 

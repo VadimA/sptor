@@ -16,6 +16,6 @@ public interface TypeOfMainToEquipmentRepository extends CrudRepository<TypeOfMa
 
     List<TypeOfMainToEquipment> findByTypeOfMaintenanceId(int typeOfMaintenanceId);
 
-    List<TypeOfMainToEquipment> findByTypeOfEquipmentIdAndTypeOfMaintenanceId(int typeOfEquipmentId, int typeOfMaintenanceId);
+    TypeOfMainToEquipment findByTypeOfEquipmentIdAndTypeOfMaintenanceId(int typeOfEquipmentId, int typeOfMaintenanceId);
 
 }

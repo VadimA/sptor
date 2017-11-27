@@ -52,6 +52,9 @@ public class RepairController {
     @Autowired
     StatusOfEqService statusOfEqService;
 
+    @Autowired
+    OrganizationService organizationService;
+
 
     private String getPrincipal(){
         String userName = null;
@@ -107,7 +110,7 @@ public class RepairController {
         DateTimeFormatter dtf = DateTimeFormat.forPattern("mm-dd-yyyy");
         DateTime end_date = dateTime.plusDays(typeOfMaintenanceService.getTypeById(type_of_maintenance_id).getDuration());
         Status status = statusService.getStatusById(1);
-        User resp_for_delivery = userService.getUserById(1);
+        Organization resp_for_delivery = organizationService.getOrganizationById(1);
         User resp_for_reception = userService.getUserById(1);
         Equipment equipment = equipmentService.getEquipmentById(equipment_id);
         Components components1 = componentService.getComponentById(components);

@@ -89,6 +89,9 @@ public class ServiceController {
 	@Autowired
 	TechnologicalCardService technologicalCardService;
 
+	@Autowired
+	OrganizationService organizationService;
+
 	//@Autowired
 	//PasswordEncoder passwordEncoder;
 
@@ -597,7 +600,7 @@ public class ServiceController {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		technologicalCard.setStart_date(formatter.parse(start_date));
 		technologicalCard.setEnd_date(formatter.parse(start_date));
-		technologicalCard.setResponsible_for_delivery(userService.getUserBySso(getPrincipal()));
+		technologicalCard.setResponsible_for_delivery(organizationService.getOrganizationById(1));
 		technologicalCard.setResponsible_for_reception(userService.getUserBySso(getPrincipal()));
 		technologicalCard.setDescription(description);
 		technologicalCardService.addCard(technologicalCard);

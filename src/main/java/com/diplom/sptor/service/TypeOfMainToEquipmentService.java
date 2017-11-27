@@ -30,7 +30,7 @@ public class TypeOfMainToEquipmentService {
         return typeOfMainToEquipmentRepository.findByTypeOfMaintenanceId(typeOfMaintenanceId);
     }
 
-    public List<TypeOfMainToEquipment> findByTypeOfEquipmentIdAndTypeOfMaintenanceId(int typeOfEquipmentId, int typeOfMaintenanceId){
+    public TypeOfMainToEquipment findByTypeOfEquipmentIdAndTypeOfMaintenanceId(int typeOfEquipmentId, int typeOfMaintenanceId){
         return typeOfMainToEquipmentRepository.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(typeOfEquipmentId, typeOfMaintenanceId);
 
     }

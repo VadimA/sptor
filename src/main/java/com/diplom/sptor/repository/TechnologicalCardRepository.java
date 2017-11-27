@@ -2,6 +2,7 @@ package com.diplom.sptor.repository;
 
 import com.diplom.sptor.domain.Equipment;
 import com.diplom.sptor.domain.TechnologicalCard;
+import com.diplom.sptor.domain.TypeOfMaintenance;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +18,5 @@ public interface TechnologicalCardRepository extends CrudRepository<Technologica
 
     List<TechnologicalCard> findAll();
     List<TechnologicalCard> findByEquipment(Equipment equipment);
+    List<TechnologicalCard> findByEquipmentAndTypeOfMaintenance(Equipment equipment, TypeOfMaintenance typeOfMaintenance);
 }

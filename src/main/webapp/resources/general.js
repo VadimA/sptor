@@ -342,7 +342,7 @@ function openTechCard(techCardId){
         jQuery("#equipment_id").text(data.equipment.equipmentName);
         jQuery("#type_of_maintenance_id").text(data.type_of_maintenance.type_of_maintenance_name);
         jQuery("#start_date").text(dtade);
-        jQuery("#responsible_for_delivery").text(data.responsible_for_delivery.last_name);
+        jQuery("#responsible_for_delivery").text(data.responsible_for_delivery.responsible);
         jQuery("#tech_card_title").text(desc);
         jQuery("#techCardDialog").dialog({
             title: "Технологическая карта №"+ data.technological_card_number,

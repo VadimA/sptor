@@ -2,6 +2,7 @@ package com.diplom.sptor.service;
 
 import com.diplom.sptor.domain.Equipment;
 import com.diplom.sptor.domain.TechnologicalCard;
+import com.diplom.sptor.domain.TypeOfMaintenance;
 import com.diplom.sptor.repository.TechnologicalCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,4 +43,9 @@ public class TechnologicalCardService {
     public List<TechnologicalCard> getTechCardByEquipment(Equipment equipment){
         return technologicalCardRepository.findByEquipment(equipment);
     }
+
+    public List<TechnologicalCard> findByEquipmentAndTypeOfMaintenance(Equipment equipment, TypeOfMaintenance typeOfMaintenance){
+        return technologicalCardRepository.findByEquipmentAndTypeOfMaintenance(equipment, typeOfMaintenance);
+    }
+
 }

@@ -45,7 +45,7 @@ public class RepairSheet implements Serializable {
 
     @ManyToOne()
     @JoinColumn(name = "responsible_for_delivery")
-    private  User responsibleForDelivery;
+    private  Organization responsibleForDelivery;
 
     @ManyToOne()
     @JoinColumn(name = "responsible_for_reception")
@@ -60,7 +60,7 @@ public class RepairSheet implements Serializable {
 
     public RepairSheet(TypeOfMaintenance type_of_maintenance, Equipment equipment, Components component,
                        Subdivisions subdivision, Date start_date, Date end_date, long sheet_number, int warranty_period,
-                       User responsibleForDelivery, User responsibleForReception, String description, Status status) {
+                       Organization responsibleForDelivery, User responsibleForReception, String description, Status status) {
         this.type_of_maintenance = type_of_maintenance;
         this.equipment = equipment;
         this.component = component;
@@ -147,11 +147,11 @@ public class RepairSheet implements Serializable {
         this.warranty_period = warranty_period;
     }
 
-    public User getResponsibleForDelivery() {
+    public Organization getResponsibleForDelivery() {
         return responsibleForDelivery;
     }
 
-    public void setResponsibleForDelivery(User responsibleForDelivery) {
+    public void setResponsibleForDelivery(Organization responsibleForDelivery) {
         this.responsibleForDelivery = responsibleForDelivery;
     }
 
