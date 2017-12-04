@@ -71,17 +71,22 @@ public class PlanningUtils {
                             return o1.getEnd_date().compareTo(o2.getEnd_date());
                         }
                     });
-            return new DateTime(technologicalCards.get(technologicalCards.size()).getEnd_date());
+            return new DateTime(technologicalCards.get(technologicalCards.size()-1).getEnd_date());
         }
         return null;
     }
 
     public DateTime getNextDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMaintenance typeOfMaintenance){
         DateTime lastDateOfMaintenance = new DateTime(getLastDateOfMaintenanceByEquipment(equipment, typeOfMaintenance));
-        int periodicityOfMaintenence = typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(
-                equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id()).getPeriodicity();
-
-        return lastDateOfMaintenance.plusDays(periodicityOfMaintenence);
+        TypeOfMainToEquipment typeOfMainToEquipment = typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(
+                equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id());
+        if(typeOfMainToEquipment != null) {
+            return lastDateOfMaintenance != null ? lastDateOfMaintenance.plusDays(typeOfMainToEquipment.getPeriodicity())
+                    : new DateTime().plusDays(typeOfMainToEquipment.getPeriodicity());
+        }
+        else{
+            return null;
+        }
     }
 
     public double getRestOfWorkingHoursBeforeMaintenance(Equipment equipment, TypeOfMaintenance typeOfMaintenance){
@@ -92,5 +97,8 @@ public class PlanningUtils {
         return curentValue - limitOfWorkingHours;
     }
 
-
+    public Double getNormativeWorkingHoursByEquipment(Equipment equipment , TypeOfMaintenance typeOfMaintenance){
+        TypeOfMainToEquipment typeOfMainToEquipment = typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id());
+        return typeOfMainToEquipment != null ? typeOfMainToEquipment.getWork_hours_limit() : 0;
+    }
 }

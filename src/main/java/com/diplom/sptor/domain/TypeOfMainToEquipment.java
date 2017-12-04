@@ -15,10 +15,10 @@ public class TypeOfMainToEquipment {
     @GeneratedValue(generator="kaugen")
     private int type_of_main_to_equipment_id;
 
-    @JoinColumn(name = "type_of_equipment_id")
+    @Column(name = "type_of_equipment_id")
     private int typeOfEquipmentId;
 
-    @JoinColumn(name = "type_of_maintenance_id")
+    @Column(name = "type_of_maintenance_id")
     private int typeOfMaintenanceId;
 
     private double duration;
