@@ -73,9 +73,9 @@ public class YearPlan{
                     }
                 }
                 else{
-                    if (equipment.getWorkingHours() >= planningUtils.getNormativeWorkingHoursByEquipment(equipment, typeOfMaintenance)) {
+                    if (planningUtils.getRestOfWorkingHoursBeforeMaintenance(equipment, typeOfMaintenance) <= 0) {
                         RepairUnit repairUnit = new RepairUnit(equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id(),
-                                null, null, equipment.getWorkingHours(), 0);
+                                null, null, equipment.getWorkingHours(), equipment.getWorkingHours());
                         repairUnitList.add(repairUnit);
                     }
                 }
