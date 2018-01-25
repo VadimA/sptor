@@ -93,23 +93,4 @@
             </c:forEach>
         </ul>
     </li>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h5 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
-                    </span>Оборудование</a>
-            </h5>
-        </div>
-        <div id="collapseFour" class="panel-collapse collapse">
-            <div class="list-group">
-                <c:forEach items="${subdivisions}" var="subdivision" begin="0" end="${subdivisions.size()}" varStatus="status">
-
-                <a href="javascript:SendGet(getSubdivision())" class="list-group-item">Dapibus ac facilisis in</a>
-                <a href="#" class="list-group-item">Morbi leo risus</a>
-                <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                <a href="#" class="list-group-item">Vestibulum at eros</a>
-                </c:forEach>
-            </div>
-        </div>
-    </div>
 </div>

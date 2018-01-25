@@ -54,10 +54,11 @@ public class YearPlan{
 
     public List<RepairUnit> getListOfEquipmentsWhereNeedsInMaintenanceMonth(List<Equipment> equipmentList, List<TypeOfMaintenance> typeOfMaintenanceList){
         List<RepairUnit> repairUnitList = new ArrayList<RepairUnit>();
-        DateTime lastDateOfMaintenance = null;
-        DateTime nextDateOfMaintenance = null;
-        double current_working_hours = 0.0;
-        double last_working_hours = 0.0;
+        DateTime lastDateOfMaintenance;
+        DateTime nextDateOfMaintenance;
+        double current_working_hours;
+        double rest_of_working_hours;
+        double last_working_hours;
 
         for(TypeOfMaintenance typeOfMaintenance : typeOfMaintenanceList){
             for(Equipment equipment : equipmentList) {
@@ -65,8 +66,9 @@ public class YearPlan{
                 nextDateOfMaintenance = planningUtils.getNextDateOfMaintenanceByEquipment(equipment, typeOfMaintenance);
                 if(nextDateOfMaintenance != null && lastDateOfMaintenance != null) {
                     current_working_hours = equipment.getWorkingHours();
-                    last_working_hours = planningUtils.getWorkingHoursByEquipmentAfterDate(equipment, new DateTime(lastDateOfMaintenance));
-                    if (nextDateOfMaintenance.getMonthOfYear() == dateOfCreation.getMonth() || last_working_hours <= 0) {
+                    last_working_hours = planningUtils.getWorkingHoursByEquipmentAfterDate(equipment, lastDateOfMaintenance);
+                    rest_of_working_hours = planningUtils.getRestOfWorkingHoursBeforeMaintenance(equipment, typeOfMaintenance);
+                    if (nextDateOfMaintenance.getMonthOfYear() == dateOfCreation.getMonth() || rest_of_working_hours <= 0) {
                         RepairUnit repairUnit = new RepairUnit(equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id(),
                                 lastDateOfMaintenance.toDate(), nextDateOfMaintenance.toDate(), current_working_hours, last_working_hours);
                         repairUnitList.add(repairUnit);

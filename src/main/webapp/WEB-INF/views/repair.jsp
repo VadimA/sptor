@@ -158,7 +158,7 @@
         jQuery("#equipment_id").text(data.equipment.equipmentName);
         jQuery("#type_of_maintenance_id").text(data.type_of_maintenance.type_of_maintenance_name);
         jQuery("#start_date").text(dtade);
-        jQuery("#responsible_for_delivery").text(data.responsibleForDelivery.last_name);
+        jQuery("#responsible_for_delivery").text(data.responsibleForDelivery.name);
         jQuery("#repair_title").text(desc);
         jQuery("#status").text(data.status.status);
 
@@ -593,7 +593,7 @@
               </c:if>
               <td><fmt:formatDate value="${repair.start_date}" pattern="dd-MM-yyyy" /></td>
               <td>${repair.subdivision.subdivision_name}</td>
-              <td>${repair.responsibleForDelivery.last_name}</td>
+              <td>${repair.responsibleForDelivery.name}</td>
               <td>${repair.description}</td>
             </tr>
           </c:forEach>

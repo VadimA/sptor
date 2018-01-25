@@ -157,7 +157,7 @@
         jQuery("#equipment_id").text(data.equipment.equipmentName);
         jQuery("#type_of_maintenance_id").text(data.type_of_maintenance.type_of_maintenance_name);
         jQuery("#start_date").text(dtade);
-        jQuery("#responsible_for_delivery").text(data.responsible_for_delivery.last_name);
+        jQuery("#responsible_for_delivery").text(data.responsible_for_delivery.name);
         jQuery("#repair_title").text(desc);
         jQuery("#status").text(data.status.status);
         jQuery("#buttons").append("<button onclick=\"confirmRepair();\">Перевести в обработку</button>" +
@@ -382,7 +382,7 @@
               <td>${repair.sheet_number}</td>
               <td><fmt:formatDate value="${repair.start_date}" pattern="dd-MM-yyyy" /></td>
               <td>${repair.subdivision.subdivision_name}</td>
-              <td>${repair.responsible_for_delivery.last_name}</td>
+              <td>${repair.responsible_for_delivery.name}</td>
               <td>${repair.description}</td>
             </tr>
           </c:forEach>

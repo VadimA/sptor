@@ -84,7 +84,7 @@ public class PlanningUtils {
     public DateTime getNextDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMaintenance typeOfMaintenance){
         DateTime lastDateOfMaintenance = new DateTime(getLastDateOfMaintenanceByEquipment(equipment, typeOfMaintenance));
         TypeOfMainToEquipment typeOfMainToEquipment = typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(
-                equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id());
+                equipment.getTypeOfEquipment().getType_of_equipment_id(), typeOfMaintenance.getType_of_maintenance_id());
         if(typeOfMainToEquipment != null) {
             return lastDateOfMaintenance != null ? lastDateOfMaintenance.plusDays(typeOfMainToEquipment.getPeriodicity())
                     : new DateTime().plusDays(typeOfMainToEquipment.getPeriodicity());
@@ -96,11 +96,13 @@ public class PlanningUtils {
 
     public double getRestOfWorkingHoursBeforeMaintenance(Equipment equipment, TypeOfMaintenance typeOfMaintenance){
          TypeOfMainToEquipment typeOfMainToEquipment=  typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(
-                equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id());
+                equipment.getTypeOfEquipment().getType_of_equipment_id(), typeOfMaintenance.getType_of_maintenance_id());
         double limitOfWorkingHours = typeOfMainToEquipment != null ? typeOfMainToEquipment.getWork_hours_limit() : 0.0;
-        double curentValue = getWorkingHoursByEquipmentAfterDate(equipment, getLastDateOfMaintenanceByEquipment(
+        double currentValue = getWorkingHoursByEquipmentAfterDate(equipment, getLastDateOfMaintenanceByEquipment(
                 equipment, typeOfMaintenance));
-        return curentValue - limitOfWorkingHours;
+        currentValue = (currentValue == 0.0 && typeOfMainToEquipment != null) ? typeOfMainToEquipment.getWork_hours_limit()
+                : currentValue;
+        return currentValue - limitOfWorkingHours;
     }
 
     public Double getNormativeWorkingHoursByEquipment(Equipment equipment , TypeOfMaintenance typeOfMaintenance){

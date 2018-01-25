@@ -12,7 +12,7 @@ import java.util.Date;
  * Created by user on 10.06.2016.
  */
 @Entity
-@Table(name = "documents")
+@Table(name = "toir.documents")
 @Proxy(lazy=false)
 public class Document {
 

@@ -76,7 +76,7 @@ function getTechCard(equipment_id){
 <tbody>\n");
         for(var i =0;i<cards.length;i++) {
             number = i;
-            $("#params_t").append("<tr><td onclick=\"openTechCard(cards[number].technological_card_id)\"><span class=\"glyphicon glyphicon-file\"></span></td> <td>" + cards[i].technological_card_number + "</td><td>" + cards[i].responsible_for_delivery.last_name + "</td><td>" + cards[i].start_date + "</td><td>" + cards[i].end_date +"</td></tr>");
+            $("#params_t").append("<tr><td onclick=\"openTechCard(cards[number].technological_card_id)\"><span class=\"glyphicon glyphicon-file\"></span></td> <td>" + cards[i].technological_card_number + "</td><td>" + cards[i].responsible_for_delivery.name + "</td><td>" + cards[i].start_date + "</td><td>" + cards[i].end_date +"</td></tr>");
         }
     });
 }
@@ -205,7 +205,7 @@ function workedHours(equipment_id){
                 var date = new Date(data[i].date_of_adding);
                 var mm = date.getMonth() + 1;
                 var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
-                $("#params_t").append("<tr><td>" + data[i].responsible.last_name + "</td><td>" + dtade + "</td><td>" + data[i].value + "</td></tr>");
+                $("#params_t").append("<tr><td>" + data[i].responsible.name + "</td><td>" + dtade + "</td><td>" + data[i].value + "</td></tr>");
             }
         }
     });
@@ -415,7 +415,7 @@ function downTime(equipment_id){
                 var date = new Date(data[i].date_of_adding);
                 var mm = date.getMonth() + 1;
                 var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
-                $("#params_t").append("<tr><td>" + data[i].responsible.last_name + "</td><td>" + dtade + "</td><td>" + data[i].value + "</td></tr>");
+                $("#params_t").append("<tr><td>" + data[i].responsible.name + "</td><td>" + dtade + "</td><td>" + data[i].value + "</td></tr>");
             }
         }
     });
