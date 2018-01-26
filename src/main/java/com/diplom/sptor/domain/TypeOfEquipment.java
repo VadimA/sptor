@@ -91,6 +91,7 @@ public class TypeOfEquipment implements Serializable {
         if (Double.compare(that.month_work_hours, month_work_hours) != 0) return false;
         if (!type_of_equipment_name.equals(that.type_of_equipment_name)) return false;
         return description != null ? description.equals(that.description) : that.description == null;
+
     }
 
     @Override

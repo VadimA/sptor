@@ -33,6 +33,7 @@ public class PlanningUtils {
     TypeOfMainToEquipmentService typeOfMainToEquipmentService;
 
     public static final int DAY_IN_MONTH = 31;
+
     public Double getWorkingHoursByEquipmentInYear(Equipment equipment){
         Double sum = 0.0;
         List<WorkingHours>workingHoursList = workingHoursService.getWorkingHoursByEquipment(equipment);
