@@ -1,6 +1,7 @@
 package com.diplom.sptor.planning;
 
 import com.diplom.sptor.domain.*;
+import com.diplom.sptor.planning.domain.RepairUnit;
 import com.diplom.sptor.service.EquipmentService;
 import com.diplom.sptor.service.TechnologicalCardService;
 import com.diplom.sptor.service.TypeOfMainToEquipmentService;
@@ -121,4 +122,30 @@ public class PlanningUtils {
         return typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(
                 equipment.getTypeOfEquipment().getType_of_equipment_id(), typeOfMaintenance.getType_of_maintenance_id());
     }
+
+    public List<RepairUnit> fetchPriorityUnitFromList(List<RepairUnit> repairUnits){
+        List<RepairUnit> newRepairUnitList = new ArrayList<RepairUnit>();
+        List<Integer> numberOfExistUnits = new ArrayList<Integer>();
+        if(!repairUnits.isEmpty()) {
+            Collections.sort(repairUnits, new Comparator<RepairUnit>() {
+                public int compare(RepairUnit o1, RepairUnit o2) {
+                    if (o1.getPriority() == o2.getPriority())
+                        return 0;
+                    return o1.getPriority() < o2.getPriority() ? -1 : 1;
+                }
+            });
+            newRepairUnitList.add(repairUnits.get(0));
+            numberOfExistUnits.add(repairUnits.get(0).getEquipmentId());
+            for (RepairUnit unit : repairUnits) {
+                System.out.println("FOR= " + unit.getEquipmentId() + " PRIOR " + unit.getPriority());
+                if (!numberOfExistUnits.contains(unit.getEquipmentId())) {
+                    System.out.println("UNIQ= " + unit.getEquipmentId());
+                    newRepairUnitList.add(unit);
+                    numberOfExistUnits.add(unit.getEquipmentId());
+                }
+            }
+        }
+        return newRepairUnitList;
+    }
+
 }

@@ -76,7 +76,9 @@ function getTechCard(equipment_id){
 <tbody>\n");
         for(var i =0;i<cards.length;i++) {
             number = i;
-            $("#params_t").append("<tr><td onclick=\"openTechCard(cards[number].technological_card_id)\"><span class=\"glyphicon glyphicon-file\"></span></td> <td>" + cards[i].technological_card_number + "</td><td>" + cards[i].responsible_for_delivery.name + "</td><td>" + cards[i].start_date + "</td><td>" + cards[i].end_date +"</td></tr>");
+            var startDate = dateConvert(cards[i].start_date);
+            var endDate = dateConvert(cards[i].end_date);
+            $("#params_t").append("<tr><td onclick=\"openTechCard(cards[number].technological_card_id)\"><span class=\"glyphicon glyphicon-file\"></span></td> <td>" + cards[i].technological_card_number + "</td><td>" + cards[i].responsible_for_delivery.responsible + "</td><td>" + startDate + "</td><td>" + endDate +"</td></tr>");
         }
     });
 }
@@ -117,17 +119,8 @@ function getRepairBySpare(component_id){
         </thead>\n\
         <tbody>");
         for(var i =0;i<data.length;i++) {
-            var date = new Date(data[i].start_date);
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-            if(day<10){
-                day="0"+day;
-            }
-            if(month<10){
-                month ="0" +month;
-            }
-            var dtade = day + "-" + month + "-" + date.getFullYear();
-            $("#repair_t").append("<tr><td>" + data[i].type_of_maintenance.type_of_maintenance_name + "</td><td>" + dtade + "</td></tr>");
+            var date = dateConvert(data[i].start_date);
+            $("#repair_t").append("<tr><td>" + data[i].type_of_maintenance.type_of_maintenance_name + "</td><td>" + date + "</td></tr>");
         }
     });
 }
@@ -173,27 +166,25 @@ function workedHours(equipment_id){
 
         mas = [];
         for(var i =0;i<=data.length-1;i++) {
-            var date = new Date(data[i].date_of_adding);
-            var mm = date.getMonth() + 1;
-            var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
+            var date = dateConvert(data[i].date_of_adding);
             var value = data[i].value;
-            var t = {year: dtade, value: value};
+            var t = {year: date, value: value};
             mas.push(t);
         }
         console.log(mas);
-            config = {
-                data: mas,
-                xkey: 'year',
-                ykeys: ['value'],
-                labels: ['Значение'],
-                fillOpacity: 0.6,
-                hideHover: 'auto',
-                behaveLikeLine: true,
-                resize: true,
-                pointFillColors:['#ffffff'],
-                pointStrokeColors: ['black'],
-                lineColors:['#6495ED']
-            };
+        config = {
+            data: mas,
+            xkey: 'year',
+            ykeys: ['value'],
+            labels: ['Значение'],
+            fillOpacity: 0.6,
+            hideHover: 'auto',
+            behaveLikeLine: true,
+            resize: true,
+            pointFillColors:['#ffffff'],
+            pointStrokeColors: ['black'],
+            lineColors:['#6495ED']
+        };
         config.element = 'myfirstchart';
         Morris.Area(config);
 
@@ -202,10 +193,8 @@ function workedHours(equipment_id){
         }
         else {
             for (var i = 0; i <= data.length - 1; i++) {
-                var date = new Date(data[i].date_of_adding);
-                var mm = date.getMonth() + 1;
-                var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
-                $("#params_t").append("<tr><td>" + data[i].responsible.name + "</td><td>" + dtade + "</td><td>" + data[i].value + "</td></tr>");
+                var date = dateConvert(data[i].date_of_adding);
+                $("#params_t").append("<tr><td>" + data[i].responsible.last_name + "</td><td>" + date + "</td><td>" + data[i].value + "</td></tr>");
             }
         }
     });
@@ -278,6 +267,20 @@ function refreshContent()
     history.go(0);
 }
 
+function dateConvert(UNIX_fromat_date) {
+    var date = new Date(UNIX_fromat_date);
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    if(day<10){
+        day="0"+day;
+    }
+    if(month<10){
+        month ="0" +month;
+    }
+    var formatedDate = day + "-" + month + "-" + date.getFullYear();
+    return formatedDate;
+}
+
 function addTechnologicalCard() {
     var type_of_maintenance_id = $("#maintenanceType").val();
     var start_date= $("#datepicker1").val();
@@ -326,22 +329,11 @@ function openTechCard(techCardId){
             \n\
             <p class=\"form-control-static\" id=\"tech_card_title\"></p>");
 
-        var date = new Date(data.start_date);
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-        if(day<10){
-            day="0"+day;
-        }
-        if(month<10){
-            month ="0" +month;
-        }
-        var dtade = day + "-" + month + "-" + date.getFullYear();
-
         desc = data.description;
         jQuery("#tech_card_id").text(data.technological_card_number);
         jQuery("#equipment_id").text(data.equipment.equipmentName);
         jQuery("#type_of_maintenance_id").text(data.type_of_maintenance.type_of_maintenance_name);
-        jQuery("#start_date").text(dtade);
+        jQuery("#start_date").text(dateConvert(data.start_date));
         jQuery("#responsible_for_delivery").text(data.responsible_for_delivery.responsible);
         jQuery("#tech_card_title").text(desc);
         jQuery("#techCardDialog").dialog({
@@ -355,7 +347,6 @@ function openTechCard(techCardId){
                     text: 'Закрыть',
                     click: function() {
                         jQuery("#techCardDialog").dialog('close');
-                        refreshContent();
                     }}
             ]
         });
@@ -383,11 +374,9 @@ function downTime(equipment_id){
 <tbody>");
         mas = [];
         for(var i =0;i<=data.length-1;i++) {
-            var date = new Date(data[i].date_of_adding);
-            var mm = date.getMonth() + 1;
-            var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
+            var changeDate = dateConvert(data[i].date_of_adding);
             var value = data[i].value;
-            var t = {year: dtade, value: value};
+            var t = {year: changeDate, value: value};
             mas.push(t);
         }
         console.log(mas);
@@ -412,10 +401,8 @@ function downTime(equipment_id){
         }
         else {
             for (var i = 0; i <= data.length - 1; i++) {
-                var date = new Date(data[i].date_of_adding);
-                var mm = date.getMonth() + 1;
-                var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
-                $("#params_t").append("<tr><td>" + data[i].responsible.name + "</td><td>" + dtade + "</td><td>" + data[i].value + "</td></tr>");
+                var dtade = dateConvert(data[i].date_of_adding);
+                $("#params_t").append("<tr><td>" + data[i].responsible.last_name + "</td><td>" + dtade + "</td><td>" + data[i].value + "</td></tr>");
             }
         }
     });
@@ -485,10 +472,8 @@ function getDocuments(equipment_id){
 <tbody>");
         for(var i =0;i<data.length;i++) {
             components_id = data[i].component_id;
-            var date = new Date(data[i].date_of_adding);
-            var mm = date.getMonth() + 1;
-            var dtade = date.getFullYear() + "-" + 0 + mm + "-" + date.getDate();
-            $("#params_t").append("<tr><td onclick=\"openDocuments(this.innerHTML)\">" + data[i].document_id + "</td><td>" + data[i].document_name + "</td><td>" + dtade + "</td><td>" + data[i].description + "</td></tr>");
+            var changeDate = dateConvert(data[i].date_of_adding);
+            $("#params_t").append("<tr><td onclick=\"openDocuments(this.innerHTML)\">" + data[i].document_id + "</td><td>" + data[i].document_name + "</td><td>" + changeDate + "</td><td>" + data[i].description + "</td></tr>");
         }
         jQuery("#result").append("<table class=\"table table-hover\" id=\"repair_t\"></table>");
     });

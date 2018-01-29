@@ -19,17 +19,20 @@ public class RepairUnit {
 
     private double last_working_hours;
 
+    private int priority;
+
     public RepairUnit() {
     }
 
     public RepairUnit(int equipmentId, int typeOfMaintenanceId, Date lastDateOfMaintenance, Date nextDateOfMaintenance,
-                      double current_working_hours, double last_working_hours) {
+                      double current_working_hours, double last_working_hours, int priority) {
         this.equipmentId = equipmentId;
         this.typeOfMaintenanceId = typeOfMaintenanceId;
         this.lastDateOfMaintenance = lastDateOfMaintenance;
         this.nextDateOfMaintenance = nextDateOfMaintenance;
         this.current_working_hours = current_working_hours;
         this.last_working_hours = last_working_hours;
+        this.priority = priority;
     }
 
     public int getEquipmentId() {
@@ -80,6 +83,14 @@ public class RepairUnit {
         this.last_working_hours = last_working_hours;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,9 +102,11 @@ public class RepairUnit {
         if (typeOfMaintenanceId != that.typeOfMaintenanceId) return false;
         if (Double.compare(that.current_working_hours, current_working_hours) != 0) return false;
         if (Double.compare(that.last_working_hours, last_working_hours) != 0) return false;
+        if (priority != that.priority) return false;
         if (lastDateOfMaintenance != null ? !lastDateOfMaintenance.equals(that.lastDateOfMaintenance) : that.lastDateOfMaintenance != null)
             return false;
-        return nextDateOfMaintenance != null ? nextDateOfMaintenance.equals(that.nextDateOfMaintenance) : that.nextDateOfMaintenance == null;
+        return nextDateOfMaintenance.equals(that.nextDateOfMaintenance);
+
     }
 
     @Override
@@ -103,11 +116,12 @@ public class RepairUnit {
         result = equipmentId;
         result = 31 * result + typeOfMaintenanceId;
         result = 31 * result + (lastDateOfMaintenance != null ? lastDateOfMaintenance.hashCode() : 0);
-        result = 31 * result + (nextDateOfMaintenance != null ? nextDateOfMaintenance.hashCode() : 0);
+        result = 31 * result + nextDateOfMaintenance.hashCode();
         temp = Double.doubleToLongBits(current_working_hours);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(last_working_hours);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + priority;
         return result;
     }
 }
