@@ -48,6 +48,6 @@ public class PlanningController {
         List<TypeOfMaintenance> allTypes = typeOfMaintenanceService.getAllTypes();
         yearPlan.setDateOfCreation(new Date());
         yearPlan.setYear(false);
-        return yearPlan.getListOfEquipmentsWhereNeedsInMaintenanceMonth(allEquipments, allTypes);
+        return yearPlan.getListOfEquipmentsWhereNeedsInMaintenanceMonth(allEquipments, allTypes, yearPlan.getDateOfCreation());
     }
 }

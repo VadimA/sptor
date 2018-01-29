@@ -25,7 +25,7 @@ public class TypeOfEquipment implements Serializable {
     private int type_of_equipment_id;
     private String type_of_equipment_name;
     private String description;
-
+    private double month_work_hours;
     @OneToMany(mappedBy = "typeOfEquipment",fetch = FetchType.LAZY)
     @JsonIgnore
     private final Set<Equipment> equipments_type = new HashSet<Equipment>();
@@ -64,6 +64,14 @@ public class TypeOfEquipment implements Serializable {
         this.description = description;
     }
 
+    public double getMonth_work_hours() {
+        return month_work_hours;
+    }
+
+    public void setMonth_work_hours(double month_work_hours) {
+        this.month_work_hours = month_work_hours;
+    }
+
     public Set<Equipment> getEquipments_type() {
         return equipments_type;
     }
@@ -71,25 +79,29 @@ public class TypeOfEquipment implements Serializable {
         equipment.setTypeOfEquipment(this);
         this.equipments_type.add(equipment);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TypeOfEquipment)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         TypeOfEquipment that = (TypeOfEquipment) o;
 
-        if (getType_of_equipment_id() != that.getType_of_equipment_id()) return false;
-        if (getType_of_equipment_name() != null ? !getType_of_equipment_name().equals(that.getType_of_equipment_name()) : that.getType_of_equipment_name() != null)
-            return false;
-        return !(getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null);
-
+        if (type_of_equipment_id != that.type_of_equipment_id) return false;
+        if (Double.compare(that.month_work_hours, month_work_hours) != 0) return false;
+        if (!type_of_equipment_name.equals(that.type_of_equipment_name)) return false;
+        return description != null ? description.equals(that.description) : that.description == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getType_of_equipment_id();
-        result = 31 * result + (getType_of_equipment_name() != null ? getType_of_equipment_name().hashCode() : 0);
-        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        int result;
+        long temp;
+        result = type_of_equipment_id;
+        result = 31 * result + type_of_equipment_name.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        temp = Double.doubleToLongBits(month_work_hours);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 }

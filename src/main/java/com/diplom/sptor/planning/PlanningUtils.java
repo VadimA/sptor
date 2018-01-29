@@ -6,6 +6,9 @@ import com.diplom.sptor.service.TechnologicalCardService;
 import com.diplom.sptor.service.TypeOfMainToEquipmentService;
 import com.diplom.sptor.service.WorkingHoursService;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.Months;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +32,7 @@ public class PlanningUtils {
     @Autowired
     TypeOfMainToEquipmentService typeOfMainToEquipmentService;
 
+    public static final int DAY_IN_MONTH = 31;
     public Double getWorkingHoursByEquipmentInYear(Equipment equipment){
         Double sum = 0.0;
         List<WorkingHours>workingHoursList = workingHoursService.getWorkingHoursByEquipment(equipment);
@@ -81,11 +85,10 @@ public class PlanningUtils {
         return null;
     }
 
-    public DateTime getNextDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMaintenance typeOfMaintenance){
-        DateTime lastDateOfMaintenance = new DateTime(getLastDateOfMaintenanceByEquipment(equipment, typeOfMaintenance));
-        TypeOfMainToEquipment typeOfMainToEquipment = typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(
-                equipment.getTypeOfEquipment().getType_of_equipment_id(), typeOfMaintenance.getType_of_maintenance_id());
+    public DateTime getNextDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMaintenance typeOfMaintenance,
+                                                        TypeOfMainToEquipment typeOfMainToEquipment){
         if(typeOfMainToEquipment != null) {
+            DateTime lastDateOfMaintenance = new DateTime(getLastDateOfMaintenanceByEquipment(equipment, typeOfMaintenance));
             return lastDateOfMaintenance != null ? lastDateOfMaintenance.plusDays(typeOfMainToEquipment.getPeriodicity())
                     : new DateTime().plusDays(typeOfMainToEquipment.getPeriodicity());
         }
@@ -94,9 +97,8 @@ public class PlanningUtils {
         }
     }
 
-    public double getRestOfWorkingHoursBeforeMaintenance(Equipment equipment, TypeOfMaintenance typeOfMaintenance){
-         TypeOfMainToEquipment typeOfMainToEquipment=  typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(
-                equipment.getTypeOfEquipment().getType_of_equipment_id(), typeOfMaintenance.getType_of_maintenance_id());
+    public double getRestOfWorkingHoursBeforeMaintenance(Equipment equipment, TypeOfMaintenance typeOfMaintenance,
+                                                         TypeOfMainToEquipment typeOfMainToEquipment){
         double limitOfWorkingHours = typeOfMainToEquipment != null ? typeOfMainToEquipment.getWork_hours_limit() : 0.0;
         double currentValue = getWorkingHoursByEquipmentAfterDate(equipment, getLastDateOfMaintenanceByEquipment(
                 equipment, typeOfMaintenance));
@@ -105,12 +107,17 @@ public class PlanningUtils {
         return currentValue - limitOfWorkingHours;
     }
 
-    public Double getNormativeWorkingHoursByEquipment(Equipment equipment , TypeOfMaintenance typeOfMaintenance){
-        TypeOfMainToEquipment typeOfMainToEquipment = typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id());
-        return typeOfMainToEquipment != null ? typeOfMainToEquipment.getWork_hours_limit() : 0;
+    public double getWorkingHoursInFutureMonth(Equipment equipment, Date date, Date dateOfCreation){
+        double working_hours = 0.0;
+        if(date != null){
+            int daysCount = Days.daysBetween(new LocalDate(dateOfCreation) , new LocalDate(date)).getDays();
+            working_hours = equipment.getWorkingHours() + (equipment.getTypeOfEquipment().getMonth_work_hours() / DAY_IN_MONTH) * daysCount;
+        }
+        return working_hours;
     }
 
-    public Double getWorkingHoursInFutureMonth(Equipment equipment, TypeOfMaintenance typeOfMaintenance, Date date){
-        return 0.0;
+    public TypeOfMainToEquipment getTypeOfMainToEquipment(Equipment equipment , TypeOfMaintenance typeOfMaintenance) {
+        return typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(
+                equipment.getTypeOfEquipment().getType_of_equipment_id(), typeOfMaintenance.getType_of_maintenance_id());
     }
 }
