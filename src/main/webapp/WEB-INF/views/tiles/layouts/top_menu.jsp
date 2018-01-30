@@ -32,7 +32,12 @@
           <security:authorize access="hasRole('ROLE_ADMIN')">
             <li><a href="<c:url value="/graphics"/>">План-график</a></li>
             <li><a href="<c:url value="/users"/>">Справочники</a></li>
-            <li><a href="<c:url value="/planning"/>">Планирование</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Планирование <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="<c:url value="/planning"/>">Список объектов</a></li>
+              </ul>
+            </li>
           </security:authorize>
         </ul>
         <ul class="nav navbar-nav navbar-right">
