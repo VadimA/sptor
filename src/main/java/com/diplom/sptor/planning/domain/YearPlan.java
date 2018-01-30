@@ -79,7 +79,7 @@ public class YearPlan{
                     }
                 } else {
                     if (Months.monthsBetween(new LocalDate(dateOfCreation), new LocalDate(date)).getMonths() == 0) {
-                        if (planningUtils.getRestOfWorkingHoursBeforeMaintenance(equipment, typeOfMaintenance, typeOfMainToEquipment) <= 0) {
+                        if (planningUtils.getRestOfWorkingHoursBeforeMaintenance(equipment, typeOfMaintenance, typeOfMainToEquipment,lastDateOfMaintenance) <= 0) {
                             RepairUnit repairUnit = new RepairUnit(equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id(),
                                     null, null, equipment.getWorkingHours(), equipment.getWorkingHours(), typeOfMaintenance.getPriority());
                             repairUnitList.add(repairUnit);

@@ -102,10 +102,7 @@ public class RepairUnit {
         if (typeOfMaintenanceId != that.typeOfMaintenanceId) return false;
         if (Double.compare(that.current_working_hours, current_working_hours) != 0) return false;
         if (Double.compare(that.last_working_hours, last_working_hours) != 0) return false;
-        if (priority != that.priority) return false;
-        if (lastDateOfMaintenance != null ? !lastDateOfMaintenance.equals(that.lastDateOfMaintenance) : that.lastDateOfMaintenance != null)
-            return false;
-        return nextDateOfMaintenance.equals(that.nextDateOfMaintenance);
+        return priority == that.priority;
 
     }
 
@@ -115,8 +112,6 @@ public class RepairUnit {
         long temp;
         result = equipmentId;
         result = 31 * result + typeOfMaintenanceId;
-        result = 31 * result + (lastDateOfMaintenance != null ? lastDateOfMaintenance.hashCode() : 0);
-        result = 31 * result + nextDateOfMaintenance.hashCode();
         temp = Double.doubleToLongBits(current_working_hours);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(last_working_hours);

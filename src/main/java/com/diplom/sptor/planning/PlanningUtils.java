@@ -13,7 +13,9 @@ import org.joda.time.Months;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by user on 21.09.2017.
@@ -77,12 +79,8 @@ public class PlanningUtils {
     public DateTime getLastDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMaintenance typeOfMaintenance){
         List<TechnologicalCard> technologicalCards = technologicalCardService.findByEquipmentAndTypeOfMaintenance(equipment, typeOfMaintenance);
         if(technologicalCards.size()>0 && !technologicalCards.isEmpty()) {
-            Collections.sort(technologicalCards, new Comparator<TechnologicalCard>() {
-                        public int compare(TechnologicalCard o1, TechnologicalCard o2) {
-                            return o1.getEnd_date().compareTo(o2.getEnd_date());
-                        }
-                    });
-            return new DateTime(technologicalCards.get(technologicalCards.size()-1).getEnd_date());
+            technologicalCards.stream().sorted(Comparator.comparing(TechnologicalCard::getEnd_date).reversed()).collect(Collectors.toList());
+            return new DateTime(technologicalCards.get(0).getEnd_date());
         }
         return null;
     }
@@ -100,10 +98,9 @@ public class PlanningUtils {
     }
 
     public double getRestOfWorkingHoursBeforeMaintenance(Equipment equipment, TypeOfMaintenance typeOfMaintenance,
-                                                         TypeOfMainToEquipment typeOfMainToEquipment){
+                                                         TypeOfMainToEquipment typeOfMainToEquipment, DateTime lastDateOfMaintenence){
         double limitOfWorkingHours = typeOfMainToEquipment != null ? typeOfMainToEquipment.getWork_hours_limit() : 0.0;
-        double currentValue = getWorkingHoursByEquipmentAfterDate(equipment, getLastDateOfMaintenanceByEquipment(
-                equipment, typeOfMaintenance));
+        double currentValue = getWorkingHoursByEquipmentAfterDate(equipment, lastDateOfMaintenence);
         currentValue = (currentValue == 0.0 && typeOfMainToEquipment != null) ? typeOfMainToEquipment.getWork_hours_limit()
                 : currentValue;
         return currentValue - limitOfWorkingHours;
@@ -127,25 +124,37 @@ public class PlanningUtils {
         List<RepairUnit> newRepairUnitList = new ArrayList<RepairUnit>();
         List<Integer> numberOfExistUnits = new ArrayList<Integer>();
         if(!repairUnits.isEmpty()) {
-            Collections.sort(repairUnits, new Comparator<RepairUnit>() {
-                public int compare(RepairUnit o1, RepairUnit o2) {
-                    if (o1.getPriority() == o2.getPriority())
-                        return 0;
-                    return o1.getPriority() < o2.getPriority() ? -1 : 1;
-                }
-            });
+            repairUnits.stream().sorted((r1,r2) -> Integer.compare(r1.getPriority(), r2.getPriority()));
             newRepairUnitList.add(repairUnits.get(0));
             numberOfExistUnits.add(repairUnits.get(0).getEquipmentId());
             for (RepairUnit unit : repairUnits) {
-                System.out.println("FOR= " + unit.getEquipmentId() + " PRIOR " + unit.getPriority());
                 if (!numberOfExistUnits.contains(unit.getEquipmentId())) {
-                    System.out.println("UNIQ= " + unit.getEquipmentId());
                     newRepairUnitList.add(unit);
                     numberOfExistUnits.add(unit.getEquipmentId());
                 }
             }
         }
         return newRepairUnitList;
+    }
+
+    public static void main(String [] args){
+        List<Date> dates = new ArrayList<>();
+        SimpleDateFormat dateformat2 = new SimpleDateFormat("yyyy-M-dd");
+        Date newdate1 = new Date();
+        Date newdate2 = new Date();
+        Date newdate3 = new Date();
+        try {
+            newdate1 = dateformat2.parse("2017-12-29");
+            newdate2 = dateformat2.parse("2017-12-25");
+            newdate3 = dateformat2.parse("2018-01-08");
+
+        }catch (Exception e){
+
+        }
+        dates.add(newdate1);
+        dates.add(newdate2);
+        dates.add(newdate3);
+            dates.stream().sorted((t1, t2) -> t2.compareTo(t1)).forEach(e -> System.out.println(e));
     }
 
 }
