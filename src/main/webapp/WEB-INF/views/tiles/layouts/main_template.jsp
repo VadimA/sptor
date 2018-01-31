@@ -34,8 +34,6 @@
   <script src="https://www.google.com/jsapi?fake=.js"></script>
   <script type="text/javascript" charset="utf8" src="/resources/general.js"></script>
 
-  <script src='https://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
-  <script src='https://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
  <style>
    .morris-hover{position:absolute;z-index:1000}.morris-hover.morris-default-style{border-radius:10px;padding:6px;color:#666;background:rgba(255,255,255,0.8);border:solid 2px rgba(230,230,230,0.8);font-family:sans-serif;font-size:12px;text-align:center}.morris-hover.morris-default-style .morris-hover-row-label{font-weight:bold;margin:0.25em 0}
    .morris-hover.morris-default-style .morris-hover-point{white-space:nowrap;margin:0.1em 0}

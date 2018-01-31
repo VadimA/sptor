@@ -11,12 +11,11 @@
 <head>
   <title>ИС ПТОР План-график</title>
   <!-- Latest compiled and minified CSS -->
-  <script src='https://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
-  <script src='https://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
-  <script src="https://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
-  <script src='https://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
-
-  <script>
+  <link rel='stylesheet' href='https://fullcalendar.io/js/fullcalendar-3.8.1/fullcalendar.min.css' />
+  <script src='https://fullcalendar.io/js/fullcalendar-3.8.1/lib/jquery.min.js'></script>
+  <script src="https://fullcalendar.io/js/fullcalendar-3.8.1/lib/jquery-ui.custom.min.js"></script>
+  <script src='https://fullcalendar.io/js/fullcalendar-3.8.1/lib/moment.min.js'></script>
+  <script src='https://fullcalendar.io/js/fullcalendar-3.8.1/fullcalendar.min.js'></script><script>
       $(document).ready(function() {
           $.ajax({
               type: "GET",
@@ -45,6 +44,20 @@
                       left: 'prev,next today',
                       center: 'title',
                       right: 'month,agendaWeek,agendaDay'
+                  },
+                  monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+                  monthNamesShort: ['Янв.','Фев.','Март','Апр.','Май','Июн.','Июл.','Авг.','Сент.','Окт.','Ноя.','Дек.'],
+                  dayNames: ["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"],
+                  dayNamesShort: ["ВС","ПН","ВТ","СР","ЧТ","ПТ","СБ"],
+                  buttonText: {
+                      prev: "Пред",
+                      next: "След",
+                      prevYear: "Пред. год",
+                      nextYear: "След. год",
+                      today: "Сегодня",
+                      month: "Месяц",
+                      week: "Неделя",
+                      day: "День"
                   },
                   defaultDate: new Date(y, m, d),
                   lang: 'ru',

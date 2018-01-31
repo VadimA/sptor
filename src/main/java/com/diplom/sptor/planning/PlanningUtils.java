@@ -136,25 +136,4 @@ public class PlanningUtils {
         }
         return newRepairUnitList;
     }
-
-    public static void main(String [] args){
-        List<Date> dates = new ArrayList<>();
-        SimpleDateFormat dateformat2 = new SimpleDateFormat("yyyy-M-dd");
-        Date newdate1 = new Date();
-        Date newdate2 = new Date();
-        Date newdate3 = new Date();
-        try {
-            newdate1 = dateformat2.parse("2017-12-29");
-            newdate2 = dateformat2.parse("2017-12-25");
-            newdate3 = dateformat2.parse("2018-01-08");
-
-        }catch (Exception e){
-
-        }
-        dates.add(newdate1);
-        dates.add(newdate2);
-        dates.add(newdate3);
-            dates.stream().sorted((t1, t2) -> t2.compareTo(t1)).forEach(e -> System.out.println(e));
-    }
-
 }
