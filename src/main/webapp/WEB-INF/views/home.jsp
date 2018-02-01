@@ -93,8 +93,75 @@
 
   <div id='timeline-embed' style="width: 100%; height: 600px"></div>
 
-  <!-- 3 -->s xsxx  xcs 
+  <!-- 3 -->s xsxx  xcs
   <script type="text/javascript">
+    var myjson = {
+        "events": [
+            {
+                "start_date": {
+                    "year":			"2017",
+                    "month":		"12",
+                    "day": 			"15",
+                    "hour": 		"",
+                    "minute": 		"",
+                    "second": 		"",
+                    "millisecond": 	"",
+                    "format": 		""
+                },
+                "end_date": {
+                    "year":			"2017",
+                    "month":		"12",
+                    "day": 			"29",
+                    "hour": 		"",
+                    "minute": 		"",
+                    "second": 		"",
+                    "millisecond": 	"",
+                    "format": 		""
+                },
+                "background": {
+                    "color": "#999999",
+                    "opacity": 50,
+                    "url": null
+                },
+                "text": {
+                    "headline": "ТО-2 для УПРО-34ТР",
+                    "text": "Номер заявки: 33018 Цех: Цех №1 Оборудование: ШВОТ-4В Тип ремонта: ТО-2 Дата заявки: 02-06-2016 Ответственный: Бригада1 Описание: Срочная заявка Статус: Добавлена"
+                },
+                "type": "overview"
+            },
+            {
+                "start_date": {
+                    "year":			"2018",
+                    "month":		"01",
+                    "day": 			"10",
+                    "hour": 		"",
+                    "minute": 		"",
+                    "second": 		"",
+                    "millisecond": 	"",
+                    "format": 		""
+                },
+                "end_date": {
+                    "year":			"2018",
+                    "month":		"01",
+                    "day": 			"18",
+                    "hour": 		"",
+                    "minute": 		"",
+                    "second": 		"",
+                    "millisecond": 	"",
+                    "format": 		""
+                },
+                "text": {
+                    "headline": "СР для ГАРРО-28",
+                    "text": "Тестовый"
+                },
+                "unique_id": ""
+            }
+        ]
+    }
+    var options = {
+        start_at_end: true,
+        language:  "ru"
+    }
       // The TL.Timeline constructor takes at least two arguments:
       // the id of the Timeline container (no '#'), and
       // the URL to your JSON data file or Google spreadsheet.
@@ -102,8 +169,7 @@
       // and the element must have CSS styling to give it width and height
       // optionally, a third argument with configuration options can be passed.
       // See below for more about options.
-      timeline = new TL.Timeline('timeline-embed',
-          'https://docs.google.com/spreadsheets/d/1cWqQBZCkX9GpzFtxCWHoqFXCHg-ylTVUWlnrdYMzKUI/pubhtml');
+      timeline = new TL.Timeline('timeline-embed', myjson, options);
   </script>
 </head>
 
