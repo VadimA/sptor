@@ -1,5 +1,8 @@
 package com.diplom.sptor.planning.domain;
 
+import com.diplom.sptor.domain.Equipment;
+import com.diplom.sptor.domain.TypeOfMaintenance;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -7,12 +10,14 @@ import java.util.Date;
 @Component
 public class RepairUnit {
 
-    private int equipmentId;
+    private Equipment equipment;
 
-    private int typeOfMaintenanceId;
+    private TypeOfMaintenance typeOfMaintenance;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Europe/Moscow")
     private Date lastDateOfMaintenance;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Europe/Moscow")
     private Date nextDateOfMaintenance;
 
     private double current_working_hours;
@@ -24,10 +29,10 @@ public class RepairUnit {
     public RepairUnit() {
     }
 
-    public RepairUnit(int equipmentId, int typeOfMaintenanceId, Date lastDateOfMaintenance, Date nextDateOfMaintenance,
-                      double current_working_hours, double last_working_hours, int priority) {
-        this.equipmentId = equipmentId;
-        this.typeOfMaintenanceId = typeOfMaintenanceId;
+    public RepairUnit(Equipment equipment, TypeOfMaintenance typeOfMaintenance, Date lastDateOfMaintenance,
+                      Date nextDateOfMaintenance, double current_working_hours, double last_working_hours, int priority) {
+        this.equipment = equipment;
+        this.typeOfMaintenance = typeOfMaintenance;
         this.lastDateOfMaintenance = lastDateOfMaintenance;
         this.nextDateOfMaintenance = nextDateOfMaintenance;
         this.current_working_hours = current_working_hours;
@@ -35,20 +40,20 @@ public class RepairUnit {
         this.priority = priority;
     }
 
-    public int getEquipmentId() {
-        return equipmentId;
+    public Equipment getEquipment() {
+        return equipment;
     }
 
-    public void setEquipmentId(int equipmentId) {
-        this.equipmentId = equipmentId;
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
     }
 
-    public int getTypeOfMaintenanceId() {
-        return typeOfMaintenanceId;
+    public TypeOfMaintenance getTypeOfMaintenance() {
+        return typeOfMaintenance;
     }
 
-    public void setTypeOfMaintenanceId(int typeOfMaintenanceId) {
-        this.typeOfMaintenanceId = typeOfMaintenanceId;
+    public void setTypeOfMaintenance(TypeOfMaintenance typeOfMaintenance) {
+        this.typeOfMaintenance = typeOfMaintenance;
     }
 
     public Date getLastDateOfMaintenance() {
@@ -98,20 +103,24 @@ public class RepairUnit {
 
         RepairUnit that = (RepairUnit) o;
 
-        if (equipmentId != that.equipmentId) return false;
-        if (typeOfMaintenanceId != that.typeOfMaintenanceId) return false;
         if (Double.compare(that.current_working_hours, current_working_hours) != 0) return false;
         if (Double.compare(that.last_working_hours, last_working_hours) != 0) return false;
-        return priority == that.priority;
-
+        if (priority != that.priority) return false;
+        if (!equipment.equals(that.equipment)) return false;
+        if (!typeOfMaintenance.equals(that.typeOfMaintenance)) return false;
+        if (lastDateOfMaintenance != null ? !lastDateOfMaintenance.equals(that.lastDateOfMaintenance) : that.lastDateOfMaintenance != null)
+            return false;
+        return nextDateOfMaintenance != null ? nextDateOfMaintenance.equals(that.nextDateOfMaintenance) : that.nextDateOfMaintenance == null;
     }
 
     @Override
     public int hashCode() {
         int result;
         long temp;
-        result = equipmentId;
-        result = 31 * result + typeOfMaintenanceId;
+        result = equipment.hashCode();
+        result = 31 * result + typeOfMaintenance.hashCode();
+        result = 31 * result + (lastDateOfMaintenance != null ? lastDateOfMaintenance.hashCode() : 0);
+        result = 31 * result + (nextDateOfMaintenance != null ? nextDateOfMaintenance.hashCode() : 0);
         temp = Double.doubleToLongBits(current_working_hours);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(last_working_hours);

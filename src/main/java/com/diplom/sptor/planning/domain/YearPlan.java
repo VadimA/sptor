@@ -1,10 +1,10 @@
 package com.diplom.sptor.planning.domain;
 
 import com.diplom.sptor.domain.Equipment;
+import com.diplom.sptor.domain.Graphic;
 import com.diplom.sptor.domain.TypeOfMainToEquipment;
 import com.diplom.sptor.domain.TypeOfMaintenance;
 import com.diplom.sptor.planning.PlanningUtils;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +57,8 @@ public class YearPlan{
 
     public List<RepairUnit> getListOfEquipmentsWhereNeedsInMaintenanceMonth(List<Equipment> equipmentList, List<TypeOfMaintenance> typeOfMaintenanceList, Date date) {
         List<RepairUnit> repairUnitList = new ArrayList<RepairUnit>();
-        DateTime lastDateOfMaintenance;
-        DateTime nextDateOfMaintenance;
+        Date lastDateOfMaintenance;
+        Date nextDateOfMaintenance;
         double current_working_hours;
         double last_working_hours;
         TypeOfMainToEquipment typeOfMainToEquipment;
@@ -67,27 +67,27 @@ public class YearPlan{
             for (Equipment equipment : equipmentList) {
                 typeOfMainToEquipment = planningUtils.getTypeOfMainToEquipment(equipment, typeOfMaintenance);
                 lastDateOfMaintenance = planningUtils.getLastDateOfMaintenanceByEquipment(equipment, typeOfMaintenance);
-                nextDateOfMaintenance = planningUtils.getNextDateOfMaintenanceByEquipment(equipment, typeOfMaintenance, typeOfMainToEquipment);
+                nextDateOfMaintenance = planningUtils.getNextDateOfMaintenanceByEquipment(equipment, typeOfMaintenance, typeOfMainToEquipment, lastDateOfMaintenance);
                 if (nextDateOfMaintenance != null && lastDateOfMaintenance != null) {
                     current_working_hours = equipment.getWorkingHours();
-                    last_working_hours = planningUtils.getWorkingHoursByEquipmentAfterDate(equipment, new DateTime(lastDateOfMaintenance));
-                    if (nextDateOfMaintenance.getMonthOfYear() == date.getMonth() || last_working_hours <= 0) {
-                        RepairUnit repairUnit = new RepairUnit(equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id(),
-                                lastDateOfMaintenance.toDate(), nextDateOfMaintenance.toDate(), current_working_hours, last_working_hours,
+                    last_working_hours = planningUtils.getWorkingHoursByEquipmentAfterLastRepair(equipment, lastDateOfMaintenance);
+                    if (nextDateOfMaintenance.getMonth() == date.getMonth() || last_working_hours <= 0) {
+                        RepairUnit repairUnit = new RepairUnit(equipment, typeOfMaintenance,
+                                lastDateOfMaintenance, nextDateOfMaintenance, current_working_hours, last_working_hours,
                                 typeOfMaintenance.getPriority());
                         repairUnitList.add(repairUnit);
                     }
                 } else {
                     if (Months.monthsBetween(new LocalDate(dateOfCreation), new LocalDate(date)).getMonths() == 0) {
                         if (planningUtils.getRestOfWorkingHoursBeforeMaintenance(equipment, typeOfMaintenance, typeOfMainToEquipment,lastDateOfMaintenance) <= 0) {
-                            RepairUnit repairUnit = new RepairUnit(equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id(),
+                            RepairUnit repairUnit = new RepairUnit(equipment, typeOfMaintenance,
                                     null, null, equipment.getWorkingHours(), equipment.getWorkingHours(), typeOfMaintenance.getPriority());
                             repairUnitList.add(repairUnit);
                         }
                     } else {
                         if (planningUtils.getWorkingHoursInFutureMonth(equipment, date, dateOfCreation) >=
-                                planningUtils.getTypeOfMainToEquipment(equipment, typeOfMaintenance).getWork_hours_limit()) {
-                            RepairUnit repairUnit = new RepairUnit(equipment.getEquipmentId(), typeOfMaintenance.getType_of_maintenance_id(),
+                                typeOfMainToEquipment.getWork_hours_limit()) {
+                            RepairUnit repairUnit = new RepairUnit(equipment, typeOfMaintenance,
                                     null, null, equipment.getWorkingHours(), equipment.getWorkingHours(), typeOfMaintenance.getPriority());
                             repairUnitList.add(repairUnit);
                         }

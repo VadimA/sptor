@@ -1,36 +1,38 @@
-package com.diplom.sptor.planning.domain;
+package com.diplom.sptor.domain;
 
-import com.diplom.sptor.domain.User;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name="toir.graphics")
 @Proxy(lazy=false)
-public class Graphic {
+public class Graphic implements Serializable {
 
-    @Id
-    @GenericGenerator(name="kaugen" , strategy="increment")
-    @GeneratedValue(generator="kaugen")
     @Column(name = "graph_id")
     private int graphicId;
 
     @Column(name = "date_of_creation")
     private Date dateOfCreation;
 
-    @Column(name = "created_by")
+    @ManyToOne()
+    @JoinColumn(name = "id")
     private User createdBy;
 
     @Column(name = "date_of_modification")
     private Date dateOfModification;
 
-    @Column(name = "modified_by")
+    @ManyToOne()
+    @JoinColumn(name = "id")
     private User modifiedBy;
 
-    private String status = GraphicStatus.CRAEATED.getGraphicStatus();
+    @Column(name = "month")
+    private Date month;
+
+    @Column(name = "status")
+    private String status;
 
     @Column(name = "is_year")
     private boolean isYear;
@@ -39,12 +41,13 @@ public class Graphic {
     }
 
     public Graphic(Date dateOfCreation, User createdBy, Date dateOfModification, User modifiedBy,
-                   String status, boolean isYear) {
+                   Date month, boolean isYear) {
         this.dateOfCreation = dateOfCreation;
         this.createdBy = createdBy;
         this.dateOfModification = dateOfModification;
         this.modifiedBy = modifiedBy;
-        this.status = status;
+        this.month = month;
+        this.status = GraphicStatus.CREATED.getGraphicStatus();
         this.isYear = isYear;
     }
 
@@ -88,6 +91,14 @@ public class Graphic {
         this.modifiedBy = modifiedBy;
     }
 
+    public Date getMonth() {
+        return month;
+    }
+
+    public void setMonth(Date month) {
+        this.month = month;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -117,6 +128,7 @@ public class Graphic {
         if (!createdBy.equals(graphic.createdBy)) return false;
         if (!dateOfModification.equals(graphic.dateOfModification)) return false;
         if (!modifiedBy.equals(graphic.modifiedBy)) return false;
+        if (!month.equals(graphic.month)) return false;
         return status.equals(graphic.status);
     }
 
@@ -127,6 +139,7 @@ public class Graphic {
         result = 31 * result + createdBy.hashCode();
         result = 31 * result + dateOfModification.hashCode();
         result = 31 * result + modifiedBy.hashCode();
+        result = 31 * result + month.hashCode();
         result = 31 * result + status.hashCode();
         result = 31 * result + (isYear ? 1 : 0);
         return result;
@@ -134,7 +147,7 @@ public class Graphic {
 }
 
 enum GraphicStatus {
-    CRAEATED("Новый"),
+    CREATED("Новый"),
     INPROGRESS("В процессе"),
     FINISHED("Выполненный");
 

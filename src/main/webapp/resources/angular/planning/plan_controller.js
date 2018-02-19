@@ -1,6 +1,6 @@
 angular.module('planApp').controller('PlanController', ['$scope', 'PlanService', 'NgTableParams', function($scope, PlanService, NgTableParams) {
     var self = this;
-    self.equipment={equipmentId:null, typeOfMaintenanceId:null, lastDateOfMaintenance:null, nextDateOfMaintenance:null,
+    self.equipment={equipment:null, typeOfMaintenance:null, lastDateOfMaintenance:null, nextDateOfMaintenance:null,
         current_working_hours: null, last_working_hours: null};
     self.equipments=[];
     getEquipmentsOnMaintenance();

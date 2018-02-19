@@ -36,6 +36,9 @@
               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Планирование <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="<c:url value="/planning"/>">Список объектов</a></li>
+                <li><a href="<c:url value="/planning"/>">Ремонтный цикл</a></li>
+                <li><a href="<c:url value="/planning"/>">Графики ППР</a></li>
+                <li><a href="<c:url value="/planning"/>">Рассчитать график ППР</a></li>
               </ul>
             </li>
           </security:authorize>

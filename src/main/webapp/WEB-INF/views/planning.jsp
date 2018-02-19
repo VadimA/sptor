@@ -9,8 +9,8 @@
         <div class="tablecontainer">
             <table ng-table="ctrl.tableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
                 <tr ng-repeat="eqp in ctrl.equipments">
-                    <td title="'ИД оборудования'"><span ng-bind="eqp.equipmentId"></span></td>
-                    <td title="'ИД типа ремонта'"><span ng-bind="eqp.typeOfMaintenanceId"></span></td>
+                    <td title="'ИД оборудования'"><span ng-bind="eqp.equipment.equipmentName"></span></td>
+                    <td title="'ИД типа ремонта'"><span ng-bind="eqp.typeOfMaintenance.type_of_maintenance_name"></span></td>
                     <td title="'Последняя дата ремонта'"><span ng-bind="eqp.lastDateOfMaintenance"></span></td>
                     <td title="'Следующая дата ремонта'"><span ng-bind="eqp.nextDateOfMaintenance"></span></td>
                     <td title="'Текущая выработка м/ч'"><span ng-bind="eqp.current_working_hours"></span></td>

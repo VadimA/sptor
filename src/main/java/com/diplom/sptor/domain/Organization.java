@@ -4,12 +4,13 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Entity
 @Table(name="toir.contr_organization")
 @Proxy(lazy=false)
-public class Organization {
+public class Organization  implements Serializable {
 
     @Id
     @GenericGenerator(name="kaugen" , strategy="increment")

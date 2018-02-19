@@ -54,11 +54,14 @@ public class Equipment implements Serializable{
     @JoinColumn(name = "status")
     private StatusOfEquipment status;
 
+    @Column(name = "date_of_exploitation")
+    private Date dateOfBeginExploitation;
+
     public Equipment() {}
 
     public Equipment(String equipmentName, TypeOfEquipment typeOfEquipment, Subdivisions subdivision,
                      int inventoryNumber, Date graduationYear, String producerOfEquipment, String description,
-                     double workingHours, double downtime, StatusOfEquipment status) {
+                     double workingHours, double downtime, StatusOfEquipment status, Date dateOfBeginExploitation) {
         this.equipmentName = equipmentName;
         this.typeOfEquipment = typeOfEquipment;
         this.subdivision = subdivision;
@@ -69,6 +72,7 @@ public class Equipment implements Serializable{
         this.workingHours = workingHours;
         this.downtime = downtime;
         this.status = status;
+        this.dateOfBeginExploitation = dateOfBeginExploitation;
     }
 
     public Equipment(String equipmentName, int typeOfEquipment, int subdivision,
@@ -171,6 +175,14 @@ public class Equipment implements Serializable{
 
     public void setDowntime(double downtime) {
         this.downtime = downtime;
+    }
+
+    public Date getDateOfBeginExploitation() {
+        return dateOfBeginExploitation;
+    }
+
+    public void setDateOfBeginExploitation(Date dateOfBeginExploitation) {
+        this.dateOfBeginExploitation = dateOfBeginExploitation;
     }
 
     @Override

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * Created by user on 10.05.2016.
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "toir.status_of_equipment")
 @Proxy(lazy=false)
-public class StatusOfEquipment {
+public class StatusOfEquipment  implements Serializable {
 
     @Id
     @GenericGenerator(name = "kaugen", strategy = "increment")

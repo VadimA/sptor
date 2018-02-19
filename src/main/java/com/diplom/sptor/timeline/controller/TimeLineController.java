@@ -1,9 +1,11 @@
 package com.diplom.sptor.timeline.controller;
 
 import com.diplom.sptor.domain.Equipment;
+import com.diplom.sptor.domain.RepairSheet;
 import com.diplom.sptor.domain.TechnologicalCard;
 import com.diplom.sptor.repository.TechnologicalCardRepository;
 import com.diplom.sptor.service.EquipmentService;
+import com.diplom.sptor.service.RepairSheetService;
 import com.diplom.sptor.service.TechnologicalCardService;
 import com.diplom.sptor.timeline.domain.Event;
 import com.diplom.sptor.timeline.domain.TimeLine;
@@ -27,6 +29,9 @@ public class TimeLineController {
     @Autowired
     EquipmentService equipmentService;
 
+    @Autowired
+    RepairSheetService repairSheetService;
+
     @RequestMapping(value = "/equipments/{equipmentId}", method = RequestMethod.GET,
             produces = "application/json")
     public @ResponseBody TimeLine prepareTimeLineEntity(@PathVariable(value = "equipmentId") int equipmentId){
@@ -36,6 +41,10 @@ public class TimeLineController {
         List<Event> events = new ArrayList<Event>();
         for(TechnologicalCard techCard: technologicalCardList){
             events.add(TimeLineUtils.mapTechCardToEvent(techCard));
+        }
+        List<RepairSheet> repairSheetList = repairSheetService.getRepairSheetByEquipment(equipment);
+        for(RepairSheet repairSheet : repairSheetList){
+            events.add(TimeLineUtils.mapRepairSheetToEvent(repairSheet));
         }
         timeLine.setEvents(events);
         return timeLine;

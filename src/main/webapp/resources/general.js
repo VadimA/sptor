@@ -61,6 +61,21 @@ function SendGet(equipment_id) {
 }
 
 function getTechCard(equipment_id){
+
+    $.ajax({
+        type: "GET",
+        contentType: 'application/json',
+        url: "/timeline/equipments/" + equipment_id,
+        dataType: 'json',
+    }).done(function (data) {
+        var dataTimeLine = data;
+        var options = {
+            start_at_end: true,
+            language:  "ru"
+        }
+        timeline = new TL.Timeline('timeline-embed', dataTimeLine, options);
+    });
+
     $.ajax({
         type: "GET",
         contentType: 'application/json',
@@ -68,6 +83,7 @@ function getTechCard(equipment_id){
         dataType: 'json',
         mimeType: 'application/json',
     }).done(function( data ) {
+
         cards = data;
         jQuery("#result").html("<center></br><h5>Оборудование: " + current_equipment_name + "</h5></center><button class=\"btn btn-default\"  type=\"button\" onclick=\"addTechCard()\">Добавить тех.карту</button></br><table class=\"table table-hover\" id=\"params_t\">\n\
 <thead>\n\
@@ -166,7 +182,7 @@ function workedHours(equipment_id){
 
         mas = [];
         for(var i =0;i<=data.length-1;i++) {
-            var date = dateConvert(data[i].date_of_adding);
+            var date = dateConvertForGraphics(data[i].date_of_adding);
             var value = data[i].value;
             var t = {year: date, value: value};
             mas.push(t);
@@ -281,6 +297,20 @@ function dateConvert(UNIX_fromat_date) {
     return formatedDate;
 }
 
+function dateConvertForGraphics(UNIX_fromat_date) {
+    var date = new Date(UNIX_fromat_date);
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    if(day<10){
+        day="0"+day;
+    }
+    if(month<10){
+        month ="0" +month;
+    }
+    var formatedDate = date.getFullYear() + "-" + month + "-" + day;
+    return formatedDate;
+}
+
 function addTechnologicalCard() {
     var type_of_maintenance_id = $("#maintenanceType").val();
     var start_date= $("#datepicker1").val();
@@ -374,7 +404,7 @@ function downTime(equipment_id){
 <tbody>");
         mas = [];
         for(var i =0;i<=data.length-1;i++) {
-            var changeDate = dateConvert(data[i].date_of_adding);
+            var changeDate = dateConvertForGraphics(data[i].date_of_adding);
             var value = data[i].value;
             var t = {year: changeDate, value: value};
             mas.push(t);

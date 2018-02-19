@@ -23,6 +23,11 @@
 
   <script type="text/javascript" charset="utf8" src="https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
 
+  <link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+
+  <!-- 2 -->
+  <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
+
   <script type="text/javascript" src="charts/sources/jscharts.js"></script>
 
   <link rel="stylesheet" href="https://cdn.oesmith.co.uk/morris-0.5.1.css">
@@ -33,7 +38,8 @@
   <script src="https://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
   <script src="https://www.google.com/jsapi?fake=.js"></script>
   <script type="text/javascript" charset="utf8" src="/resources/general.js"></script>
-
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="http://code.highcharts.com/modules/exporting.js"></script>
  <style>
    .morris-hover{position:absolute;z-index:1000}.morris-hover.morris-default-style{border-radius:10px;padding:6px;color:#666;background:rgba(255,255,255,0.8);border:solid 2px rgba(230,230,230,0.8);font-family:sans-serif;font-size:12px;text-align:center}.morris-hover.morris-default-style .morris-hover-row-label{font-weight:bold;margin:0.25em 0}
    .morris-hover.morris-default-style .morris-hover-point{white-space:nowrap;margin:0.1em 0}

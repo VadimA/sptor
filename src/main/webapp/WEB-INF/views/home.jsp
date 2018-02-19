@@ -1,114 +1,214 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
-<%@ page session="false" isELIgnored="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-
-<!DOCTYPE html>
-
-<html>
 <head>
-  <title>Equipment Page</title>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <meta charset="utf-8" />
+    <title>daypilot-project</title>
 
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <style type="text/css">
+        p, body, td { font-family: Tahoma, Arial, Helvetica, sans-serif; font-size: 10pt; }
+        body { padding: 0px; margin: 0px; background-color: #ffffff; }
+        a { color: #1155a3; }
+        .space { margin: 10px 0px 10px 0px; }
+        .header { background: #003267; background: linear-gradient(to right, #011329 0%,#00639e 44%,#011329 100%); padding:20px 10px; color: white; box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.75); }
+        .header a { color: white; }
+        .header h1 a { text-decoration: none; }
+        .header h1 { padding: 0px; margin: 0px; }
+        .main { padding: 10px }
+        .scheduler_default_corner div:nth-of-type(2) {
+            display: none !important;
+        }
+    </style>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <!-- DayPilot library -->
+    <script src="/resources/daypilot-project/js/daypilot/daypilot-all.min.js"></script>
 
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!-- Vue.js -->
+    <script src="https://unpkg.com/vue"></script>
 
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="http://code.highcharts.com/modules/exporting.js"></script>
-
-  <script>
-
-    $(function () {
-      $('#charts').highcharts({
-        chart: {
-          type: 'column'
-        },
-        title: {
-          text: 'График выполнения заявок'
-        },
-        subtitle: {
-          text: '2016 год'
-        },
-        xAxis: {
-          categories: [
-            'Июл',
-            'Авг',
-            'Сен',
-            'Окт',
-            'Ноя',
-            'Дек',
-            'Янв',
-            'Фев',
-            'Мар',
-            'Апр',
-            'Май',
-            'Июн'
-          ]
-        },
-        yAxis: {
-          min: 0,
-          title: {
-            text: 'Заявки'
-          }
-        },
-        tooltip: {
-          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          '<td style="padding:0"><b>{point.y}</b></td></tr>',
-          footerFormat: '</table>',
-          shared: true,
-          useHTML: true
-        },
-        plotOptions: {
-          column: {
-            pointPadding: 0.2,
-            borderWidth: 0
-          }
-        },
-        series: [{
-          name: 'Новые',
-          data: [12,3,4,23,12,6,3,6,8,12,12,16]
-
-        },{
-          name: 'Выполненные',
-          data: [11,2,4,19,12,4,3,5,4,11,10,15]
-
-        }]
-      });
-    });
-
-  </script>
-
-  <link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
-
-  <!-- 2 -->
-  <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
-
-  <div id='timeline-embed' style="width: 100%; height: 600px"></div>
-
-  <script type="text/javascript">
-
-    $.ajax({
-      type: "GET",
-      contentType: 'application/json',
-      url: "/timeline/equipments/" + 1,
-      dataType: 'json',
-    }).done(function (data) {
-      var dataTimeLine = data;
-      var options = {
-        start_at_end: true,
-        language:  "ru"
-      }
-      timeline = new TL.Timeline('timeline-embed', dataTimeLine, options);
-    });
-  </script>
 </head>
+<body>
 
-      <div id="charts" ></div>
+<div class="main">
+
+    <div id="scheduler-app">
+        <scheduler id="dp" :config="initConfig" ref="scheduler"></scheduler>
+    </div>
+
+</div>
+
+<script>
+    Vue.component('scheduler', {
+        props: ['id', 'config'],
+        template: '<div :id="id"></div>',
+        mounted: function() { this.control = new DayPilot.Scheduler(this.id, this.config).init(); }
+    });
+    var app = new Vue({
+        el: '#scheduler-app',
+        data: {
+            initConfig: {
+                timeHeaders: [{"groupBy": "Month"}, {"groupBy": "Day", "format": "d"}],
+                scale: "Day",
+                days: DayPilot.Date.today().daysInMonth(),
+                startDate: DayPilot.Date.today().firstDayOfMonth(),
+                timeRangeSelectedHandling: "Enabled",
+                eventHeight: 40,
+                locale: "ru-ru",
+                monthNames: ["Январь", "Февраль", "Март", "Апрель", "Март", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+                onTimeRangeSelected: function (args) {
+                    var dp = this;
+                    DayPilot.Modal.prompt("Create a new event:", "Event 1").then(function (modal) {
+                        dp.clearSelection();
+                        if (!modal.result) {
+                            return;
+                        }
+                        dp.events.add(new DayPilot.Event({
+                            start: args.start,
+                            end: args.end,
+                            id: DayPilot.guid(),
+                            resource: args.resource,
+                            text: modal.result
+                        }));
+                    });
+                },
+                eventMoveHandling: "Update",
+                onEventMoved: function (args) {
+                    this.message("Event moved");
+                },
+                eventResizeHandling: "Update",
+                onEventResized: function (args) {
+                    this.message("Event resized");
+                },
+                eventClickHandling: "Enabled",
+                onEventClicked: function (args) {
+                    this.message("Event clicked");
+                },
+                eventHoverHandling: "Disabled",
+                treeEnabled: true,
+                onBeforeEventRender: function(args) {
+                    args.data.barColor = args.data.color;
+                    args.data.areas = [
+                        { top: 6, right: 2, icon: "icon-triangle-down", visibility: "Hover", action: "ContextMenu", style: "font-size: 12px; background-color: #f9f9f9; border: 1px solid #ccc; padding: 2px 2px 0px 2px; cursor:pointer;"}
+                    ];
+                },
+                contextMenu: new DayPilot.Menu({
+                    items: [
+                        {
+                            text: "Delete",
+                            onClick: function(args) {
+                                var e = args.source;
+                                app.scheduler.events.remove(e);
+                                app.scheduler.message("Deleted.");
+                            }
+                        },
+                        {
+                            text: "-"
+                        },                        {
+                            text: "Blue",
+                            icon: "icon icon-blue",
+                            color: "#1155cc",
+                            onClick: function(args) { app.updateColor(args.source, args.item.color); }
+                        },
+                        {
+                            text: "Green",
+                            icon: "icon icon-green",
+                            color: "#6aa84f",
+                            onClick: function(args) { app.updateColor(args.source, args.item.color); }
+                        },
+                        {
+                            text: "Yellow",
+                            icon: "icon icon-yellow",
+                            color: "#f1c232",
+                            onClick: function(args) { app.updateColor(args.source, args.item.color); }
+                        },
+                        {
+                            text: "Red",
+                            icon: "icon icon-red",
+                            color: "#cc0000",
+                            onClick: function(args) { app.updateColor(args.source, args.item.color); }
+                        },
+
+                    ]
+                })
+            }
+        },
+        computed: {
+            // DayPilot.Scheduler object
+            // https://api.daypilot.org/daypilot-scheduler-class/
+            scheduler: function () {
+                return this.$refs.scheduler.control;
+            }
+        },
+        methods: {
+            loadReservations: function () {
+                // placeholder for an AJAX call
+                jQuery.extend({
+                    getValues: function() {
+                        var result = null;
+                        $.ajax({
+                            url: "/daypilot/techcard/",
+                            type: 'GET',
+                            dataType: 'JSON',
+                            async: false,
+                            success: function(data) {
+                                result = data;
+                            }
+                        });
+                        return result;
+                    }
+                });
+                var results = $.getValues();
+                console.log("YEAAHH", results);
+                var data = [
+                    {
+                        id: 1,
+                        resource: 1,
+                        start: DayPilot.Date.today().firstDayOfMonth().addDays(3),
+                        end: DayPilot.Date.today().firstDayOfMonth().addDays(7),
+                        text: "Event ",
+                        barColor: "#cc0000"
+                    },
+                    {
+                        id: 2,
+                        resource: 2,
+                        start: DayPilot.Date.today().firstDayOfMonth().addDays(5),
+                        end: DayPilot.Date.today().firstDayOfMonth().addDays(10),
+                        text: "Event 2",
+                        barColor: "#38761d"
+                    }
+                ];
+                console.log("AGGA", data);
+                this.scheduler.update({events: results});
+            },
+            loadResources: function () {
+                // placeholder for an AJAX call
+                jQuery.extend({
+                    getValues: function() {
+                        var result = null;
+                        $.ajax({
+                            url: "/daypilot/equipments/",
+                            type: 'GET',
+                            dataType: 'JSON',
+                            async: false,
+                            success: function(data) {
+                                result = data;
+                            }
+                        });
+                        return result;
+                    }
+                });
+                var results = $.getValues();
+                this.scheduler.update({resources: results});
+            },
+            updateColor: function(e, color) {
+                var dp = this.scheduler;
+                e.data.color = color;
+                dp.events.update(e);
+                dp.message("Color updated");
+            }
+        },
+        mounted: function () {
+            this.loadResources();
+            this.loadReservations();
+        }
+    });
+    </script>
+
+</body>

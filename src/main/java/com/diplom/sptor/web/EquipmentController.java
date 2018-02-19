@@ -2,11 +2,13 @@ package com.diplom.sptor.web;
 
 import com.diplom.sptor.domain.*;
 import com.diplom.sptor.planning.PlanningUtils;
+import com.diplom.sptor.planning.domain.DayPilCard;
+import com.diplom.sptor.planning.domain.DayPilot;
+import com.diplom.sptor.domain.RepairOperation;
 import com.diplom.sptor.service.*;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.commons.io.IOUtils;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -71,6 +72,9 @@ public class EquipmentController {
 
     @Autowired
     PlanningUtils planningUtils;
+
+    @Autowired
+    RepairOperationService repairOperationService;
     /**
      * GET list of all equipments.
      * @return list
@@ -377,6 +381,28 @@ public class EquipmentController {
        documentService.deleteDocument(documentId);
        return "documents";
    }
+
+    @RequestMapping(value = "/daypilot/equipments/", method = RequestMethod.GET,
+            produces = "application/json")
+    public @ResponseBody List<DayPilot> getEquipmentsForDayPilot(Model model) {
+       List<DayPilot> dayPilots = new ArrayList<>();
+       for(Equipment equipment : equipmentService.getAllEquipment()){
+           dayPilots.add(new DayPilot(equipment.getEquipmentName(), equipment.getEquipmentId()));
+       }
+       return dayPilots;
+    }
+
+    @RequestMapping(value = "/daypilot/techcard/", method = RequestMethod.GET,
+            produces = "application/json")
+    public @ResponseBody List<DayPilCard> getRepairSheetForDayPilot(Model model) {
+        List<DayPilCard> dayPilCards = new ArrayList<>();
+        for(RepairOperation repairOperation : repairOperationService.getAllRepairSheets()){
+            dayPilCards.add(new DayPilCard(repairOperation.getOperationId(), repairOperation.getTypeOfMaintenance().getType_of_maintenance_name() ,
+                    repairOperation.getStartDate(), repairOperation.getEndDate(),
+                    repairOperation.getEquipment().getEquipmentId(), null));
+        }
+        return dayPilCards;
+    }
 }
 
 

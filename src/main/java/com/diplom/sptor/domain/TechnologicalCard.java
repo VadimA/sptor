@@ -1,5 +1,6 @@
 package com.diplom.sptor.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
@@ -29,7 +30,9 @@ public class TechnologicalCard implements Serializable{
     private Equipment equipment;
 
     private long technological_card_number;
+
     private Date start_date;
+
     private Date  end_date;
 
     @ManyToOne()

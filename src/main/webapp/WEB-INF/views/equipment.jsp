@@ -67,6 +67,7 @@
 
                 </div>
         </div>
+        <div id='timeline-embed' style="width: 100%; height: 600px"></div>
         <div id="new_working_hours"  title="Добавление наработки" style="display: none">
 
             <form id="work_form" >

@@ -1,5 +1,6 @@
 package com.diplom.sptor.timeline.util;
 
+import com.diplom.sptor.domain.RepairSheet;
 import com.diplom.sptor.domain.TechnologicalCard;
 import com.diplom.sptor.timeline.domain.*;
 
@@ -12,8 +13,17 @@ public class TimeLineUtils {
         event.setBackground(fillBackGround());
         event.setStartDate(fillStartDate(technologicalCard.getStart_date()));
         event.setEndDate(fillEndDate(technologicalCard.getEnd_date()));
-        event.setText(fillText(technologicalCard));
-        return null;
+        event.setText(fillTextToTechCard(technologicalCard));
+        return event;
+    }
+
+    public static Event mapRepairSheetToEvent(RepairSheet repairSheet){
+        Event event = new Event();
+        event.setBackground(fillBackGround());
+        event.setStartDate(fillStartDate(repairSheet.getStart_date()));
+        event.setEndDate(fillEndDate(repairSheet.getEnd_date()));
+        event.setText(fillTextToRepairSheet(repairSheet));
+        return event;
     }
 
     public static Background fillBackGround(){
@@ -39,16 +49,30 @@ public class TimeLineUtils {
         return endDate;
     }
 
-    public static Text fillText(TechnologicalCard technologicalCard){
+    public static Text fillTextToTechCard(TechnologicalCard technologicalCard){
         Text text = new Text();
         text.setHeadline(technologicalCard.getType_of_maintenance().getType_of_maintenance_name() + " для " +
                         technologicalCard.getEquipment().getEquipmentName());
         text.setText("Номер карты: " + technologicalCard.getTechnological_card_number()
-                + "Оборудование: " + technologicalCard.getEquipment().getEquipmentName()
-                + "Тип ремонта: " + technologicalCard.getType_of_maintenance().getType_of_maintenance_name()
-                + "Дата: " + technologicalCard.getEnd_date().getDate()
-                + "Ответственный: " + technologicalCard.getResponsible_for_delivery().getResponsible()
-                + "Описание " + technologicalCard.getDescription());
+                + System.lineSeparator() + " Оборудование: " + technologicalCard.getEquipment().getEquipmentName()
+                + System.lineSeparator() + " Тип ТО: " + technologicalCard.getType_of_maintenance().getType_of_maintenance_name()
+                + System.lineSeparator() + " Дата: " + technologicalCard.getEnd_date().getDate()
+                + System.lineSeparator() + " Ответственный: " + technologicalCard.getResponsible_for_delivery().getResponsible()
+                + System.lineSeparator() + " Описание: " + technologicalCard.getDescription());
+        return text;
+    }
+
+    public static Text fillTextToRepairSheet(RepairSheet repairSheet){
+        Text text = new Text();
+        text.setHeadline(repairSheet.getType_of_maintenance().getType_of_maintenance_name() + " для " +
+                repairSheet.getEquipment().getEquipmentName());
+        text.setText("Номер Листа: " + repairSheet.getSheet_number()
+                + System.lineSeparator() + " Оборудование: " + repairSheet.getEquipment().getEquipmentName()
+                + System.lineSeparator() + " Тип ремонта: " + repairSheet.getType_of_maintenance().getType_of_maintenance_name()
+                + System.lineSeparator() + " Дата: " + repairSheet.getEnd_date().getDate()
+                + System.lineSeparator() + " Ответственный: " + repairSheet.getResponsibleForDelivery().getResponsible()
+                + System.lineSeparator() + " Описание: " + repairSheet.getDescription()
+                + System.lineSeparator() + " Статус: " + repairSheet.getStatus().getStatus());
         return text;
     }
 

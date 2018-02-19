@@ -1,6 +1,7 @@
 package com.diplom.sptor.planning.domain;
 
 import com.diplom.sptor.domain.Equipment;
+import com.diplom.sptor.domain.Graphic;
 import com.diplom.sptor.domain.TypeOfMaintenance;
 
 import java.util.List;
