@@ -20,10 +20,10 @@ public class DayPilCard {
 
     private String text;
 
-    @DateTimeFormat(iso= DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Europe/Moscow")
     private Date start;
 
-    @DateTimeFormat(iso= DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Europe/Moscow")
     private Date end;
 
     private int resource;

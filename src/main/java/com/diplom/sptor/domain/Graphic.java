@@ -1,5 +1,6 @@
 package com.diplom.sptor.domain;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
@@ -11,6 +12,9 @@ import java.util.Date;
 @Proxy(lazy=false)
 public class Graphic implements Serializable {
 
+    @Id
+    @GenericGenerator(name="kaugen" , strategy="increment")
+    @GeneratedValue(generator="kaugen")
     @Column(name = "graph_id")
     private int graphicId;
 
@@ -18,21 +22,21 @@ public class Graphic implements Serializable {
     private Date dateOfCreation;
 
     @ManyToOne()
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "created_by")
     private User createdBy;
 
     @Column(name = "date_of_modification")
     private Date dateOfModification;
 
     @ManyToOne()
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "modified_by")
     private User modifiedBy;
 
     @Column(name = "month")
     private Date month;
 
     @Column(name = "status")
-    private String status;
+    private int status;
 
     @Column(name = "is_year")
     private boolean isYear;
@@ -41,13 +45,13 @@ public class Graphic implements Serializable {
     }
 
     public Graphic(Date dateOfCreation, User createdBy, Date dateOfModification, User modifiedBy,
-                   Date month, boolean isYear) {
+                   Date month, int status, boolean isYear) {
         this.dateOfCreation = dateOfCreation;
         this.createdBy = createdBy;
         this.dateOfModification = dateOfModification;
         this.modifiedBy = modifiedBy;
         this.month = month;
-        this.status = GraphicStatus.CREATED.getGraphicStatus();
+        this.status = status;
         this.isYear = isYear;
     }
 
@@ -99,11 +103,11 @@ public class Graphic implements Serializable {
         this.month = month;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -123,13 +127,13 @@ public class Graphic implements Serializable {
         Graphic graphic = (Graphic) o;
 
         if (graphicId != graphic.graphicId) return false;
+        if (status != graphic.status) return false;
         if (isYear != graphic.isYear) return false;
         if (!dateOfCreation.equals(graphic.dateOfCreation)) return false;
         if (!createdBy.equals(graphic.createdBy)) return false;
         if (!dateOfModification.equals(graphic.dateOfModification)) return false;
         if (!modifiedBy.equals(graphic.modifiedBy)) return false;
-        if (!month.equals(graphic.month)) return false;
-        return status.equals(graphic.status);
+        return month.equals(graphic.month);
     }
 
     @Override
@@ -140,25 +144,8 @@ public class Graphic implements Serializable {
         result = 31 * result + dateOfModification.hashCode();
         result = 31 * result + modifiedBy.hashCode();
         result = 31 * result + month.hashCode();
-        result = 31 * result + status.hashCode();
+        result = 31 * result + status;
         result = 31 * result + (isYear ? 1 : 0);
         return result;
     }
-}
-
-enum GraphicStatus {
-    CREATED("Новый"),
-    INPROGRESS("В процессе"),
-    FINISHED("Выполненный");
-
-    String graphicStatus;
-
-    private GraphicStatus(String graphicStatus){
-        this.graphicStatus = graphicStatus;
-    }
-
-    public String getGraphicStatus(){
-        return graphicStatus;
-    }
-
 }

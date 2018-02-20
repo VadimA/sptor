@@ -27,7 +27,7 @@
 <body>
 
 <div class="main">
-
+    <center><h4>Месячный план-график</h4></center>
     <div id="scheduler-app">
         <scheduler id="dp" :config="initConfig" ref="scheduler"></scheduler>
     </div>
@@ -156,25 +156,6 @@
                 });
                 var results = $.getValues();
                 console.log("YEAAHH", results);
-                var data = [
-                    {
-                        id: 1,
-                        resource: 1,
-                        start: DayPilot.Date.today().firstDayOfMonth().addDays(3),
-                        end: DayPilot.Date.today().firstDayOfMonth().addDays(7),
-                        text: "Event ",
-                        barColor: "#cc0000"
-                    },
-                    {
-                        id: 2,
-                        resource: 2,
-                        start: DayPilot.Date.today().firstDayOfMonth().addDays(5),
-                        end: DayPilot.Date.today().firstDayOfMonth().addDays(10),
-                        text: "Event 2",
-                        barColor: "#38761d"
-                    }
-                ];
-                console.log("AGGA", data);
                 this.scheduler.update({events: results});
             },
             loadResources: function () {

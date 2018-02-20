@@ -60,7 +60,7 @@ public class PlanningController {
         List<RepairUnit> repairUnitList = getRepairUnitList();
         Date month = new Date();
         Graphic graphic = new Graphic(new Date(), planningUtils.getCurrentUser(), new Date(),
-                planningUtils.getCurrentUser(), month, false);
+                planningUtils.getCurrentUser(), month, 1, false);
         graphicService.addGraphic(graphic);
         planningUtils.sortRepairUnitListByPriority(repairUnitList);
         return planningUtils.fillRepairInMonth(graphicService.getAllGraphics().get(0), repairUnitList);
