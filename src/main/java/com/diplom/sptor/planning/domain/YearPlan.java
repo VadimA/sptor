@@ -5,21 +5,23 @@ import com.diplom.sptor.domain.Graphic;
 import com.diplom.sptor.domain.TypeOfMainToEquipment;
 import com.diplom.sptor.domain.TypeOfMaintenance;
 import com.diplom.sptor.planning.PlanningUtils;
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
-public class YearPlan{
+public class YearPlan {
 
     private boolean isYear;
 
     private Date dateOfCreation;
+
+    public static final int DAY_IN_MONTH = 30;
 
     @Autowired
     PlanningUtils planningUtils;
@@ -28,7 +30,8 @@ public class YearPlan{
         this.planningUtils = planningUtils;
     }
 
-    public YearPlan() {}
+    public YearPlan() {
+    }
 
     public YearPlan(boolean isYear, Date dateOfCreation) {
         this.isYear = isYear;
@@ -51,50 +54,67 @@ public class YearPlan{
         this.dateOfCreation = dateOfCreation;
     }
 
-    public Graphic generatePlan(){
+    public Graphic generatePlan() {
         return new Graphic();
     }
 
     public List<RepairUnit> getListOfEquipmentsWhereNeedsInMaintenanceMonth(List<Equipment> equipmentList, List<TypeOfMaintenance> typeOfMaintenanceList, Date date) {
         List<RepairUnit> repairUnitList = new ArrayList<RepairUnit>();
-        Date lastDateOfMaintenance;
-        Date nextDateOfMaintenance;
+        List<Integer> equipmentsIdList = new ArrayList<>();
+        Optional<Date> lastDateOfMaintenance;
+        Optional<Date> nextDateOfMaintenance;
         double current_working_hours;
         double last_working_hours;
         TypeOfMainToEquipment typeOfMainToEquipment;
+        typeOfMaintenanceList = typeOfMaintenanceList.stream().sorted(Comparator.comparingInt
+                (TypeOfMaintenance::getPriority).reversed()).collect(Collectors.toList());
+        System.out.println("Reversed order after sorting = " + typeOfMaintenanceList.get(0).getType_of_maintenance_name());
 
         for (TypeOfMaintenance typeOfMaintenance : typeOfMaintenanceList) {
             for (Equipment equipment : equipmentList) {
-                typeOfMainToEquipment = planningUtils.getTypeOfMainToEquipment(equipment, typeOfMaintenance);
-                lastDateOfMaintenance = planningUtils.getLastDateOfMaintenanceByEquipment(equipment, typeOfMaintenance);
-                nextDateOfMaintenance = planningUtils.getNextDateOfMaintenanceByEquipment(equipment, typeOfMaintenance, typeOfMainToEquipment, lastDateOfMaintenance);
-                if (nextDateOfMaintenance != null && lastDateOfMaintenance != null) {
-                    current_working_hours = equipment.getWorkingHours();
-                    last_working_hours = planningUtils.getWorkingHoursByEquipmentAfterLastRepair(equipment, lastDateOfMaintenance);
-                    if (nextDateOfMaintenance.getMonth() == date.getMonth() || last_working_hours <= 0) {
-                        RepairUnit repairUnit = new RepairUnit(equipment, typeOfMaintenance,
-                                lastDateOfMaintenance, nextDateOfMaintenance, current_working_hours, last_working_hours,
-                                typeOfMaintenance.getPriority());
-                        repairUnitList.add(repairUnit);
-                    }
-                } else {
-                    if (Months.monthsBetween(new LocalDate(dateOfCreation), new LocalDate(date)).getMonths() == 0) {
-                        if (planningUtils.getRestOfWorkingHoursBeforeMaintenance(equipment, typeOfMaintenance, typeOfMainToEquipment,lastDateOfMaintenance) <= 0) {
+                if (!equipmentsIdList.contains(equipment.getEquipmentId())) {
+                    typeOfMainToEquipment = planningUtils.getTypeOfMainToEquipment(equipment, typeOfMaintenance);
+                    lastDateOfMaintenance = planningUtils.getLastDateOfMaintenanceByEquipment(equipment, typeOfMaintenance);
+                    if (lastDateOfMaintenance.isPresent()) {
+                        nextDateOfMaintenance = planningUtils.getNextDateOfMaintenanceByEquipment(equipment,typeOfMainToEquipment,
+                                lastDateOfMaintenance.get());
+                        current_working_hours = equipment.getWorkingHours();
+                        last_working_hours = planningUtils.getWorkingHoursByEquipmentAfterLastRepair(equipment, lastDateOfMaintenance.get());
+                        if (nextDateOfMaintenance.get().getMonth() == date.getMonth() || last_working_hours >= typeOfMainToEquipment.getWork_hours_limit()) {
                             RepairUnit repairUnit = new RepairUnit(equipment, typeOfMaintenance,
-                                    null, null, equipment.getWorkingHours(), equipment.getWorkingHours(), typeOfMaintenance.getPriority());
+                                    lastDateOfMaintenance.get(), nextDateOfMaintenance.get(), current_working_hours, last_working_hours,
+                                    typeOfMaintenance.getPriority());
                             repairUnitList.add(repairUnit);
+                            equipmentsIdList.add(equipment.getEquipmentId());
                         }
                     } else {
-                        if (planningUtils.getWorkingHoursInFutureMonth(equipment, date, dateOfCreation) >=
-                                typeOfMainToEquipment.getWork_hours_limit()) {
+                        System.out.println("VAAN daysBetween = " + Days.daysBetween(new LocalDate(dateOfCreation), new LocalDate(equipment.getDateOfBeginExploitation())).getDays());
+                        if (Days.daysBetween(new LocalDate(dateOfCreation), new LocalDate(equipment.getDateOfBeginExploitation())).getDays() >= typeOfMainToEquipment.getPeriodicity() * DAY_IN_MONTH) {
                             RepairUnit repairUnit = new RepairUnit(equipment, typeOfMaintenance,
-                                    null, null, equipment.getWorkingHours(), equipment.getWorkingHours(), typeOfMaintenance.getPriority());
+                                    dateOfCreation, new LocalDate(dateOfCreation).plusDays(typeOfMainToEquipment.getPeriodicity() * DAY_IN_MONTH).toDate(),
+                                    equipment.getWorkingHours(), equipment.getWorkingHours(), typeOfMaintenance.getPriority());
                             repairUnitList.add(repairUnit);
+                            equipmentsIdList.add(equipment.getEquipmentId());
+
+                        } else {
+                            System.out.println("VAAN getWorkingHoursInFutureMonth = " + planningUtils.getWorkingHoursInFutureMonth(equipment, dateOfCreation));
+                            if (planningUtils.getWorkingHoursInFutureMonth(equipment, dateOfCreation) >=
+                                    typeOfMainToEquipment.getWork_hours_limit()) {
+                                RepairUnit repairUnit = new RepairUnit(equipment, typeOfMaintenance,
+                                        dateOfCreation, new LocalDate(dateOfCreation).plusDays(typeOfMainToEquipment.getPeriodicity() * DAY_IN_MONTH).toDate(),
+                                        equipment.getWorkingHours(), equipment.getWorkingHours(), typeOfMaintenance.getPriority());
+                                repairUnitList.add(repairUnit);
+                                equipmentsIdList.add(equipment.getEquipmentId());
+                            }
                         }
                     }
                 }
             }
         }
-        return planningUtils.fetchPriorityUnitFromList(repairUnitList);
+        return repairUnitList;
+    }
+
+    public void saveRepairUnit(){
+
     }
 }

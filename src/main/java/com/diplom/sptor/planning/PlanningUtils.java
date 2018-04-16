@@ -43,7 +43,7 @@ public class PlanningUtils {
     @Autowired
     RepairOperationService repairOperationService;
 
-    public static final int DAY_IN_MONTH = 31;
+    public static final int DAY_IN_MONTH = 30;
 
     public static final List<LocalDate> holidays = Arrays.asList(new LocalDate(2018, 1, 1), new LocalDate(2018, 1, 2),
                                                                 new LocalDate(2018, 1, 3), new LocalDate(2018, 1, 4),
@@ -59,41 +59,37 @@ public class PlanningUtils {
                 sum += workingHours.getValue();
             }
         }
+        System.out.println("Total sum= " + sum + " ::: " + new DateTime().minusYears(1).toDate());
         return sum;
     }
     public Double getWorkingHoursByEquipmentAfterLastRepair(Equipment equipment, Date date){
         Double sum = 0.0;
-        if(date != null) {
+            //TODO remove duplicate call of getWorkingHoursByEquipment
             List<WorkingHours> workingHoursList = workingHoursService.getWorkingHoursByEquipment(equipment);
             for (WorkingHours workingHours : workingHoursList) {
                 if (workingHours.getDate_of_adding().after(date)) {
                     sum += workingHours.getValue();
                 }
             }
-        }
-        else{
-            sum = equipment.getWorkingHours();
-        }
-        return sum;
+        return sum != 0.0 ? sum : equipment.getWorkingHours();
     }
 
-    public Date getLastDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMaintenance typeOfMaintenance){
+    public Optional<Date> getLastDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMaintenance typeOfMaintenance){
         List<TechnologicalCard> technologicalCards = technologicalCardService.findByEquipmentAndTypeOfMaintenance(equipment, typeOfMaintenance);
         if(technologicalCards.size()>0 && !technologicalCards.isEmpty()) {
             technologicalCards.stream().sorted(Comparator.comparing(TechnologicalCard::getEnd_date).reversed()).collect(Collectors.toList());
-            return technologicalCards.get(0).getEnd_date();
+            return Optional.ofNullable(technologicalCards.get(0).getEnd_date());
         }
-        return equipment.getDateOfBeginExploitation();
+        return Optional.ofNullable(equipment.getDateOfBeginExploitation());
     }
 
-    public Date getNextDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMaintenance typeOfMaintenance,
-                                                        TypeOfMainToEquipment typeOfMainToEquipment, Date lastDateOfMaintenance){
-        if(typeOfMainToEquipment != null) {
-            return lastDateOfMaintenance != null ? (new DateTime(lastDateOfMaintenance).plusDays(typeOfMainToEquipment.getPeriodicity())).toDate()
-                    : (new DateTime(equipment.getDateOfBeginExploitation()).plusDays(typeOfMainToEquipment.getPeriodicity())).toDate();
+    public Optional<Date> getNextDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMainToEquipment typeOfMainToEquipment, Date lastDateOfMaintenance){
+        if(typeOfMainToEquipment != null && lastDateOfMaintenance != null) {
+            return Optional.ofNullable(new DateTime(lastDateOfMaintenance).plusDays(typeOfMainToEquipment.getPeriodicity() * DAY_IN_MONTH).toDate());
         }
         else{
-            return null;
+            return Optional.ofNullable(new LocalDate(equipment.getDateOfBeginExploitation()).plusDays(
+                    typeOfMainToEquipment.getPeriodicity() * DAY_IN_MONTH).toDate());
         }
     }
 
@@ -104,10 +100,10 @@ public class PlanningUtils {
         return currentValue - limitOfWorkingHours;
     }
 
-    public double getWorkingHoursInFutureMonth(Equipment equipment, Date date, Date dateOfCreation){
+    public double getWorkingHoursInFutureMonth(Equipment equipment, Date dateOfCreation){
         double working_hours = 0.0;
-        if(date != null){
-            int daysCount = Days.daysBetween(new LocalDate(dateOfCreation) , new LocalDate(date)).getDays();
+        if(dateOfCreation != null){
+            int daysCount = Days.daysBetween(new LocalDate(dateOfCreation) , new LocalDate(dateOfCreation).dayOfMonth().withMaximumValue()).getDays();
             working_hours = equipment.getWorkingHours() + (equipment.getTypeOfEquipment().getMonth_work_hours() / DAY_IN_MONTH) * daysCount;
         }
         return working_hours;
@@ -116,23 +112,6 @@ public class PlanningUtils {
     public TypeOfMainToEquipment getTypeOfMainToEquipment(Equipment equipment , TypeOfMaintenance typeOfMaintenance) {
         return typeOfMainToEquipmentService.findByTypeOfEquipmentIdAndTypeOfMaintenanceId(
                 equipment.getTypeOfEquipment().getType_of_equipment_id(), typeOfMaintenance.getType_of_maintenance_id());
-    }
-
-    public List<RepairUnit> fetchPriorityUnitFromList(List<RepairUnit> repairUnits){
-        List<RepairUnit> newRepairUnitList = new ArrayList<RepairUnit>();
-        List<Integer> numberOfExistUnits = new ArrayList<Integer>();
-        if(!repairUnits.isEmpty()) {
-            repairUnits.stream().sorted(Comparator.comparing(RepairUnit::getPriority));
-            newRepairUnitList.add(repairUnits.get(0));
-            numberOfExistUnits.add(repairUnits.get(0).getEquipment().getEquipmentId());
-            for (RepairUnit unit : repairUnits) {
-                if (!numberOfExistUnits.contains(unit.getEquipment().getEquipmentId())) {
-                    newRepairUnitList.add(unit);
-                    numberOfExistUnits.add(unit.getEquipment().getEquipmentId());
-                }
-            }
-        }
-        return newRepairUnitList;
     }
 
     public User getCurrentUser(){
@@ -165,25 +144,27 @@ public class PlanningUtils {
         return isHolidays;
     }
 
-    public Organization getFreeOrganizationInDateInterval(List<RepairOperation> repairOperationList){
+    public Optional<Organization> getFreeOrganizationInDateInterval(List<RepairOperation> repairOperationList){
         List<Organization> organizationList = organizationService.getOrganizations();
-        Organization freeOrganization = null;
+        Optional<Organization> freeOrganization = null;
         if(repairOperationList != null && !repairOperationList.isEmpty()){
-            for(RepairOperation repairOperation : repairOperationList){
+            ListIterator listIterator = repairOperationList.listIterator();
+            while (listIterator.hasNext()){
+                RepairOperation repairOperation = (RepairOperation) listIterator.next();
                 organizationList.remove(repairOperation.getOrganization());
             }
             if(organizationList != null && !organizationList.isEmpty() && organizationList.get(0) != null){
-                freeOrganization = organizationList.get(0);
+                freeOrganization = Optional.ofNullable(organizationList.get(0));
             }
         }
         else{
-            freeOrganization = organizationList.get(0);
+            freeOrganization = Optional.ofNullable(organizationList.get(0));
         }
         return freeOrganization;
     }
 
     public List<RepairOperation> getListOperationInDateInterval(Date date, List<RepairOperation> repairOperationList){
-        List<RepairOperation> newRepairOperationList = new ArrayList<>();
+        List<RepairOperation> newRepairOperationList = Collections.EMPTY_LIST;
         for(RepairOperation operation : repairOperationList){
             if(operation.getStartDate().compareTo(date) != 1 && operation.getEndDate().compareTo(date) != -1){
                 newRepairOperationList.add(operation);
@@ -205,7 +186,7 @@ public class PlanningUtils {
         for(RepairUnit repairUnit : repairUnitList){
             isAdding = false;
             while (!isAdding) {
-                freeOrganization = getFreeOrganizationInDateInterval(getListOperationInDateInterval(localDate.toDate(), repairOperationList));
+                freeOrganization = getFreeOrganizationInDateInterval(getListOperationInDateInterval(localDate.toDate(), repairOperationList)).get();
                 if (freeOrganization != null && !checkHolidays(localDate) && !checkHolidays(localDate.plusDays(
                         repairUnit.getTypeOfMaintenance().getDuration()))) {
                     System.out.println("VAAN ADDED DATE = " + localDate.toDate() + " FORM=" + localDate);
