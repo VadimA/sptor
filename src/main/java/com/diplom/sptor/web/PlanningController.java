@@ -63,7 +63,7 @@ public class PlanningController {
                 planningUtils.getCurrentUser(), month, 1, false);
         graphicService.addGraphic(graphic);
         planningUtils.sortRepairUnitListByPriority(repairUnitList);
-        return planningUtils.fillRepairInMonth(graphicService.getAllGraphics().get(0), repairUnitList);
+        return planningUtils.fillRepairInMonth(graphic, repairUnitList);
     }
 
     public List<RepairUnit> getRepairUnitList(){

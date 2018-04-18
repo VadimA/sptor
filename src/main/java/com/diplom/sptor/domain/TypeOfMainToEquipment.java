@@ -21,7 +21,7 @@ public class TypeOfMainToEquipment {
     @Column(name = "type_of_maintenance_id")
     private int typeOfMaintenanceId;
 
-    private double duration;
+    private int duration;
 
     private double complexity;
 
@@ -32,7 +32,7 @@ public class TypeOfMainToEquipment {
     public TypeOfMainToEquipment() {
     }
 
-    public TypeOfMainToEquipment(int typeOfEquipmentId, int typeOfMaintenanceId, double duration, double complexity,
+    public TypeOfMainToEquipment(int typeOfEquipmentId, int typeOfMaintenanceId, int duration, double complexity,
                                  int periodicity, double work_hours_limit) {
         this.typeOfEquipmentId = typeOfEquipmentId;
         this.typeOfMaintenanceId = typeOfMaintenanceId;
@@ -66,11 +66,11 @@ public class TypeOfMainToEquipment {
         this.typeOfMaintenanceId = typeOfMaintenanceId;
     }
 
-    public double getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(double duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 

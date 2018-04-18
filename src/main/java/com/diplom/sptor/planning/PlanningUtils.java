@@ -144,9 +144,10 @@ public class PlanningUtils {
         return isHolidays;
     }
 
+    //TODO refactor to JAVA 8 lambda's
     public Optional<Organization> getFreeOrganizationInDateInterval(List<RepairOperation> repairOperationList){
-        List<Organization> organizationList = organizationService.getOrganizations();
         Optional<Organization> freeOrganization = null;
+        List<Organization> organizationList = organizationService.getOrganizations();
         if(repairOperationList != null && !repairOperationList.isEmpty()){
             ListIterator listIterator = repairOperationList.listIterator();
             while (listIterator.hasNext()){
@@ -164,10 +165,12 @@ public class PlanningUtils {
     }
 
     public List<RepairOperation> getListOperationInDateInterval(Date date, List<RepairOperation> repairOperationList){
-        List<RepairOperation> newRepairOperationList = Collections.EMPTY_LIST;
-        for(RepairOperation operation : repairOperationList){
-            if(operation.getStartDate().compareTo(date) != 1 && operation.getEndDate().compareTo(date) != -1){
-                newRepairOperationList.add(operation);
+        List<RepairOperation> newRepairOperationList = new ArrayList<>();
+        if(repairOperationList != null && !repairOperationList.isEmpty()) {
+            for (RepairOperation operation : repairOperationList) {
+                if (operation.getStartDate().compareTo(date) != 1 && operation.getEndDate().compareTo(date) != -1) {
+                    newRepairOperationList.add(operation);
+                }
             }
         }
         return newRepairOperationList;
@@ -175,7 +178,7 @@ public class PlanningUtils {
 
     public List<RepairOperation> fillRepairInMonth(Graphic graphic, List<RepairUnit> repairUnitList){
         List<RepairOperation> repairOperationList = new ArrayList<>();
-        Organization freeOrganization;
+        Optional<Organization> freeOrganization;
         Date date = graphic.getMonth();
         date.setDate(1);
         LocalDate localDate = new LocalDate(date);
@@ -186,13 +189,15 @@ public class PlanningUtils {
         for(RepairUnit repairUnit : repairUnitList){
             isAdding = false;
             while (!isAdding) {
-                freeOrganization = getFreeOrganizationInDateInterval(getListOperationInDateInterval(localDate.toDate(), repairOperationList)).get();
+                freeOrganization = getFreeOrganizationInDateInterval(getListOperationInDateInterval(localDate.toDate(),
+                                    repairOperationList));
                 if (freeOrganization != null && !checkHolidays(localDate) && !checkHolidays(localDate.plusDays(
                         repairUnit.getTypeOfMaintenance().getDuration()))) {
                     System.out.println("VAAN ADDED DATE = " + localDate.toDate() + " FORM=" + localDate);
+                    int duration = getTypeOfMainToEquipment(repairUnit.getEquipment(), repairUnit.getTypeOfMaintenance()).getDuration();
                     currentRepairOperation = new RepairOperation(repairUnit.getEquipment(), repairUnit.getTypeOfMaintenance(),
-                            freeOrganization, localDate.toDate(), localDate.plusDays(repairUnit.getTypeOfMaintenance()
-                            .getDuration()).toDate(), graphic, false);
+                            freeOrganization.get(), localDate.toDate(), localDate.plusDays(duration).toDate(), graphic, false);
+
                     repairOperationList.add(currentRepairOperation);
                     repairOperationService.addRepairOperation(currentRepairOperation);
                     isAdding = true;
