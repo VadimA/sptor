@@ -397,9 +397,11 @@ public class EquipmentController {
     public @ResponseBody List<DayPilCard> getRepairSheetForDayPilot(Model model) {
         List<DayPilCard> dayPilCards = new ArrayList<>();
         for(RepairOperation repairOperation : repairOperationService.getAllRepairSheets()){
-            dayPilCards.add(new DayPilCard(repairOperation.getOperationId(), repairOperation.getTypeOfMaintenance().getType_of_maintenance_name() ,
-                    repairOperation.getStartDate(), repairOperation.getEndDate(),
-                    repairOperation.getEquipment().getEquipmentId(), null));
+            if(repairOperation.isViolation()) {
+                dayPilCards.add(new DayPilCard(repairOperation.getOperationId(), repairOperation.getTypeOfMaintenance().getType_of_maintenance_name(),
+                        repairOperation.getStartDate(), repairOperation.getEndDate(),
+                        repairOperation.getEquipment().getEquipmentId(), null));
+            }
         }
         return dayPilCards;
     }

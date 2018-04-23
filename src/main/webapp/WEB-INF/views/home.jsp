@@ -28,6 +28,7 @@
 
 <div class="main">
     <center><h4>Месячный план-график</h4></center>
+
     <div id="scheduler-app">
         <scheduler id="dp" :config="initConfig" ref="scheduler"></scheduler>
     </div>
@@ -178,11 +179,8 @@
                 var results = $.getValues();
                 this.scheduler.update({resources: results});
             },
-            updateColor: function(e, color) {
-                var dp = this.scheduler;
-                e.data.color = color;
-                dp.events.update(e);
-                dp.message("Color updated");
+            update: function(e, color) {
+                this.scheduler.update();
             }
         },
         mounted: function () {
