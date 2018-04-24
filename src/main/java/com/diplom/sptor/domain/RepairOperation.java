@@ -12,7 +12,11 @@ import java.util.Date;
 @Entity
 @Table(name="toir.operations")
 @Proxy(lazy=false)
-public class RepairOperation  implements Serializable {
+public class
+
+
+
+RepairOperation  implements Serializable {
 
     @Id
     @GenericGenerator(name="kaugen" , strategy="increment")

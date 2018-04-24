@@ -74,4 +74,11 @@ public class PlanningController {
         return yearPlan.getListOfEquipmentsWhereNeedsInMaintenanceMonth(allEquipments, allTypes, yearPlan.getDateOfCreation());
     }
 
+    @ApiOperation(value = "getEquipments", notes = "Get all equipments")
+    @RequestMapping(value = "/planning/graphics/current", method = RequestMethod.GET,
+            produces = "application/json")
+    public String getPagePPRGraphic(Model model) {
+        return "ppr_graphic";
+    }
+
 }

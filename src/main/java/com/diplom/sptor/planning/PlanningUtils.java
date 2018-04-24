@@ -209,4 +209,9 @@ public class PlanningUtils {
         }
         return repairOperationList;
     }
+
+    public void setRightRepairOperation(Graphic graphic){
+        List<RepairOperation> repairOperationList = repairOperationService.getRepairSheetByGraphicId(graphic.getGraphicId());
+        repairOperationList.forEach(e -> e.setViolation(true));
+    }
 }

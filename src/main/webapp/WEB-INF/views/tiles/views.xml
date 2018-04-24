@@ -57,4 +57,7 @@
     <definition name="work_hours" extends="template"> <!-- Шаблон главной страницы -->
         <put-attribute name="body" value="/WEB-INF/views/work_hours.jsp" />
     </definition>
+    <definition name="ppr_graphic" extends="template"> <!-- Шаблон главной страницы -->
+        <put-attribute name="body" value="/WEB-INF/views/ppr_graphic.jsp" />
+    </definition>
 </tiles-definitions>
