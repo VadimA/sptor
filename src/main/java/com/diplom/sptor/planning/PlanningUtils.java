@@ -51,6 +51,10 @@ public class PlanningUtils {
                                                                 new LocalDate(2018, 2, 23), new LocalDate(2018, 3, 8),
                                                                 new LocalDate(2018, 3, 9), new LocalDate(2018, 4, 30));
 
+    public static List<LocalDate> getHolidays() {
+        return holidays;
+    }
+
     public Double getWorkingHoursByEquipmentInYear(Equipment equipment){
         Double sum = 0.0;
         List<WorkingHours>workingHoursList = workingHoursService.getWorkingHoursByEquipment(equipment);
@@ -138,7 +142,7 @@ public class PlanningUtils {
     public boolean checkHolidays(LocalDate date){
         boolean isHolidays = false;
         if((date.getDayOfWeek() == 6 || date.getDayOfWeek() == 7)
-            ||(holidays.contains(date))){
+            ||(getHolidays().contains(date))){
             isHolidays = true;
         }
         return isHolidays;
@@ -208,6 +212,20 @@ public class PlanningUtils {
             }
         }
         return repairOperationList;
+    }
+
+    public List<String> getRepairCycleByEquipment(int equipmentId){
+        List<String> repairCycle = new ArrayList<>();
+        int typeOfEquipmentId = equipmentService.getEquipmentById(equipmentId).getTypeOfEquipment().getType_of_equipment_id();
+        List<TypeOfMainToEquipment> typeOfMainToEquipment = typeOfMainToEquipmentService.findByTypeOfEquipmentId(typeOfEquipmentId)
+                .stream().sorted(Comparator.comparingInt(TypeOfMainToEquipment::getPeriodicity)).collect(Collectors.toList());
+        int sumPeriodicity = 0;
+        for(){
+        if(!repairCycle.contains(typeOfMainToEquipment.get(typeOfMainToEquipment.size()))){
+            if(sumPeriodicity < ){
+
+            }
+        }
     }
 
     public void setRightRepairOperation(Graphic graphic){
