@@ -60,4 +60,7 @@
     <definition name="ppr_graphic" extends="template"> <!-- Шаблон главной страницы -->
         <put-attribute name="body" value="/WEB-INF/views/ppr_graphic.jsp" />
     </definition>
+    <definition name="repair_cycle" extends="template"> <!-- Шаблон главной страницы -->
+        <put-attribute name="body" value="/WEB-INF/views/repair_cycle.jsp" />
+    </definition>
 </tiles-definitions>

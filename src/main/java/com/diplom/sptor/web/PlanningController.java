@@ -69,9 +69,10 @@ public class PlanningController {
         return planningUtils.fillRepairInMonth(graphic, repairUnitList);
     }
 
-    @RequestMapping("/planning/repair_cycle")
+    @RequestMapping("/planning/repair_cycle/{equipmentId}")
     public List<String> getRepairCycleByEquipment(@PathVariable(value = "equipmentId")int equipmentId){
         List<String> maintenanceList = new ArrayList<>();
+        return maintenanceList;
     }
 
     public List<RepairUnit> getRepairUnitList(){
@@ -89,4 +90,10 @@ public class PlanningController {
         return "ppr_graphic";
     }
 
+    @ApiOperation(value = "getEquipments", notes = "Get all equipments")
+    @RequestMapping(value = "/planning/repair_cycle", method = RequestMethod.GET,
+            produces = "application/json")
+    public String getPageRepairCycle(Model model) {
+        return "repair_cycle";
+    }
 }

@@ -214,19 +214,19 @@ public class PlanningUtils {
         return repairOperationList;
     }
 
-    public List<String> getRepairCycleByEquipment(int equipmentId){
-        List<String> repairCycle = new ArrayList<>();
-        int typeOfEquipmentId = equipmentService.getEquipmentById(equipmentId).getTypeOfEquipment().getType_of_equipment_id();
-        List<TypeOfMainToEquipment> typeOfMainToEquipment = typeOfMainToEquipmentService.findByTypeOfEquipmentId(typeOfEquipmentId)
-                .stream().sorted(Comparator.comparingInt(TypeOfMainToEquipment::getPeriodicity)).collect(Collectors.toList());
-        int sumPeriodicity = 0;
-        for(){
-        if(!repairCycle.contains(typeOfMainToEquipment.get(typeOfMainToEquipment.size()))){
-            if(sumPeriodicity < ){
-
-            }
-        }
-    }
+   //public List<String> getRepairCycleByEquipment(int equipmentId){
+   //    List<String> repairCycle = new ArrayList<>();
+   //    Map<Integer, String> map = new HashMap<>();
+   //    int typeOfEquipmentId = equipmentService.getEquipmentById(equipmentId).getTypeOfEquipment().getType_of_equipment_id();
+   //    List<TypeOfMainToEquipment> typeOfMainToEquipmentList = typeOfMainToEquipmentService.findByTypeOfEquipmentId(typeOfEquipmentId)
+   //            .stream().sorted(Comparator.comparingInt(TypeOfMainToEquipment::getPeriodicity)).collect(Collectors.toList());
+   //    int sumPeriodicity = 0;
+   //    while(!sumPeriodicity <= typeOfMainToEquipmentList.get(typeOfMainToEquipmentList.size()).getPeriodicity()){
+   //        if(sumPeriodicity < typeOfMainToEquipmentList.){
+   //            map
+   //        }
+   //    }
+   //}
 
     public void setRightRepairOperation(Graphic graphic){
         List<RepairOperation> repairOperationList = repairOperationService.getRepairSheetByGraphicId(graphic.getGraphicId());
