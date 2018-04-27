@@ -11,23 +11,32 @@
 <head>
     <title>Ремонтный цикл</title>
 </head>
-<body>
-
-<ul>
-    <li>ТКРАО-31</li>
-    <li>РРП34-1</li>
-    <li>Станок 345</li>
-</ul>
-
-</br>
-
-<div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
+<body ng-app="cycleApp" class="ng-cloak">
+<div class="col-md-4" ng-controller="CycleController as ctrl" >
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><span class="lead">List of Equipments </span></div>
+        <div class="tablecontainer">
+            <li ng:repeat="item in ctrl.subdivisions">
+                {{item.subdivision_name}}:
+                <ul>
+                    <li ng:repeat="eq in item.equipments_sub">
+                        {{eq.equipmentName}}
+                    </li>
+                </ul>
+            </li>
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
     <button type="button" class="btn btn-default">ТО-1</button>
     <button type="button" class="btn btn-default">ТО-1</button>
     <button type="button" class="btn btn-success">ТО-2</button>
     <button type="button" class="btn btn-default">ТО-1</button>
     <button type="button" class="btn btn-default">ТО-1</button>
     <button type="button" class="btn btn-default">ТР</button>
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>

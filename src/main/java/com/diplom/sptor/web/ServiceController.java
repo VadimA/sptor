@@ -201,9 +201,16 @@ public class ServiceController {
 	@ApiOperation(value = "getSubdivisions", notes = "Get all subdivisions")
 	@RequestMapping(value = "/subdivisions", method = RequestMethod.GET,
 			produces = "application/json")
-	public String getSubdivisions() {
+	public String getSubdivisionPage() {
 		return "subdivision";
 		//return SubdivisionService.listSubdivisions();
+	}
+
+	@ApiOperation(value = "getSubdivisions", notes = "Get all subdivisions")
+	@RequestMapping(value = "/subdivisions/all", method = RequestMethod.GET,
+			produces = "application/json")
+	public @ResponseBody List<Subdivisions> getSubdivisions() {
+		return subdivisionService.getAllSubdivisions();
 	}
 
 	/**

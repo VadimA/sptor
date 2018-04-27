@@ -121,14 +121,6 @@ public class EquipmentController {
         return "equipment";
     }
 
-    //@ApiOperation(value = "/equipments", notes = "Get all equipments")
-    //@RequestMapping(value ="/equipments", method = RequestMethod.GET,
-    //        produces = "application/json")
-    //public String getEquipments(Model model) {
-    //    List<Equipment> equipmentList = equipmentService.getAllEquipment();
-    //    return "equipment";
-    //}
-
    @RequestMapping(value = "/equipments/type_of_equipment/{subdivisionId}", method = RequestMethod.GET,
            produces = "application/json")
    public @ResponseBody
