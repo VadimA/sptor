@@ -17,18 +17,22 @@
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">List of Equipments </span></div>
         <div class="tablecontainer">
-            <li ng:repeat="item in ctrl.subdivisions">
-                {{item.subdivision_name}}:
-                <ul>
-                    <li ng:repeat="eq in item.equipments_sub">
-                        {{eq.equipmentName}}
-                    </li>
-                </ul>
-            </li>
-        </div>
+        <table class="table table-hover">
+            <tr ng:repeat="item in ctrl.subdivisions">
+                <td>
+                    {{item.subdivision_name}}
+                    <table ng-show="item.equipments_sub">
+                        <tr ng:repeat="eq in item.equipments_sub">
+                            <td>{{eq.equipmentName}}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
     </div>
 </div>
-<div class="col-md-6">
+<div class="col-md-8">
     <div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
     <button type="button" class="btn btn-default">ТО-1</button>
     <button type="button" class="btn btn-default">ТО-1</button>
