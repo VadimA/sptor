@@ -9,6 +9,17 @@
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
+<style>
+    .dropdown-submenu {
+        position: relative;
+    }
+
+    .dropdown-submenu .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -1px;
+    }
+</style>
 
   <!-- Static navbar -->
   <nav class="navbar navbar-default">
@@ -37,7 +48,13 @@
               <ul class="dropdown-menu">
                 <li><a href="<c:url value="/planning"/>">Список объектов</a></li>
                 <li><a href="<c:url value="/planning/repair_cycle"/>">Ремонтный цикл</a></li>
-                <li><a href="<c:url value="/planning/graphics/current"/>">Графики ППР</a></li>
+                  <li class="dropdown-submenu">
+                      <a class="test" tabindex="-1" href="#">Графики ППР<span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                          <li><a href="<c:url value="/planning/graphics/month"/>">Месячный план-график</a></li>
+                          <li><a href="<c:url value="/planning/graphics/year"/>">Годовой план-график</a></li>
+                      </ul>
+                  </li>
                 <li><a href="<c:url value="/planning/graphics/new"/>">Рассчитать график ППР</a></li>
               </ul>
             </li>
@@ -100,3 +117,13 @@
       </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->
   </nav>
+
+<script>
+    $(document).ready(function(){
+        $('.dropdown-submenu a.test').on("click", function(e){
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+    });
+</script>

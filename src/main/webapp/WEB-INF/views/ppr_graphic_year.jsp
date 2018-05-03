@@ -24,7 +24,7 @@
 <body>
 
 <div class="main">
-    <center><h4>Месячный план-график ППР</h4></center>
+    <center><h4>Годовой план-график ППР</h4></center>
 
     <div class="main">
         <div id="dp"></div>
@@ -52,8 +52,8 @@
         crosshairType: "Header",
         timeHeaders: [{"groupBy":"Month"},{"groupBy":"Day","format":"d"}],
         scale: "Day",
-        days: DayPilot.Date.today().daysInMonth(),
-        startDate: DayPilot.Date.today().firstDayOfMonth(),
+        days: DayPilot.Date.today().daysInYear(),
+        startDate: DayPilot.Date.today().firstDayOfYear(),
         showNonBusiness: true,
         businessWeekends: false,
         floatingEvents: true,

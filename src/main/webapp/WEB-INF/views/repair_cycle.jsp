@@ -23,7 +23,7 @@
                     {{item.subdivision_name}}
                     <table ng-show="item.equipments_sub">
                         <tr ng:repeat="eq in item.equipments_sub">
-                            <td>{{eq.equipmentName}}</td>
+                            <td><button type="button"  ng-click='getRepairCycleByEquipment(eq.equipmentId)' >{{eq.equipmentName}}</button></td>
                         </tr>
                     </table>
                 </td>
@@ -34,12 +34,11 @@
 </div>
 <div class="col-md-8">
     <div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
-    <button type="button" class="btn btn-default">ТО-1</button>
-    <button type="button" class="btn btn-default">ТО-1</button>
-    <button type="button" class="btn btn-success">ТО-2</button>
-    <button type="button" class="btn btn-default">ТО-1</button>
-    <button type="button" class="btn btn-default">ТО-1</button>
-    <button type="button" class="btn btn-default">ТР</button>
+        <tr ng:repeat="item in ctrl.repair_cycle">
+            <td>
+                <button type="button" class="btn btn-default">{{item}}</button>
+            </td>
+        </tr>
     </div>
 </div>
 

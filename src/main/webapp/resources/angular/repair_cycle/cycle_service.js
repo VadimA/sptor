@@ -4,10 +4,12 @@ angular.module('cycleApp').factory('CycleService', ['$http', '$q', function($htt
 
     var EQUIPMENT_SERVICE_URI = '/equipments/subdivisions';
     var SUBDIVISION_SERVICE_URI = '/subdivisions/all';
+    var CYCLE_URI = '/planning/repair_cycle/';
 
     var factory = {
         getEquipmentsBySubdivision: getEquipmentsBySubdivision,
-        getAllSubdivision: getAllSubdivision
+        getAllSubdivision: getAllSubdivision,
+        getRepairCycleByEquipment: getRepairCycleByEquipment
     };
 
     return factory;
@@ -41,4 +43,20 @@ angular.module('cycleApp').factory('CycleService', ['$http', '$q', function($htt
             );
         return deferred.promise;
     }
+
+    function getRepairCycleByEquipment(equipmentId) {
+        var deferred = $q.defer();
+        $http.get(CYCLE_URI + "/" + equipmentId)
+            .then(
+                function (response) {
+                    deferred.resolve(response.data);
+                },
+                function(errResponse){
+                    console.error('Error while fetching Equipments on maintenance');
+                    deferred.reject(errResponse);
+                }
+            );
+        return deferred.promise;
+    }
+
 }]);

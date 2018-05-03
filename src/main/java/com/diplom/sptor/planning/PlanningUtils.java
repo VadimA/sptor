@@ -46,6 +46,9 @@ public class PlanningUtils {
     @Autowired
     TypeOfMaintenanceService typeOfMaintenanceService;
 
+    @Autowired
+    RepairSheetService repairSheetService;
+
     public static final int DAY_IN_MONTH = 30;
 
     public static final List<LocalDate> holidays = Arrays.asList(new LocalDate(2018, 1, 1), new LocalDate(2018, 1, 2),
@@ -82,15 +85,6 @@ public class PlanningUtils {
         return sum != 0.0 ? sum : equipment.getWorkingHours();
     }
 
-    public Optional<Date> getLastDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMaintenance typeOfMaintenance) {
-        List<TechnologicalCard> technologicalCards = technologicalCardService.findByEquipmentAndTypeOfMaintenance(equipment, typeOfMaintenance);
-        if (technologicalCards.size() > 0 && !technologicalCards.isEmpty()) {
-            technologicalCards.stream().sorted(Comparator.comparing(TechnologicalCard::getEnd_date).reversed()).collect(Collectors.toList());
-            return Optional.ofNullable(technologicalCards.get(0).getEnd_date());
-        }
-        return Optional.ofNullable(equipment.getDateOfBeginExploitation());
-    }
-
     public Optional<Date> getNextDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMainToEquipment typeOfMainToEquipment, Date lastDateOfMaintenance) {
         if (typeOfMainToEquipment != null && lastDateOfMaintenance != null) {
             return Optional.ofNullable(new DateTime(lastDateOfMaintenance).plusDays(typeOfMainToEquipment.getPeriodicity() * DAY_IN_MONTH).toDate());
@@ -98,6 +92,24 @@ public class PlanningUtils {
             return Optional.ofNullable(new LocalDate(equipment.getDateOfBeginExploitation()).plusDays(
                     typeOfMainToEquipment.getPeriodicity() * DAY_IN_MONTH).toDate());
         }
+    }
+
+    public Optional<TechnologicalCard> getLastMaintenanceByEquipment(Equipment equipment, TypeOfMaintenance typeOfMaintenance) {
+        List<TechnologicalCard> technologicalCards = technologicalCardService.findByEquipmentAndTypeOfMaintenance(equipment, typeOfMaintenance);
+        if (technologicalCards.size() > 0 && !technologicalCards.isEmpty()) {
+            technologicalCards = technologicalCards.stream().sorted(Comparator.comparing(TechnologicalCard::getEnd_date).reversed()).collect(Collectors.toList());
+            return Optional.ofNullable(technologicalCards.get(0));
+        }
+        return Optional.empty();
+    }
+
+    public Optional<RepairSheet> getLastRepairByEquipment(Equipment equipment) {
+        List<RepairSheet> repairSheetList = repairSheetService.getRepairSheetByEquipment(equipment);
+        if (repairSheetList.size() > 0 && !repairSheetList.isEmpty()) {
+            repairSheetList = repairSheetList.stream().sorted(Comparator.comparing(RepairSheet::getEnd_date).reversed()).collect(Collectors.toList());
+            return Optional.ofNullable(repairSheetList.get(0));
+        }
+        return Optional.empty();
     }
 
     public double getRestOfWorkingHoursBeforeMaintenance(Equipment equipment, TypeOfMaintenance typeOfMaintenance,
@@ -230,15 +242,76 @@ public class PlanningUtils {
     //    }
     //}
 
+    public List<String> getRepairCycleByEquipment(Equipment equipment){
+        List<TypeOfMainToEquipment> typeOfMainToEquipmentList = typeOfMainToEquipmentService.findByTypeOfEquipmentId(equipment.getTypeOfEquipment().getType_of_equipment_id());
+        typeOfMainToEquipmentList = typeOfMainToEquipmentList.stream().sorted(Comparator.comparingInt(TypeOfMainToEquipment::getPeriodicity).reversed()).collect(Collectors.toList());
+        List<String> repairCycleList = new ArrayList<>();
+        int step = typeOfMainToEquipmentList.get(typeOfMainToEquipmentList.size()-1).getPeriodicity();
+        int sum_of_periodicity = step;
+        System.out.println("VAAN step = " + step);
+        typeOfMainToEquipmentList.stream().forEach(e -> System.out.println("VAAN typeOfMainTo = " + e.getType_of_main_to_equipment_id()));
+        while (sum_of_periodicity <= typeOfMainToEquipmentList.get(0).getPeriodicity()){
+            for(int i =0; i < typeOfMainToEquipmentList.size(); i++){
+                System.out.println("VAAN in for = " + typeOfMainToEquipmentList.get(i).getType_of_main_to_equipment_id());
+                if(sum_of_periodicity >= typeOfMainToEquipmentList.get(i).getPeriodicity() &&
+                       sum_of_periodicity % typeOfMainToEquipmentList.get(i).getPeriodicity() == 0){
+                    sum_of_periodicity += step;
+                    repairCycleList.add(typeOfMaintenanceService.getTypeById(typeOfMainToEquipmentList.get(i).getTypeOfMaintenanceId()).getType_of_maintenance_name());
+                    System.out.println("VAAN SUCCESS = " + typeOfMainToEquipmentList.get(i).getType_of_main_to_equipment_id());
+                    System.out.println("VAAN SUCCESS2 = " + sum_of_periodicity);
+                    break;
+                }
+            }
+        }
+        repairCycleList.stream().forEach(e -> System.out.println("ELEM = " + e));
+        return repairCycleList;
+    }
+
+    public Integer getNumberOfCurrentMaintenance(Equipment equipment, List<String> repairCycle){
+        System.out.println("VAAN in  getNumberOfCurrentMaintenance = " );
+        int number = 0;
+        double sumOfWorkingHours = 0;
+        if(repairCycle != null && !repairCycle.isEmpty()){
+            TypeOfMaintenance lastTypeOfMaintenance = technologicalCardService.getTechCardByEquipment(equipment).stream().sorted(Comparator.
+                    comparing(TechnologicalCard::getEnd_date).reversed()).collect(Collectors.toList()).get(0).getType_of_maintenance();
+            TypeOfMainToEquipment typeOfMainToEquipment = typeOfMainToEquipmentService.
+                    findByTypeOfEquipmentIdAndTypeOfMaintenanceId(equipment.getEquipmentId(), lastTypeOfMaintenance.getType_of_maintenance_id());
+            for(int i = 0; i < repairCycle.size(); i++){
+                if(repairCycle.get(i).equals(lastTypeOfMaintenance.getType_of_maintenance_name())){
+                    System.out.println("VAAN in TRUE= " + lastTypeOfMaintenance.getType_of_maintenance_name());
+                    sumOfWorkingHours += typeOfMainToEquipment.getWork_hours_limit();
+                    if(equipment.getWorkingHours() <= sumOfWorkingHours){
+                        number = i + 1;
+                        System.out.println("VAAN 777 = " + sumOfWorkingHours + " VS - " + equipment.getWorkingHours() + " FINALLY = " + number);
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        return number;
+    }
+
     public void setRightRepairOperation(Graphic graphic) {
         List<RepairOperation> repairOperationList = repairOperationService.getRepairSheetByGraphicId(graphic.getGraphicId());
         repairOperationList.forEach(e -> e.setViolation(true));
     }
 
-    public Optional<List<TechnologicalCard>> getLastMaintenancesByEquipment(Equipment equipment) {
-        Optional<List<TechnologicalCard>> technologicalCardList = new ArrayList<>();
+    public Optional<List<RepairUnit>> getLastMaintenancesByEquipment(Equipment equipment) {
+        List<RepairUnit> repairUnitList = new ArrayList<RepairUnit>();
         List<TypeOfMaintenance> typeOfMaintenanceList = typeOfMaintenanceService.getAllTypes();
-        //TODO: tomorrow add new class for representation required object and implement method
-        return technologicalCardList;
+        for(TypeOfMaintenance typeOfMaintenance : typeOfMaintenanceList){
+            Optional<TechnologicalCard> technologicalCard = getLastMaintenanceByEquipment(equipment, typeOfMaintenance);
+            if(technologicalCard.isPresent()){
+                TypeOfMainToEquipment typeOfMainToEquipment = getTypeOfMainToEquipment(equipment, typeOfMaintenance);
+                RepairUnit repairUnit = new RepairUnit();
+                repairUnit.setTypeOfMaintenance(typeOfMaintenance);
+                repairUnit.setLastDateOfMaintenance(technologicalCard.get().getEnd_date());
+                repairUnit.setNextDateOfMaintenance(getNextDateOfMaintenanceByEquipment(equipment, typeOfMainToEquipment, technologicalCard.get().getEnd_date()).get());
+                repairUnitList.add(repairUnit);
+            }
+        }
+        return Optional.of(repairUnitList);
     }
 }

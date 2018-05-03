@@ -30,7 +30,6 @@ public class Equipment implements Serializable{
     private TypeOfEquipment typeOfEquipment;
 
     @ManyToOne()
-    @JsonIgnore
     @JoinColumn(name = "subdivision_id")
     private Subdivisions subdivision;
 

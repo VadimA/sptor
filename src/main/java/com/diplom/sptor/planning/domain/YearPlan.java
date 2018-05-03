@@ -1,9 +1,6 @@
 package com.diplom.sptor.planning.domain;
 
-import com.diplom.sptor.domain.Equipment;
-import com.diplom.sptor.domain.Graphic;
-import com.diplom.sptor.domain.TypeOfMainToEquipment;
-import com.diplom.sptor.domain.TypeOfMaintenance;
+import com.diplom.sptor.domain.*;
 import com.diplom.sptor.planning.PlanningUtils;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -59,9 +56,11 @@ public class YearPlan {
     }
 
     public List<RepairUnit> getListOfEquipmentsWhereNeedsInMaintenanceMonth(List<Equipment> equipmentList, List<TypeOfMaintenance> typeOfMaintenanceList, Date date) {
+        System.out.println("VAAN EQUIPMENT = " + equipmentList.get(0).getEquipmentName());
+        planningUtils.getNumberOfCurrentMaintenance(equipmentList.get(0),planningUtils.getRepairCycleByEquipment(equipmentList.get(0)));
         List<RepairUnit> repairUnitList = new ArrayList<RepairUnit>();
         List<Integer> equipmentsIdList = new ArrayList<>();
-        Optional<Date> lastDateOfMaintenance;
+        Date lastDateOfMaintenance;
         Optional<Date> nextDateOfMaintenance;
         double current_working_hours;
         double last_working_hours;
@@ -74,15 +73,16 @@ public class YearPlan {
             for (Equipment equipment : equipmentList) {
                 if (!equipmentsIdList.contains(equipment.getEquipmentId())) {
                     typeOfMainToEquipment = planningUtils.getTypeOfMainToEquipment(equipment, typeOfMaintenance);
-                    lastDateOfMaintenance = planningUtils.getLastDateOfMaintenanceByEquipment(equipment, typeOfMaintenance);
-                    if (lastDateOfMaintenance.isPresent()) {
+                    Optional<TechnologicalCard> technologicalCard = planningUtils.getLastMaintenanceByEquipment(equipment, typeOfMaintenance);
+                    lastDateOfMaintenance = technologicalCard.isPresent() ? technologicalCard.get().getEnd_date() : equipment.getDateOfBeginExploitation();
+                    if (lastDateOfMaintenance != null) {
                         nextDateOfMaintenance = planningUtils.getNextDateOfMaintenanceByEquipment(equipment,typeOfMainToEquipment,
-                                lastDateOfMaintenance.get());
+                                lastDateOfMaintenance);
                         current_working_hours = equipment.getWorkingHours();
-                        last_working_hours = planningUtils.getWorkingHoursByEquipmentAfterLastRepair(equipment, lastDateOfMaintenance.get());
+                        last_working_hours = planningUtils.getWorkingHoursByEquipmentAfterLastRepair(equipment, lastDateOfMaintenance);
                         if (nextDateOfMaintenance.get().getMonth() == date.getMonth() || last_working_hours >= typeOfMainToEquipment.getWork_hours_limit()) {
                             RepairUnit repairUnit = new RepairUnit(equipment, typeOfMaintenance,
-                                    lastDateOfMaintenance.get(), nextDateOfMaintenance.get(), current_working_hours, last_working_hours,
+                                    lastDateOfMaintenance, nextDateOfMaintenance.get(), current_working_hours, last_working_hours,
                                     typeOfMaintenance.getPriority());
                             repairUnitList.add(repairUnit);
                             equipmentsIdList.add(equipment.getEquipmentId());
