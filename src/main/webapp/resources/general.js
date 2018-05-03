@@ -362,7 +362,7 @@ function openTechCard(techCardId){
         desc = data.description;
         jQuery("#tech_card_id").text(data.technological_card_number);
         jQuery("#equipment_id").text(data.equipment.equipmentName);
-        jQuery("#type_of_maintenance_id").text(data.type_of_maintenance.type_of_maintenance_name);
+        jQuery("#type_of_maintenance_id").text(data.typeOfMaintenance.type_of_maintenance_name);
         jQuery("#start_date").text(dateConvert(data.start_date));
         jQuery("#responsible_for_delivery").text(data.responsible_for_delivery.responsible);
         jQuery("#tech_card_title").text(desc);

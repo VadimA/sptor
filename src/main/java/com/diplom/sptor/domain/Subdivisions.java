@@ -35,6 +35,7 @@ public class Subdivisions implements Serializable{
 
     @OneToMany(mappedBy = "subdivision",fetch = FetchType.LAZY)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnore
     private  Set<Equipment> equipments_sub = new HashSet<Equipment>();
 
     public Subdivisions(String subdivision_name, String abbreviation, String responsible, String description) {

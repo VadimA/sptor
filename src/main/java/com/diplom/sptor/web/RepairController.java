@@ -55,6 +55,9 @@ public class RepairController {
     @Autowired
     OrganizationService organizationService;
 
+    @Autowired
+    TechnologicalCardService technologicalCardService;
+
 
     private String getPrincipal(){
         String userName = null;
@@ -232,5 +235,4 @@ public class RepairController {
         }
         repairSheetService.updateRepairSheet(repairSheet);
     }
-
 }

@@ -75,6 +75,9 @@ public class EquipmentController {
 
     @Autowired
     RepairOperationService repairOperationService;
+
+    @Autowired
+    TechnologicalCardService technologicalCardService;
     /**
      * GET list of all equipments.
      * @return list
@@ -404,6 +407,32 @@ public class EquipmentController {
             }
         }
         return dayPilCards;
+    }
+
+    @RequestMapping(value = "/techcard/{techCardId}", method = RequestMethod.GET,
+            produces = "application/json")
+    public @ResponseBody TechnologicalCard getTechCardById(@PathVariable("techCardId") int techCardId, Model model) {
+        return technologicalCardService.getCardById(techCardId);
+    }
+
+    @RequestMapping(value = "/tech_card", method = RequestMethod.GET,
+            produces = "application/json")
+    public String getPageTechCard(Model model) {
+        model.addAttribute("listTechCard", technologicalCardService.getAllCards());
+        model.addAttribute("tech_status_one", technologicalCardService.getTechnologicalCardByStatus(statusService.getStatusById(1)).size());
+        model.addAttribute("tech_status_two", technologicalCardService.getTechnologicalCardByStatus(statusService.getStatusById(2)).size() + technologicalCardService.getTechnologicalCardByStatus(statusService.getStatusById(3)).size());
+        model.addAttribute("tech_status_three", technologicalCardService.getTechnologicalCardByStatus(statusService.getStatusById(4)).size());
+        model.addAttribute("tech_status_four", technologicalCardService.getTechnologicalCardByStatus(statusService.getStatusById(5)).size());
+        model.addAttribute("tech_status_all", technologicalCardService.getAllCards().size());
+        model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
+        model.addAttribute("listEquipments", equipmentService.getAllEquipment());
+        model.addAttribute("listTypeOfMaintenance", typeOfMaintenanceService.getAllTypes());
+        Status status1 = statusService.getStatusById(1);
+        Status status2 = statusService.getStatusById(2);
+        model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+        model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("listStatus", repairSheetService.getAllRepairSheets());
+        return "tech_card";
     }
 }
 

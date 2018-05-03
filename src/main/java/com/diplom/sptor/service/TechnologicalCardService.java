@@ -1,6 +1,7 @@
 package com.diplom.sptor.service;
 
 import com.diplom.sptor.domain.Equipment;
+import com.diplom.sptor.domain.Status;
 import com.diplom.sptor.domain.TechnologicalCard;
 import com.diplom.sptor.domain.TypeOfMaintenance;
 import com.diplom.sptor.repository.TechnologicalCardRepository;
@@ -48,4 +49,7 @@ public class TechnologicalCardService {
         return technologicalCardRepository.findByEquipmentAndTypeOfMaintenance(equipment, typeOfMaintenance);
     }
 
+    public List<TechnologicalCard> getTechnologicalCardByStatus(Status status){
+        return technologicalCardRepository.findByStatus(status);
+    }
 }

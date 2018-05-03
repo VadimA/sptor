@@ -3,7 +3,7 @@
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
     <definition name="template"
-                template="/WEB-INF/views/tiles/layouts/main_template.jsp"> <!-- Общий шаблон -->
+                template="/WEB-INF/views/tiles/layouts/main_template.jsp">
      <put-attribute name="header"
                        value="/WEB-INF/views/tiles/layouts/top_menu.jsp" />
         <put-attribute name="footer"
@@ -12,58 +12,60 @@
                        value="/WEB-INF/views/tiles/layouts/menu_right.jsp" />
         <put-attribute name="menu_left"
                        value="/WEB-INF/views/tiles/layouts/menu_left.jsp" />
-        <!--    <put-attribute name="side"
-                        value="/WEB-INF/views/tiles/signinsignup.jsp" /> -->
+
     </definition>
-    <definition name="homePage" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="homePage" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/home.jsp" />
     </definition>
-    <definition name="repairPage" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="repairPage" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/repair.jsp" />
     </definition>
-    <definition name="graphics" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="graphics" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/graphics.jsp" />
     </definition>
-    <definition name="equipment" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="equipment" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/equipment.jsp" />
     </definition>
-    <definition name="documents" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="documents" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/documents.jsp" />
     </definition>
-    <definition name="equipments" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="equipments" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/equipments.jsp" />
     </definition>
-    <definition name="manual" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="manual" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/manual.jsp" />
     </definition>
-    <definition name="orders" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="orders" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/orders.jsp" />
     </definition>
-    <definition name="planning" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="planning" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/planning.jsp" />
     </definition>
-    <definition name="spares" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="spares" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/spare.jsp" />
     </definition>
-    <definition name="subdivision" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="subdivision" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/subdivision.jsp" />
     </definition>
-    <definition name="subdivisions" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="subdivisions" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/subdivisions.jsp" />
     </definition>
-    <definition name="users" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="users" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/users.jsp" />
     </definition>
-    <definition name="work_hours" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="work_hours" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/work_hours.jsp" />
     </definition>
-    <definition name="ppr_graphic" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="ppr_graphic" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/ppr_graphic.jsp" />
     </definition>
-    <definition name="ppr_graphic_year" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="ppr_graphic_year" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/ppr_graphic_year.jsp" />
     </definition>
-    <definition name="repair_cycle" extends="template"> <!-- Шаблон главной страницы -->
+    <definition name="repair_cycle" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/repair_cycle.jsp" />
+    </definition>
+    <definition name="tech_card" extends="template">
+        <put-attribute name="body" value="/WEB-INF/views/tech_card.jsp" />
     </definition>
 </tiles-definitions>

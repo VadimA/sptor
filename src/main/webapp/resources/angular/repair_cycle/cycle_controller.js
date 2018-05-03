@@ -10,7 +10,6 @@ angular.module('cycleApp').controller('CycleController', ['$scope', 'CycleServic
             .then(
                 function(d) {
                     self.subdivisions = d;
-                    console.log('Sub = ' + d[0].equipments_sub[0].equipmentName);
                 },
                 function(errResponse){
                     console.error('Error while fetching Equipments');

@@ -36,6 +36,10 @@ public class TechnologicalCard implements Serializable{
     private Date  end_date;
 
     @ManyToOne()
+    @JoinColumn(name = "status")
+    private  Status status;
+
+    @ManyToOne()
     @JoinColumn(name = "responsible_for_delivery")
     private Organization responsible_for_delivery;
 
@@ -49,7 +53,7 @@ public class TechnologicalCard implements Serializable{
 
     public TechnologicalCard(TypeOfMaintenance type_of_maintenance, Equipment equipment, long technological_card_number,
                              Date start_date, Date end_date, Organization responsible_for_delivery, User responsible_for_reception,
-                             String description) {
+                             String description, Status status) {
         this.typeOfMaintenance = type_of_maintenance;
         this.equipment = equipment;
         this.technological_card_number = technological_card_number;
@@ -58,6 +62,7 @@ public class TechnologicalCard implements Serializable{
         this.responsible_for_delivery = responsible_for_delivery;
         this.responsible_for_reception = responsible_for_reception;
         this.description = description;
+        this.status = status;
     }
 
     public int getTechnological_card_id() {
@@ -130,6 +135,14 @@ public class TechnologicalCard implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
