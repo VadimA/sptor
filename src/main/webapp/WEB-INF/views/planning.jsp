@@ -26,8 +26,8 @@
 <div class="generic-container" ng-controller="PlanController as ctrl">
     <div class="panel panel-default">
         <!-- Default panel contents -->
-        <label for="startDate">Месяц :</label>
-        <input name="startDate" id="startDate" class="date-picker" />
+        <!--<label for="startDate">Месяц :</label>
+        <input name="startDate" id="startDate" class="date-picker" />-->
         <div class="panel-heading"><span class="lead">Список оборудования, нуждающегося в ремонте: </span></div>
         <div class="tablecontainer">
             <table ng-table="ctrl.tableParams" class="table table-condensed table-bordered table-striped">

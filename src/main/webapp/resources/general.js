@@ -214,15 +214,6 @@ function workedHours(equipment_id){
             }
         }
     });
-    $.ajax({
-        type: "GET",
-        contentType: 'application/json',
-        url: "/working_hours/year/"+equipment_id,
-        dataType: 'json',
-        mimeType: 'application/json',
-    }).done(function( data ) {
-        $("#result").append("<h3>Наработка за год: </h3> " + data);
-    });
 }
 
 function addWorkedHours() {

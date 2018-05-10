@@ -1,15 +1,10 @@
 package com.diplom.sptor.web;
 
-import com.diplom.sptor.domain.Equipment;
-import com.diplom.sptor.domain.TypeOfMaintenance;
+import com.diplom.sptor.domain.*;
 import com.diplom.sptor.planning.PlanningUtils;
-import com.diplom.sptor.domain.Graphic;
-import com.diplom.sptor.domain.RepairOperation;
 import com.diplom.sptor.planning.domain.RepairUnit;
 import com.diplom.sptor.planning.domain.YearPlan;
-import com.diplom.sptor.service.EquipmentService;
-import com.diplom.sptor.service.GraphicService;
-import com.diplom.sptor.service.TypeOfMaintenanceService;
+import com.diplom.sptor.service.*;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +39,15 @@ public class PlanningController {
 
     @Autowired
     GraphicService graphicService;
+
+    @Autowired
+    RepairSheetService repairSheetService;
+
+    @Autowired
+    SubdivisionService subdivisionService;
+
+    @Autowired
+    StatusService statusService;
 
     public void setYearPlan(YearPlan yearPlan) {
         this.yearPlan = yearPlan;
@@ -89,6 +93,20 @@ public class PlanningController {
     @RequestMapping(value = "/planning/graphics/month", method = RequestMethod.GET,
             produces = "application/json")
     public String getPagePPRGraphic(Model model) {
+        model.addAttribute("listRepair", repairSheetService.getAllRepairSheets());
+        model.addAttribute("status_one", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(1)).size());
+        model.addAttribute("status_two", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(2)).size() + repairSheetService.getRepairSheetByStatus(statusService.getStatusById(3)).size());
+        model.addAttribute("status_three", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(4)).size());
+        model.addAttribute("status_four", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(5)).size());
+        model.addAttribute("status_all", repairSheetService.getAllRepairSheets().size());
+        model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
+        model.addAttribute("listEquipments", equipmentService.getAllEquipment());
+        model.addAttribute("listTypeOfMaintenance", typeOfMaintenanceService.getAllTypes());
+        Status status1 = statusService.getStatusById(1);
+        Status status2 = statusService.getStatusById(2);
+        model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+        model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("listStatus", repairSheetService.getAllRepairSheets());
         return "ppr_graphic";
     }
 
