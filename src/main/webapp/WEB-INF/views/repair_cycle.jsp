@@ -9,37 +9,28 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Ремонтный цикл</title>
+
 </head>
 <body ng-app="cycleApp" class="ng-cloak">
+
+<div id="jstree_demo_div"></div>
+
 <div class="col-md-4" ng-controller="CycleController as ctrl" >
     <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">List of Equipments </span></div>
+        <div class="panel-heading"><span class="lead">Список оборудования:</span></div>
         <div class="tablecontainer">
-        <table class="table table-hover">
-            <tr ng:repeat="item in ctrl.subdivisions">
-                <td>
-                    {{item.subdivision_name}}
-                    <table ng-show="item.equipments_sub">
-                        <tr ng:repeat="eq in item.equipments_sub">
-                            <td><button type="button"  ng-click='getRepairCycleByEquipment(eq.equipmentId)' >{{eq.equipmentName}}</button></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+            <table class="table table-condensed table-bordered table-striped">
+                    <tr ng-repeat="item in ctrl.equipments">
+                        <td><a ng-href='#here' ng-click="getRepairCycleByEquipment('item.equipmentId')" ><span ng-bind="item.equipmentName"></span></a></td>
+                    </tr>
+            </table>
     </div>
     </div>
 </div>
-<div class="col-md-8">
-    <div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
-        <tr ng:repeat="item in ctrl.repair_cycle">
-            <td>
-                <button type="button" class="btn btn-default">{{item}}</button>
-            </td>
-        </tr>
-    </div>
+
+<div class="col-md-8" id="result">
+
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>

@@ -62,6 +62,9 @@
     <definition name="ppr_graphic_year" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/ppr_graphic_year.jsp" />
     </definition>
+    <definition name="ppr_graphic_new" extends="template">
+        <put-attribute name="body" value="/WEB-INF/views/ppr_graphic_new.jsp" />
+    </definition>
     <definition name="repair_cycle" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/repair_cycle.jsp" />
     </definition>

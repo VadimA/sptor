@@ -180,12 +180,6 @@
         }
         </security:authorize>
 
-        $.datepicker.setDefaults(
-                $.extend(
-                        {'dateFormat':'yy-mm-dd'},
-                        $.datepicker.regional['ru']
-                )
-        );
         $("#datepicker3").datepicker({ dateFormat: 'yy-mm-dd', minDate: new Date(year,month-1,day)  });
         $("#datepicker4").datepicker({ dateFormat: 'yy-mm-dd', minDate: new Date(year,month-1,day)  });
 
@@ -456,7 +450,6 @@
 </head>
       <div class="content-box-large">
         <div class="panel-heading">
-          <div class="panel-title">Заявки</div>
           <security:authorize access="hasRole('ROLE_ADMIN')">
             </br>
             <button class="btn btn-info" onclick="addRepairSheet()">Новая заявка</button>

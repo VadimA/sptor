@@ -188,7 +188,7 @@ function workedHours(equipment_id){
             mas.push(t);
         }
         console.log(mas);
-        config = {
+        var config = {
             data: mas,
             xkey: 'year',
             ykeys: ['value'],
@@ -401,7 +401,7 @@ function downTime(equipment_id){
             mas.push(t);
         }
         console.log(mas);
-        config = {
+        var config = {
             data: mas,
             xkey: 'year',
             ykeys: ['value'],
@@ -548,4 +548,35 @@ function openEquipment() {
 
 function openDocuments(document_id){
     location.href = "/documents/download/"+document_id;
+}
+
+function getNewGraphicPPR(){
+    $.ajax({
+        type: "GET",
+        contentType: 'application/json',
+        url: "/planning/graphics/new",
+        dataType: 'json',
+        mimeType: 'application/json',
+    }).done(function( data) {
+        location.replace("/planning/graphics/month");
+    });
+}
+
+
+function getRepairCycleByEquipment(equipment_id){
+    $.ajax({
+        type: "GET",
+        contentType: 'application/json',
+        url: "/planning/repair_cycle/"+equipment_id,
+        dataType: 'json',
+        mimeType: 'application/json',
+    }).done(function( data) {
+        jQuery("#result").html("<table class=\"table table-hover\" id=\"params_t\">\n\
+<tbody><tr>");
+        for(var i =0;i<data.length;i++) {
+            components_id = data[i];
+            $("#params_t").append("<td>" + data[i] + "</td>");
+        }
+        jQuery("#result").append("</tr></table>");
+    });
 }

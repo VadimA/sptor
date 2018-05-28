@@ -2,6 +2,7 @@ package com.diplom.sptor.web;
 
 import com.diplom.sptor.domain.*;
 import com.diplom.sptor.planning.PlanningUtils;
+import com.diplom.sptor.planning.domain.Hierarchy;
 import com.diplom.sptor.planning.domain.RepairUnit;
 import com.diplom.sptor.planning.domain.YearPlan;
 import com.diplom.sptor.service.*;
@@ -48,6 +49,9 @@ public class PlanningController {
 
     @Autowired
     StatusService statusService;
+
+    @Autowired
+    TechnologicalCardService technologicalCardService;
 
     public void setYearPlan(YearPlan yearPlan) {
         this.yearPlan = yearPlan;
@@ -110,10 +114,48 @@ public class PlanningController {
         return "ppr_graphic";
     }
 
+    @RequestMapping(value = "/planning/repair_cycle/equipments/all", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody List<Hierarchy> getHierarchyListOfEquipment(Model model) {
+        List<Hierarchy> hierarchies = new ArrayList<>();
+        List<Subdivisions> subdivisionsList = subdivisionService.getAllSubdivisions();
+        for(Subdivisions subdivisions : subdivisionsList){
+            Hierarchy hierarchy = new Hierarchy();
+            hierarchy.setText(subdivisions.getSubdivision_name());
+            List<Hierarchy> eqNames = new ArrayList<>();
+            for(Equipment equipment : subdivisions.getEquipments_sub()){
+                Hierarchy hierarchyLocal = new Hierarchy();
+                hierarchyLocal.setText(equipment.getEquipmentName());
+                eqNames.add(hierarchyLocal);
+            }
+            hierarchy.setNodes(eqNames);
+            hierarchies.add(hierarchy);
+        }
+        return hierarchies;
+    }
+
     @RequestMapping(value = "/planning/graphics/year", method = RequestMethod.GET,
             produces = "application/json")
     public String getPageYearPPRGraphic(Model model) {
+        model.addAttribute("listRepair", repairSheetService.getAllRepairSheets());
+        model.addAttribute("status_one", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(1)).size());
+        model.addAttribute("status_two", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(2)).size() + repairSheetService.getRepairSheetByStatus(statusService.getStatusById(3)).size());
+        model.addAttribute("status_three", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(4)).size());
+        model.addAttribute("status_four", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(5)).size());
+        model.addAttribute("status_all", repairSheetService.getAllRepairSheets().size());
+        model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
+        model.addAttribute("listEquipments", equipmentService.getAllEquipment());
+        model.addAttribute("listTypeOfMaintenance", typeOfMaintenanceService.getAllTypes());
+        Status status1 = statusService.getStatusById(1);
+        Status status2 = statusService.getStatusById(2);
+        model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+        model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("listStatus", repairSheetService.getAllRepairSheets());
         return "ppr_graphic_year";
+    }
+    @RequestMapping(value = "/planning/graphics", method = RequestMethod.GET,
+            produces = "application/json")
+    public String getPageNewPPRGraphic(Model model) {
+        return "ppr_graphic_new";
     }
 
     @ApiOperation(value = "getEquipments", notes = "Get all equipments")
@@ -121,5 +163,22 @@ public class PlanningController {
             produces = "application/json")
     public String getPageRepairCycle(Model model) {
         return "repair_cycle";
+    }
+
+    public void addNewMaintenanceOnPPRPlan(List<RepairOperation> repairOperationList){
+        for(RepairOperation repairOperation : repairOperationList){
+            TechnologicalCard techCard = new TechnologicalCard();
+            techCard.setEquipment(repairOperation.getEquipment());
+            techCard.setType_of_maintenance(repairOperation.getTypeOfMaintenance());
+            techCard.setStatus(statusService.getStatusById(1));
+            techCard.setStart_date(new Date());
+            techCard.setResponsible_for_delivery(repairOperation.getOrganization());
+            techCard.setStart_date(repairOperation.getStartDate());
+            techCard.setEnd_date(repairOperation.getEndDate());
+            techCard.setResponsible_for_reception(planningUtils.getCurrentUser());
+            techCard.setTechnological_card_id(planningUtils.getLastTechCardId());
+            techCard.setTechnological_card_number(planningUtils.getLastTechCardNumber());
+            technologicalCardService.addCard(techCard);
+        }
     }
 }

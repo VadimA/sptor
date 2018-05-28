@@ -139,6 +139,12 @@ public class EquipmentController {
        return typesOfEquipments;
    }
 
+    @RequestMapping(value = "/equipments/all", method = RequestMethod.GET,
+            produces = "application/json")
+    public @ResponseBody List<Equipment> getAllEquipments() {
+        return equipmentService.getAllEquipment();
+    }
+
    @RequestMapping(value = "/working_hours/{equipmentId}", method = RequestMethod.GET,
            produces = "application/json")
    public @ResponseBody

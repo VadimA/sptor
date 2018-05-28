@@ -47,7 +47,6 @@
               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Планирование <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="<c:url value="/planning"/>">Список объектов</a></li>
-                <li><a href="<c:url value="/planning/repair_cycle"/>">Ремонтный цикл</a></li>
                   <li class="dropdown-submenu">
                       <a class="test" tabindex="-1" href="#">Графики ППР<span class="caret"></span></a>
                       <ul class="dropdown-menu">
@@ -55,7 +54,7 @@
                           <li><a href="<c:url value="/planning/graphics/year"/>">Годовой план-график</a></li>
                       </ul>
                   </li>
-                <li><a href="<c:url value="/planning/graphics/new"/>">Рассчитать график ППР</a></li>
+                <li><a href="<c:url value="/planning/graphics"/>">Рассчитать график ППР</a></li>
               </ul>
             </li>
           </security:authorize>

@@ -3,13 +3,14 @@ angular.module('cycleApp').controller('CycleController', ['$scope', 'CycleServic
     self.subdivisions=[];
     self.equipments=[];
     self.repair_cycle = [];
-    getAllSubdivision();
+    getAllEquipments();
 
-    function getAllSubdivision(){
-        CycleService.getAllSubdivision()
+    function getAllEquipments(){
+        CycleService.getAllEquipments()
             .then(
                 function(d) {
-                    self.subdivisions = d;
+                    console.log('Sub = ' + d);
+                    self.equipments = d;
                 },
                 function(errResponse){
                     console.error('Error while fetching Equipments');
@@ -21,8 +22,8 @@ angular.module('cycleApp').controller('CycleController', ['$scope', 'CycleServic
         CycleService.getRepairCycleByEquipment(equipmentId)
             .then(
                 function (d) {
+                    console.log('AAAA = ' + equipmentId);
                     self.repair_cycle.push(d);
-                    console.log('Sub = ' + d[0]);
                 },
                 function(errResponse){
                     console.error('Error while fetching getRepairCycleByEquipment');

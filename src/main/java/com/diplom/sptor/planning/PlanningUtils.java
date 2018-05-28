@@ -49,6 +49,9 @@ public class PlanningUtils {
     @Autowired
     RepairSheetService repairSheetService;
 
+    @Autowired
+    GraphicService graphicService;
+
     public static final int DAY_IN_MONTH = 30;
 
     public static final List<LocalDate> holidays = Arrays.asList(new LocalDate(2018, 1, 1), new LocalDate(2018, 1, 2),
@@ -313,5 +316,30 @@ public class PlanningUtils {
             }
         }
         return Optional.of(repairUnitList);
+    }
+
+    public Integer getLastTechCardId(){
+        List<TechnologicalCard> technologicalCards = technologicalCardService.getAllCards();
+        return technologicalCards.stream().sorted(Comparator.comparing(TechnologicalCard::getTechnological_card_id)
+                .reversed()).collect(Collectors.toList()).get(0).getTechnological_card_id();
+    }
+
+    public long getLastTechCardNumber(){
+        List<TechnologicalCard> technologicalCards = technologicalCardService.getAllCards();
+        return technologicalCards.stream().sorted(Comparator.comparing(TechnologicalCard::getTechnological_card_number)
+                .reversed()).collect(Collectors.toList()).get(0).getTechnological_card_number();
+    }
+
+    public boolean checkExistsOfPlan(Date date, boolean isYear){
+        boolean isExists = false;
+        if(date != null) {
+            for (Graphic graphic : graphicService.getAllGraphics()) {
+                if (graphic.getMonth().getMonth() == date.getMonth() &&
+                        graphic.isYear() == isYear) {
+                    isExists = true;
+                }
+            }
+        }
+        return  isExists;
     }
 }

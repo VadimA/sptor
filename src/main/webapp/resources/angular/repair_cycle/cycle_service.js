@@ -2,21 +2,21 @@ var App = angular.module('cycleApp', []);
 
 angular.module('cycleApp').factory('CycleService', ['$http', '$q', function($http, $q){
 
-    var EQUIPMENT_SERVICE_URI = '/equipments/subdivisions';
+    var EQUIPMENT_SERVICE_URI = '/equipments/all';
     var SUBDIVISION_SERVICE_URI = '/subdivisions/all';
     var CYCLE_URI = '/planning/repair_cycle/';
 
     var factory = {
         getEquipmentsBySubdivision: getEquipmentsBySubdivision,
-        getAllSubdivision: getAllSubdivision,
+        getAllEquipments: getAllEquipments,
         getRepairCycleByEquipment: getRepairCycleByEquipment
     };
 
     return factory;
 
-    function getAllSubdivision() {
+    function getAllEquipments() {
         var deferred = $q.defer();
-        $http.get(SUBDIVISION_SERVICE_URI)
+        $http.get(EQUIPMENT_SERVICE_URI)
             .then(
                 function (response) {
                     deferred.resolve(response.data);
