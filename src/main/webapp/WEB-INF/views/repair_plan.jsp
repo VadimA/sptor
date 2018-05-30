@@ -31,84 +31,6 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script type="text/javascript">
 
-    function addRepairSheet () {
-      jQuery("#new_repair").dialog({
-        title: "Добавление новой заявки",
-        width:550,
-        height: 470,
-        modal: true,
-        resizable:false
-      });
-      $("#datepicker1").datepicker({
-          dateFormat: 'yy-mm-dd',
-          closeText: "Закрыть",
-          prevText: "&#x3C;Пред",
-          nextText: "След&#x3E;",
-          currentText: "Сегодня",
-          monthNames: [ "Январь","Февраль","Март","Апрель","Май","Июнь",
-              "Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь" ],
-          monthNamesShort: [ "Янв","Фев","Мар","Апр","Май","Июн",
-              "Июл","Авг","Сен","Окт","Ноя","Дек" ],
-          dayNames: [ "воскресенье","понедельник","вторник","среда","четверг","пятница","суббота" ],
-          dayNamesShort: [ "вск","пнд","втр","срд","чтв","птн","сбт" ],
-          dayNamesMin: [ "Вс","Пн","Вт","Ср","Чт","Пт","Сб" ],
-          weekHeader: "Нед"
-      });
-      console.log("In method");
-      $('#subdivisions').change(function () {
-        var subdivisions = $(this).val();
-        if (subdivisions == '0') {
-          $('#equipments').html('<option>- Выберите оборудование -</option>');
-          $('#equipments').attr('disabled', true);
-          $('#components').html('<option>- Выберите комплектующие -</option>');
-          $('#components').attr('disabled', true);
-          return(false);
-        }
-        $('#equipments').attr('disabled', true);
-        $('#equipments ').html('<option>загрузка...</option>');
-        $.ajax({
-          type: "GET",
-          contentType: 'application/json',
-          url: "/equipments/work/subdivisions/"+subdivisions,
-          dataType: 'json',
-        }).done(function( data ) {
-          var options = '';
-          for(var i =0;i<data.length;i++) {
-            options += '<option value="' + data[i].equipmentId + '">' + data[i].equipmentName + '</option>';
-          }
-          $('#equipments').html(options);
-          $('#equipments').attr('disabled', false);
-          $('#components').html('<option>- Выберите комплектующие -</option>');
-          $('#components').attr('disabled', true);
-        });
-      });
-
-      //type_of_equipment = 0;
-      $('#equipments').change(function () {
-        equipments = $('#equipments :selected').val();
-        if (equipments == '0') {
-          $('#components').html('<option></option>');
-          $('#components').attr('disabled', true);
-          return (false);
-        }
-        $('#components').attr('disabled', true);
-        $('#components').html('<option>загрузка...</option>');
-        $.ajax({
-          type: "GET",
-          contentType: 'application/json',
-          url: "/components/" + equipments,
-          dataType: 'json',
-        }).done(function (data) {
-          var options = '';
-          for(var i =0;i<data.length;i++) {
-            options += '<option value="' + data[i].componentId + '">' + data[i].spare.spare_name + '</option>';
-          }
-          $('#components').html(options);
-          $('#components').attr('disabled', false);
-        });
-      });
-    }
-
     function openRepair(repairId){
       $.ajax({
         type: "GET",
@@ -403,169 +325,29 @@
       history.go(0);
     }
 
-    function addRepair(){
-        console.log("In method addRepair");
-      $("#error1").text("");
-      $("#error2").text("");
-      $("#error3").text("");
-      $("#error4").text("");
-      $("#error5").text("");
-      $("#error6").text("");
-      $("#error10").text("");
-
-      if($("#equipments").val()=="0"){
-        $("#error2").text("Укажите оборудование");
-      }
-
-      else if($("#datepicker1").val()==""){
-        $("#error5").text("Укажите дату");
-      }
-      else if($("#description").val()==""){
-        $("#error6").text("Укажите описание");
-      }
-      else {
-        var subdivision_id = $("#subdivisions").val();
-        var equipment_id = $("#equipments").val();
-        var components = $("#components").val();
-        if(components == ''){
-            components = 0;
-        }
-        var type_of_maintenance_id = $("#maintenanceType").val();
-        var start_date = $("#datepicker1").val();
-        var description = $("#description").val();
-          console.log("In method addRepair", subdivision_id, equipment_id, components,
-          type_of_maintenance_id, start_date, description);
-        var that = this;
-        $.ajax({
-          type: "POST",
-          url: "/repair/add",
-          content: "application/json",
-          dataType: "json",
-          data: {
-            subdivision_id: subdivision_id,
-            equipment_id: equipment_id,
-            components:components,
-            type_of_maintenance_id: type_of_maintenance_id,
-            start_date: start_date,
-            description: description
-          },
-          success: function (returnData) {
-              console.log("In method addRepair SUCCESS ");
-            $(that).dialog("close");
-          }
-        });
-        refreshContent();
-      }
-    }
   </script>
 
 </head>
       <div class="content-box-large">
-        <div class="panel-heading">
-          <security:authorize access="hasRole('ROLE_ADMIN')">
-            </br>
-            <button class="btn btn-info" onclick="addRepairSheet()">Новая заявка</button>
-          </security:authorize>
-        </div>
-
-        <div id="new_repair"  title="Добавление новой заявки" style="display: none">
-
-          <form:form  modelAttribute="repairSheet" >
-            <table>
-              <tr>
-                <td><label><spring:message text="Цех: "/></label></td>
-                <td>
-                  <select class="form-control" path="subdivision.subdivision_id" name="subdivisions" id="subdivisions">
-                    <c:forEach items="${subdivisions}" var="subdivisions">
-                      <option value="${subdivisions.subdivision_id}">${subdivisions.subdivision_name}</option>
-                    </c:forEach>
-                  </select>
-                  <p id ="error1" style="color: red"></p>
-                </td>
-              </tr>
-              <tr><td><br/></td><td><br/></td></tr>
-              <tr>
-                <td><label><spring:message text="Оборудование: "/></label></td>
-                <td>
-                  <select class="form-control" path="equipment.equipmentId" name="equipments" id="equipments" disabled="disabled">
-                    <option value="0">- Выберите оборудование -</option>
-                  </select>
-                  <p id ="error2" style="color: red"></p>
-                </td>
-              </tr>
-              <tr><td><br/></td><td><br/></td></tr>
-              <tr>
-                <td><label><spring:message text="Комплектующие: "/></label></td>
-                <td>
-                  <select class="form-control" path="component.componentId" name="components" id="components" disabled="disabled">
-                    <c:forEach items="${components}" var="components">
-                      <option value="${components.componentId}">${components.spare.spare_name}</option>
-                    </c:forEach>
-                  </select>
-                  <p id ="error10" style="color: red"></p>
-                </td>
-              </tr>
-              <tr><td><br/></td><td><br/></td></tr>
-              <tr>
-                <td><label><spring:message text="Вид ремонта"/></label></td>
-                <td>
-                  <select class="form-control" path="type_of_maintenance.type_of_maintenance_id" name="maintenanceType" id="maintenanceType">
-                    <c:forEach items="${listTypeOfMaintenance}" var="maintenance">
-                      <option value="${maintenance.type_of_maintenance_id}">${maintenance.type_of_maintenance_name}</option>
-                    </c:forEach>
-                  </select>
-                  <p id ="error4" style="color: red"></p>
-                </td>
-              </tr>
-              <tr><td><br/></td><td><br/></td></tr>
-              <tr>
-                <td><label><spring:message text="Дата"/></label></td>
-                <td><form:input path="start_date" id="datepicker1" readonly="true"/>
-                  <p id ="error5" style="color: red"></p>
-                </td>
-              </tr>
-              <tr><td><br/></td><td><br/></td></tr>
-              <tr>
-                <td><label><spring:message text="Описание"/></label></td>
-                <td><form:input path="description" id="description"/>
-                  <p id ="error6" style="color: red"></p>
-                </td>
-              </tr>
-              <tr><td><br/></td><td><br/></td></tr>
-              <tr>
-                <div style="align-content: center;">
-                <center>
-                <td colspan="2">
-                  <input type="button"
-                         value="<spring:message text="Добавить"/>" onclick="addRepair()"/>
-                  <input type="button"
-                         value="<spring:message text="Закрыть"/>" onclick="jQuery('#new_repair').dialog('close');"/>
-                </center>
-                </div>
-                </td>
-              </tr>
-            </table>
-          </form:form>
-        </div>
         <div class="panel-body" id="allrepair">
           <div class="progress">
-            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="${status_three * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_three/status_all*100}%">
-              <span>Выполненные(${status_three})</span>
+            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="${status_three_plan * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_three/status_all*100}%">
+              <span>Выполненные(${status_three_plan})</span>
             </div>
           </div>
           <div class="progress">
-            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="${status_one * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_one/status_all*100}%">
-              <span>Новые(${status_one})</span>
+            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="${status_one_plan * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_one/status_all*100}%">
+              <span>Новые(${status_one_plan})</span>
             </div>
           </div>
           <div class="progress">
-            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${status_two * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_two/status_all*100}%">
-              <span>В обработке(${status_two})</span>
+            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${status_two_plan * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_two/status_all*100}%">
+              <span>В обработке(${status_two_plan})</span>
             </div>
           </div>
           <div class="progress">
-            <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="${status_four * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_four/status_all*100}%">
-              <span>Отмененные(${status_four})</span>
+            <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="${status_four_plan * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_four/status_all*100}%">
+              <span>Отмененные(${status_four_plan})</span>
             </div>
           </div>
         </div>
@@ -576,34 +358,32 @@
           <thead>
           <tr>
             <th></th>
-            <th>Номер заявки</th>
+            <th>Номер тех.карты</th>
             <th>Статус</th>
             <th>Дата начала</th>
-            <th>Цех</th>
             <th>Ответственный</th>
             <th>Описание</th>
           </tr>
           </thead>
-          <c:forEach items="${listRepair}" var="repair">
-            <tr onclick="openRepair(${repair.repair_sheet_id})">
+          <c:forEach items="${listTechCard}" var="techCard">
+            <tr onclick="openRepair(${techCard.technological_card_id})">
               <td><span class="glyphicon glyphicon-file"></span></td>
-              <td>${repair.sheet_number}</td>
-              <c:if test="${repair.status.status_id==1}">
-              <td><span class="word">${repair.status.status}</span></td>
+              <td>${techCard.technological_card_number}</td>
+              <c:if test="${techCard.status.status_id==1}">
+              <td><span class="word">${techCard.status.status}</span></td>
               </c:if>
-              <c:if test="${repair.status.status_id==2||repair.status.status_id==3}">
-                <td><span class="word2">${repair.status.status}</span></td>
+              <c:if test="${techCard.status.status_id==2||repair.status.status_id==3}">
+                <td><span class="word2">${techCard.status.status}</span></td>
               </c:if>
-              <c:if test="${repair.status.status_id==4}">
-                <td><span class="word4">${repair.status.status}</span></td>
+              <c:if test="${techCard.status.status_id==4}">
+                <td><span class="word4">${techCard.status.status}</span></td>
               </c:if>
-              <c:if test="${repair.status.status_id==5}">
-                <td><span class="word3">${repair.status.status}</span></td>
+              <c:if test="${techCard.status.status_id==5}">
+                <td><span class="word3">${techCard.status.status}</span></td>
               </c:if>
-              <td><fmt:formatDate value="${repair.start_date}" pattern="dd-MM-yyyy" /></td>
-              <td>${repair.subdivision.subdivision_name}</td>
-              <td>${repair.responsibleForDelivery.name}</td>
-              <td>${repair.description}</td>
+              <td><fmt:formatDate value="${techCard.start_date}" pattern="dd-MM-yyyy" /></td>
+              <td>${techCard.responsible_for_delivery.name}</td>
+              <td>${techCard.description}</td>
             </tr>
           </c:forEach>
         </table>

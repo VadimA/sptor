@@ -47,7 +47,7 @@
         if (subdivisions == '0') {
           $('#equipments').html('<option>- Выберите оборудование -</option>');
           $('#equipments').attr('disabled', true);
-          $('#components').html('<option>- Выберите комплектующие -</option>');
+          $('#components').html('<option></option>');
           $('#components').attr('disabled', true);
           return(false);
         }

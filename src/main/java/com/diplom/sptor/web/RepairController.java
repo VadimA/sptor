@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by user on 02.02.2016.
@@ -76,7 +77,8 @@ public class RepairController {
             produces = "application/json")
     public String RepairStart(Model model) {
         model.addAttribute("repairSheet", new RepairSheet());
-        model.addAttribute("listRepair", repairSheetService.getAllRepairSheets());
+        model.addAttribute("listRepair", repairSheetService.getAllRepairSheets().stream().sorted(Comparator.comparing(
+                RepairSheet::getStart_date).reversed()).collect(Collectors.toList()));
         model.addAttribute("status_one", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(1)).size());
         model.addAttribute("status_two", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(2)).size() + repairSheetService.getRepairSheetByStatus(statusService.getStatusById(3)).size());
         model.addAttribute("status_three", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(4)).size());
@@ -94,11 +96,9 @@ public class RepairController {
         return "repairPage";
     }
 
-
-
     @RequestMapping(value = "/add", method = RequestMethod.POST,
             produces = "application/json")
-    public String addRepairSheet(
+    public void addRepairSheet(
             @RequestParam int subdivision_id,
             @RequestParam int equipment_id,
             @RequestParam int components,
@@ -106,6 +106,7 @@ public class RepairController {
             @RequestParam String start_date,
             @RequestParam String description
     ) throws ParseException {
+        System.out.println("IN addRepairSheet" + equipment_id);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date start = formatter.parse(start_date);
         Date end = formatter.parse(start_date);
@@ -116,20 +117,19 @@ public class RepairController {
         Organization resp_for_delivery = organizationService.getOrganizationById(1);
         User resp_for_reception = userService.getUserById(1);
         Equipment equipment = equipmentService.getEquipmentById(equipment_id);
-        Components components1 = componentService.getComponentById(components);
+        Components component = null;
+        if(components != 0) {
+            component = componentService.getComponentById(components);
+            deleteComponentInStock(component);
+        }
         Subdivisions subdivisions = subdivisionService.getSubdivisionById(subdivision_id);
         TypeOfMaintenance typeOfMaintenance = typeOfMaintenanceService.getTypeById(type_of_maintenance_id);
         int sheet_number = equipment_id + 33000;
         int warranty_period = type_of_maintenance_id;
         repairSheetService.addRepairSheet(new RepairSheet(typeOfMaintenance, equipment,
-                components1, subdivisions, start, end_date.toDate(), sheet_number, warranty_period,
+                component, subdivisions, start, end_date.toDate(), sheet_number, warranty_period,
                 resp_for_delivery, resp_for_reception, description, status));
-
-        deleteComponentInStock(components1);
         changeStatusOfEquipment(equipment, status, typeOfMaintenance);
-
-        return "repairPage";
-
     }
 
     public void deleteComponentInStock(Components components){
@@ -198,7 +198,7 @@ public class RepairController {
     }
 
     @ApiOperation(value = "getRepairSheetById", notes = "Get all equipments")
-    @RequestMapping(value = "/repair/{repairId}", method = RequestMethod.POST,
+    @RequestMapping(value = "/{repairId}", method = RequestMethod.POST,
             produces = "application/json")
     public void updateStatusRepair(@PathVariable("repairId") int repairId,
                                    @RequestParam String date,

@@ -169,7 +169,7 @@ public class PlanningController {
         for(RepairOperation repairOperation : repairOperationList){
             TechnologicalCard techCard = new TechnologicalCard();
             techCard.setEquipment(repairOperation.getEquipment());
-            techCard.setType_of_maintenance(repairOperation.getTypeOfMaintenance());
+            techCard.setTypeOfMaintenance(repairOperation.getTypeOfMaintenance());
             techCard.setStatus(statusService.getStatusById(1));
             techCard.setStart_date(new Date());
             techCard.setResponsible_for_delivery(repairOperation.getOrganization());

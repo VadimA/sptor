@@ -20,6 +20,9 @@
     <definition name="repairPage" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/repair.jsp" />
     </definition>
+    <definition name="repairPlanPage" extends="template">
+        <put-attribute name="body" value="/WEB-INF/views/repair_plan.jsp" />
+    </definition>
     <definition name="graphics" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/graphics.jsp" />
     </definition>

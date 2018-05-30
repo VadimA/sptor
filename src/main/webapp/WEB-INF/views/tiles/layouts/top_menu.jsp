@@ -39,7 +39,13 @@
           <security:authorize access="hasRole('ROLE_ADMIN')">
             <li><a href="<c:url value="/equipments"/>">Оборудование</a></li>
           </security:authorize>
-          <li><a href="<c:url value="/repair"/>">Заявки</a></li>
+          <li class="dropdown-submenu">
+            <a class="test" tabindex="-1">Заявки<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="<c:url value="/repair"/>">Внеплановые</a></li>
+              <li><a href="<c:url value="/techcards"/>">Плановые</a></li>
+            </ul>
+          </li>
           <security:authorize access="hasRole('ROLE_ADMIN')">
             <li><a href="<c:url value="/graphics"/>">План-график</a></li>
             <li><a href="<c:url value="/users"/>">Справочники</a></li>

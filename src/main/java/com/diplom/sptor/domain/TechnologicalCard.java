@@ -51,10 +51,10 @@ public class TechnologicalCard implements Serializable{
 
     public TechnologicalCard(){}
 
-    public TechnologicalCard(TypeOfMaintenance type_of_maintenance, Equipment equipment, long technological_card_number,
+    public TechnologicalCard(TypeOfMaintenance typeOfMaintenance, Equipment equipment, long technological_card_number,
                              Date start_date, Date end_date, Organization responsible_for_delivery, User responsible_for_reception,
                              String description, Status status) {
-        this.typeOfMaintenance = type_of_maintenance;
+        this.typeOfMaintenance = typeOfMaintenance;
         this.equipment = equipment;
         this.technological_card_number = technological_card_number;
         this.start_date = start_date;
@@ -73,12 +73,12 @@ public class TechnologicalCard implements Serializable{
         this.technological_card_id = technological_card_id;
     }
 
-    public TypeOfMaintenance getType_of_maintenance() {
+    public TypeOfMaintenance getTypeOfMaintenance() {
         return typeOfMaintenance;
     }
 
-    public void setType_of_maintenance(TypeOfMaintenance type_of_maintenance) {
-        this.typeOfMaintenance = type_of_maintenance;
+    public void setTypeOfMaintenance(TypeOfMaintenance typeOfMaintenance) {
+        this.typeOfMaintenance = typeOfMaintenance;
     }
 
     public Equipment getEquipment() {
@@ -154,7 +154,7 @@ public class TechnologicalCard implements Serializable{
 
         if (getTechnological_card_id() != that.getTechnological_card_id()) return false;
         if (getTechnological_card_number() != that.getTechnological_card_number()) return false;
-        if (!getType_of_maintenance().equals(that.getType_of_maintenance())) return false;
+        if (!getTypeOfMaintenance().equals(that.getTypeOfMaintenance())) return false;
         if (!getEquipment().equals(that.getEquipment())) return false;
         if (!getStart_date().equals(that.getStart_date())) return false;
         if (getEnd_date() != null ? !getEnd_date().equals(that.getEnd_date()) : that.getEnd_date() != null)
@@ -169,7 +169,7 @@ public class TechnologicalCard implements Serializable{
     @Override
     public int hashCode() {
         int result = getTechnological_card_id();
-        result = 31 * result + getType_of_maintenance().hashCode();
+        result = 31 * result + getTypeOfMaintenance().hashCode();
         result = 31 * result + getEquipment().hashCode();
         result = 31 * result + (int) (getTechnological_card_number() ^ (getTechnological_card_number() >>> 32));
         result = 31 * result + getStart_date().hashCode();

@@ -51,11 +51,11 @@ public class TimeLineUtils {
 
     public static Text fillTextToTechCard(TechnologicalCard technologicalCard){
         Text text = new Text();
-        text.setHeadline(technologicalCard.getType_of_maintenance().getType_of_maintenance_name() + " для " +
+        text.setHeadline(technologicalCard.getTypeOfMaintenance().getType_of_maintenance_name() + " для " +
                         technologicalCard.getEquipment().getEquipmentName());
         text.setText("Номер карты: " + technologicalCard.getTechnological_card_number()
                 + System.lineSeparator() + " Оборудование: " + technologicalCard.getEquipment().getEquipmentName()
-                + System.lineSeparator() + " Тип ТО: " + technologicalCard.getType_of_maintenance().getType_of_maintenance_name()
+                + System.lineSeparator() + " Тип ТО: " + technologicalCard.getTypeOfMaintenance().getType_of_maintenance_name()
                 + System.lineSeparator() + " Дата: " + technologicalCard.getEnd_date().getDate()
                 + System.lineSeparator() + " Ответственный: " + technologicalCard.getResponsible_for_delivery().getResponsible()
                 + System.lineSeparator() + " Описание: " + technologicalCard.getDescription());

@@ -276,7 +276,7 @@ public class PlanningUtils {
         double sumOfWorkingHours = 0;
         if(repairCycle != null && !repairCycle.isEmpty()){
             TypeOfMaintenance lastTypeOfMaintenance = technologicalCardService.getTechCardByEquipment(equipment).stream().sorted(Comparator.
-                    comparing(TechnologicalCard::getEnd_date).reversed()).collect(Collectors.toList()).get(0).getType_of_maintenance();
+                    comparing(TechnologicalCard::getEnd_date).reversed()).collect(Collectors.toList()).get(0).getTypeOfMaintenance();
             TypeOfMainToEquipment typeOfMainToEquipment = typeOfMainToEquipmentService.
                     findByTypeOfEquipmentIdAndTypeOfMaintenanceId(equipment.getEquipmentId(), lastTypeOfMaintenance.getType_of_maintenance_id());
             for(int i = 0; i < repairCycle.size(); i++){
