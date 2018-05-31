@@ -77,22 +77,7 @@ public class RepairController {
             produces = "application/json")
     public String RepairStart(Model model) {
         model.addAttribute("repairSheet", new RepairSheet());
-        model.addAttribute("listRepair", repairSheetService.getAllRepairSheets().stream().sorted(Comparator.comparing(
-                RepairSheet::getStart_date).reversed()).collect(Collectors.toList()));
-        model.addAttribute("status_one", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(1)).size());
-        model.addAttribute("status_two", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(2)).size() + repairSheetService.getRepairSheetByStatus(statusService.getStatusById(3)).size());
-        model.addAttribute("status_three", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(4)).size());
-        model.addAttribute("status_four", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(5)).size());
-        model.addAttribute("status_all", repairSheetService.getAllRepairSheets().size());
-        model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
-        model.addAttribute("components", componentService.getAllComponents());
-        model.addAttribute("listEquipments", equipmentService.getAllEquipment());
-        model.addAttribute("listTypeOfMaintenance", typeOfMaintenanceService.getAllTypes());
-        Status status1 = statusService.getStatusById(1);
-        Status status2 = statusService.getStatusById(2);
-        model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
-        model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
-        model.addAttribute("listStatus", repairSheetService.getAllRepairSheets());
+        addParametersToModel(model);
         return "repairPage";
     }
 
@@ -234,5 +219,26 @@ public class RepairController {
             repairSheet.addDescription(description);
         }
         repairSheetService.updateRepairSheet(repairSheet);
+    }
+
+    public void addParametersToModel(Model model){
+        model.addAttribute("listRepair", repairSheetService.getAllRepairSheets().stream().sorted(Comparator.comparing(
+                RepairSheet::getStart_date).reversed()).collect(Collectors.toList()));
+        model.addAttribute("status_one", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(1)).size());
+        model.addAttribute("status_two", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(2)).size() + repairSheetService.getRepairSheetByStatus(statusService.getStatusById(3)).size());
+        model.addAttribute("status_three", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(4)).size());
+        model.addAttribute("status_four", repairSheetService.getRepairSheetByStatus(statusService.getStatusById(5)).size());
+        model.addAttribute("status_all", repairSheetService.getAllRepairSheets().size());
+        model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
+        model.addAttribute("components", componentService.getAllComponents());
+        model.addAttribute("listEquipments", equipmentService.getAllEquipment());
+        model.addAttribute("listTypeOfMaintenance", typeOfMaintenanceService.getAllTypes());
+        Status status1 = statusService.getStatusById(1);
+        Status status2 = statusService.getStatusById(2);
+        model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+        model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("active_techcard", technologicalCardService.getTechnologicalCardByStatus(status1).size());
+        model.addAttribute("confirm_techcard", technologicalCardService.getTechnologicalCardByStatus(status2).size());
+        model.addAttribute("listStatus", repairSheetService.getAllRepairSheets());
     }
 }

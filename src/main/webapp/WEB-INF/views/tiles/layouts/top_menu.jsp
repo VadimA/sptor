@@ -70,15 +70,20 @@
             <li>
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-bell-o"></i>
-                <span class="glyphicon glyphicon-envelope" style="color: red">${active_req}</span>
+                <span class="glyphicon glyphicon-envelope" style="color: red">${active_req + active_techcard}</span>
               </a>
               <ul class="dropdown-menu" style="padding: 15px; ">
-                <li class="header">Поступило новых заявок: <b>${active_req}</b></li>
+                <li class="header">Поступило новых заявок: </li>
                 <li>
                   <!-- inner menu: contains the actual data -->
                   <div class="slimScrollDiv"><ul class="menu">
-                    <li>
+                    <li>Плановых: <b>${active_req}</b>
                       <a href="<c:url value="/repair"/>">
+                        <p>перейти к заявкам</p>
+                      </a>
+                    </li>
+                    <li>Внеплановых: <b>${active_techcard}</b>
+                      <a href="<c:url value="/techcards"/>">
                         <p>перейти к заявкам</p>
                       </a>
                     </li>
@@ -92,15 +97,20 @@
             <li>
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-bell-o"></i>
-                <span class="glyphicon glyphicon-envelope" style="color: red">${confirm_req}</span>
+                <span class="glyphicon glyphicon-envelope" style="color: red">${confirm_req + confirm_techcard}</span>
               </a>
               <ul class="dropdown-menu" style="padding: 15px; ">
-                <li class="header">Заявок на подтверждении: <b>${confirm_req}</b></li>
+                <li class="header">Заявок на подтверждении: </li>
                 <li>
                   <!-- inner menu: contains the actual data -->
                   <div class="slimScrollDiv"><ul class="menu">
-                    <li>
+                    <li>Плановых: <b>${confirm_req}</b>
                       <a href="<c:url value="/repair"/>">
+                        <p>перейти к заявкам</p>
+                      </a>
+                    </li>
+                    <li>Внеплановых: <b>${confirm_techcard}</b>
+                      <a href="<c:url value="/techcards"/>">
                         <p>перейти к заявкам</p>
                       </a>
                     </li>

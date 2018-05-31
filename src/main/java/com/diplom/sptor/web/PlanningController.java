@@ -110,6 +110,8 @@ public class PlanningController {
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
         model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("active_techcard", technologicalCardService.getTechnologicalCardByStatus(status1).size());
+        model.addAttribute("confirm_techcard", technologicalCardService.getTechnologicalCardByStatus(status2).size());
         model.addAttribute("listStatus", repairSheetService.getAllRepairSheets());
         return "ppr_graphic";
     }
@@ -149,6 +151,8 @@ public class PlanningController {
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
         model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("active_techcard", technologicalCardService.getTechnologicalCardByStatus(status1).size());
+        model.addAttribute("confirm_techcard", technologicalCardService.getTechnologicalCardByStatus(status2).size());
         model.addAttribute("listStatus", repairSheetService.getAllRepairSheets());
         return "ppr_graphic_year";
     }

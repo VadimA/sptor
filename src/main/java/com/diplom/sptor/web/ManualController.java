@@ -51,6 +51,9 @@ public class ManualController {
     @Autowired
     TypeOfEquipmentService typeOfEquipmentService;
 
+    @Autowired
+    TechnologicalCardService technologicalCardService;
+
     private String getPrincipal(){
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -80,6 +83,8 @@ public class ManualController {
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
         model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("active_techcard", technologicalCardService.getTechnologicalCardByStatus(status1).size());
+        model.addAttribute("confirm_techcard", technologicalCardService.getTechnologicalCardByStatus(status2).size());
         model.addAttribute("subdivisions", subdivisionService.getAllSubdivisions());
         model.addAttribute("user", userService.getUserBySso(getPrincipal()).getLast_name() + " " +
                 userService.getUserBySso(getPrincipal()).getFirst_name());
@@ -105,6 +110,8 @@ public class ManualController {
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
         model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("active_techcard", technologicalCardService.getTechnologicalCardByStatus(status1).size());
+        model.addAttribute("confirm_techcard", technologicalCardService.getTechnologicalCardByStatus(status2).size());
         return "users";
     }
 
@@ -192,6 +199,8 @@ public class ManualController {
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
         model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("active_techcard", technologicalCardService.getTechnologicalCardByStatus(status1).size());
+        model.addAttribute("confirm_techcard", technologicalCardService.getTechnologicalCardByStatus(status2).size());
         model.addAttribute("spareForm", new Spares());
         return "spares";
     }
@@ -225,6 +234,8 @@ public class ManualController {
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
         model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("active_techcard", technologicalCardService.getTechnologicalCardByStatus(status1).size());
+        model.addAttribute("confirm_techcard", technologicalCardService.getTechnologicalCardByStatus(status2).size());
         return "subdivisions";
     }
 

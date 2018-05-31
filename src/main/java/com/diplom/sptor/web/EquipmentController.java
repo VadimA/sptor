@@ -113,6 +113,8 @@ public class EquipmentController {
         Status status2 = statusService.getStatusById(2);
         model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
         model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("active_techcard", technologicalCardService.getTechnologicalCardByStatus(status1).size());
+        model.addAttribute("confirm_techcard", technologicalCardService.getTechnologicalCardByStatus(status2).size());
         model.addAttribute("techCard", new TechnologicalCard());
         model.addAttribute("listTypeOfMaintenance", typeOfMaintenanceService.getAllTypes());
         model.addAttribute("allEquipment", equipmentService.getAllEquipment().size());
@@ -435,8 +437,12 @@ public class EquipmentController {
         model.addAttribute("listTypeOfMaintenance", typeOfMaintenanceService.getAllTypes());
         Status status1 = statusService.getStatusById(1);
         Status status2 = statusService.getStatusById(2);
-        model.addAttribute("active_req", technologicalCardService.getTechnologicalCardByStatus(status1).size());
-        model.addAttribute("confirm_req", technologicalCardService.getTechnologicalCardByStatus(status2).size());
+        model.addAttribute("active_req", repairSheetService.getRepairSheetByStatus(status1).size());
+        model.addAttribute("confirm_req", repairSheetService.getRepairSheetByStatus(status2).size());
+        model.addAttribute("active_techcard", technologicalCardService.getTechnologicalCardByStatus(status1).size());
+        model.addAttribute("confirm_techcard", technologicalCardService.getTechnologicalCardByStatus(status2).size());
+        model.addAttribute("active_techcard", technologicalCardService.getTechnologicalCardByStatus(status1).size());
+        model.addAttribute("confirm_techcard", technologicalCardService.getTechnologicalCardByStatus(status2).size());
         model.addAttribute("listStatus", technologicalCardService.getAllCards());
         int subdivisionsCount = subdivisionService.getAllSubdivisions().size();
         model.addAttribute("equipment", new Equipment());
