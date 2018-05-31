@@ -653,24 +653,4 @@ public class ServiceController {
 		technologicalCardService.deleteCard(id);
 		return "Deleted successfully";
 	}
-
-	@RequestMapping(value = "/techcards", method = RequestMethod.GET,
-			produces = "application/json")
-	public String RepairPlanStart(Model model) {
-		model.addAttribute("listTechCard", technologicalCardService.getAllCards().stream().sorted(Comparator.comparing(
-				TechnologicalCard::getStart_date).reversed()).collect(Collectors.toList()));
-		model.addAttribute("status_one_plan", technologicalCardService.getTechnologicalCardByStatus(statusService.getStatusById(1)).size());
-		model.addAttribute("status_two_plan", technologicalCardService.getTechnologicalCardByStatus(statusService.getStatusById(2)).size() + technologicalCardService.getTechnologicalCardByStatus(statusService.getStatusById(3)).size());
-		model.addAttribute("status_three_plan", technologicalCardService.getTechnologicalCardByStatus(statusService.getStatusById(4)).size());
-		model.addAttribute("status_four_plan", technologicalCardService.getTechnologicalCardByStatus(statusService.getStatusById(5)).size());
-		model.addAttribute("status_all_plan", technologicalCardService.getAllCards().size());
-		model.addAttribute("listEquipments", equipmentService.getAllEquipment());
-		model.addAttribute("listTypeOfMaintenance", typeOfMaintenanceService.getAllTypes());
-		Status status1 = statusService.getStatusById(1);
-		Status status2 = statusService.getStatusById(2);
-		model.addAttribute("active_req_plan", technologicalCardService.getTechnologicalCardByStatus(status1).size());
-		model.addAttribute("confirm_req_plan", technologicalCardService.getTechnologicalCardByStatus(status2).size());
-		model.addAttribute("listStatus_plan", technologicalCardService.getAllCards());
-		return "repairPlanPage";
-	}
 }

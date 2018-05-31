@@ -40,7 +40,7 @@
             <li><a href="<c:url value="/equipments"/>">Оборудование</a></li>
           </security:authorize>
           <li class="dropdown-submenu">
-            <a class="test" tabindex="-1">Заявки<span class="caret"></span></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Заявки <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="<c:url value="/repair"/>">Внеплановые</a></li>
               <li><a href="<c:url value="/techcards"/>">Плановые</a></li>

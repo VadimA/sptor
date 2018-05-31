@@ -331,23 +331,23 @@
       <div class="content-box-large">
         <div class="panel-body" id="allrepair">
           <div class="progress">
-            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="${status_three_plan * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_three/status_all*100}%">
-              <span>Выполненные(${status_three_plan})</span>
+            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="${tech_status_three * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${tech_status_three/tech_status_all*100}%">
+              <span>Выполненные(${tech_status_three})</span>
             </div>
           </div>
           <div class="progress">
-            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="${status_one_plan * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_one/status_all*100}%">
-              <span>Новые(${status_one_plan})</span>
+            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="${tech_status_one * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${tech_status_one/tech_status_all*100}%">
+              <span>Новые(${tech_status_one})</span>
             </div>
           </div>
           <div class="progress">
-            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${status_two_plan * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_two/status_all*100}%">
-              <span>В обработке(${status_two_plan})</span>
+            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${tech_status_two * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${tech_status_two/tech_status_all*100}%">
+              <span>В обработке(${tech_status_two})</span>
             </div>
           </div>
           <div class="progress">
-            <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="${status_four_plan * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${status_four/status_all*100}%">
-              <span>Отмененные(${status_four_plan})</span>
+            <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="${tech_status_four * 10}" aria-valuemin="0" aria-valuemax="100" style="width: ${tech_status_four/tech_status_all*100}%">
+              <span>Отмененные(${tech_status_four})</span>
             </div>
           </div>
         </div>
