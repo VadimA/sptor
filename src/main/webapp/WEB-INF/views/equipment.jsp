@@ -111,7 +111,7 @@
                     <tr><td><br/></td><td><br/></td></tr>
                     <tr>
                         <td><form:label path="description">Описание &nbsp</form:label></td>
-                        <td><form:textarea path="description" /></td>
+                        <td><form:textarea rows="4" cols="30" path="description" id="description"/></td>
                     </tr>
                     <tr><td><br/></td><td><br/></td></tr>
                     <tr>
@@ -153,7 +153,7 @@
             <tr><td><br/></td><td><br/></td></tr>
             <tr>
               <td><label><spring:message text="Описание"/></label></td>
-              <td><form:input path="description" id="description_tech"/></td>
+              <td><form:textarea rows="4" cols="30" path="description" id="description_tech"/></td>
             </tr>
             <tr><td><br/></td><td><br/></td></tr>
             <tr>
@@ -183,7 +183,7 @@
                     <tr><td><br/></td><td><br/></td></tr>
                     <tr>
                         <td><form:label path="description">Описание </form:label></td>
-                        <td><form:textarea path="description" /></td>
+                        <td><form:textarea rows="4" cols="30" path="description" id="description"/></td>
                     </tr>
                     <tr><td><br/></td><td><br/></td></tr>
                     <tr>

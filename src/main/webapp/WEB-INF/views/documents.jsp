@@ -85,7 +85,7 @@
           </tr>
           <tr>
             <td><form:label path="description">Описание</form:label></td>
-            <td><form:textarea path="description" /></td>
+            <td><form:textarea rows="4" cols="30" path="description" id="description"/></td>
           </tr>
           <tr>
             <td><form:label path="content">Document</form:label></td>

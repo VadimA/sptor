@@ -23,10 +23,11 @@
 
   <div class="container" align="center">
 
-    <c:if test="${not empty error}">
-      <div class="error">${error}</div>
+    <c:if test="${param.error != null}">
+      <div id="error" class="alert alert-danger">
+          <p>Вы ввели некорректный логин или пароль</p>
+      </div>
     </c:if>
-
     <c:if test="${param.logout != null}">
       <div class="alert alert-success">
         <p>Вы успешно вышли из системы.</p>

@@ -175,7 +175,7 @@
         <security:authorize access="hasRole('ROLE_REPAIR')">
         if(status==1) {
           jQuery("#repairDialog").append("</br><center><div><p><b>Дата начала работ:</b></p><input id=\"datepicker3\" readonly=\"true\"  tabindex=\"-1\" /><p id =\"errordate\" style=\"color: red\"></p>\n\
-            <p><b>Комментарий:</b></p><input type=\"text\" id=\"reason\"/><p id =\"errorreason\" style=\"color: red\"></p></br><button onclick=\"confirmRepair(1);\">Перевести в обработку</button>" +
+            <p><b>Комментарий:</b></p><textarea rows=\"4\" cols=\"30\" path=\"description\"  id=\"reason\"/><p id =\"errorreason\" style=\"color: red\"></p></br><button onclick=\"confirmRepair(1);\">Перевести в обработку</button>" +
                   "<button onclick=\"rejectRepair(1);\">Отклонить</button></div></center>");
         }
 
@@ -191,7 +191,7 @@
 
         <security:authorize access="hasRole('ROLE_ADMIN')">
         if(status==2) {
-          jQuery("#repairDialog").append("<center><div style=\"align-content: center;\"><p style=\"align-content: center;\"> <b>Комментарий:</b></p><input id=\"manager_comment\"/>\n\
+          jQuery("#repairDialog").append("<center><div style=\"align-content: center;\"><p style=\"align-content: center;\"> <b>Комментарий:</b></p><textarea rows=\"4\" cols=\"30\" path=\"description\" id=\"manager_comment\"/>\n\
                 <p id =\"manager_error\" style=\"color: red\"></p></br><button onclick=\"confirmRepair(2);\">Подтвердить</button><spacer width=\"100\" type=\"block\">" +
                   "<button onclick=\"rejectRepair(2);\">Отправить на пересмотр</button></div></center>");
         }
@@ -527,21 +527,21 @@
               <tr><td><br/></td><td><br/></td></tr>
               <tr>
                 <td><label><spring:message text="Описание"/></label></td>
-                <td><form:input path="description" id="description"/>
+                <td><form:textarea rows="4" cols="30" path="description" id="description"/>
                   <p id ="error6" style="color: red"></p>
                 </td>
               </tr>
               <tr><td><br/></td><td><br/></td></tr>
               <tr>
-                <div style="align-content: center;">
                 <center>
+                <div style="align-content: center;">
                 <td colspan="2">
                   <input type="button"
                          value="<spring:message text="Добавить"/>" onclick="addRepair()"/>
                   <input type="button"
                          value="<spring:message text="Закрыть"/>" onclick="jQuery('#new_repair').dialog('close');"/>
-                </center>
                 </div>
+                </center>
                 </td>
               </tr>
             </table>

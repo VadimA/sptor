@@ -120,7 +120,7 @@
               <tr><td><br/></td><td><br/></td></tr>
               <tr>
                 <td><label><spring:message text="Описание "/></label></td>
-                <td><form:input path="description" id="work_hour4" />
+                <td><form:textarea rows="4" cols="30" path="description" id="work_hour4"/>
                   <p id ="error4" style="color: red"></p>
                 </td>
               </tr>
