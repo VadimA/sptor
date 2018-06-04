@@ -63,6 +63,7 @@
                 <li><a href="<c:url value="/planning/graphics"/>">Рассчитать график ППР</a></li>
               </ul>
             </li>
+            <li><a href="<c:url value="/stock"/>">Склад</a></li>
           </security:authorize>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -78,12 +79,12 @@
                   <!-- inner menu: contains the actual data -->
                   <div class="slimScrollDiv"><ul class="menu">
                     <li>Плановых: <b>${active_req}</b>
-                      <a href="<c:url value="/repair"/>">
+                      <a href="<c:url value="/techcards"/>">
                         <p>перейти к заявкам</p>
                       </a>
                     </li>
                     <li>Внеплановых: <b>${active_techcard}</b>
-                      <a href="<c:url value="/techcards"/>">
+                      <a href="<c:url value="/repair"/>">
                         <p>перейти к заявкам</p>
                       </a>
                     </li>
@@ -105,12 +106,12 @@
                   <!-- inner menu: contains the actual data -->
                   <div class="slimScrollDiv"><ul class="menu">
                     <li>Плановых: <b>${confirm_req}</b>
-                      <a href="<c:url value="/repair"/>">
+                      <a href="<c:url value="/techcards"/>">
                         <p>перейти к заявкам</p>
                       </a>
                     </li>
                     <li>Внеплановых: <b>${confirm_techcard}</b>
-                      <a href="<c:url value="/techcards"/>">
+                      <a href="<c:url value="/repair"/>">
                         <p>перейти к заявкам</p>
                       </a>
                     </li>

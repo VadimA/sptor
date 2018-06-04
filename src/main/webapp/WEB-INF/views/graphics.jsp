@@ -24,7 +24,7 @@
               dataType: 'json',
               mimeType: 'application/json',
           }).done(function( data ) {
-              mas = [];
+              var mas = [];
               for (var i = 0; i <= data.length - 1; i++) {
                   var id = data[i].repair_sheet_id;
                   var date = new Date(data[i].start_date);
@@ -35,39 +35,57 @@
                   var t = {id : id,start: dtade, end: end_date, title: desc, allDay: true, url: "/repair"};
                   mas.push(t);
               }
-              var date = new Date();
-              var d = date.getDate();
-              var m = date.getMonth();
-              var y = date.getFullYear();
-              $('#calendar').fullCalendar({
-                  header: {
-                      left: 'prev,next today',
-                      center: 'title',
-                      right: 'month,agendaWeek,agendaDay'
-                  },
-                  monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
-                  monthNamesShort: ['Янв.','Фев.','Март','Апр.','Май','Июн.','Июл.','Авг.','Сент.','Окт.','Ноя.','Дек.'],
-                  dayNames: ["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"],
-                  dayNamesShort: ["ВС","ПН","ВТ","СР","ЧТ","ПТ","СБ"],
-                  buttonText: {
-                      prev: "Пред",
-                      next: "След",
-                      prevYear: "Пред. год",
-                      nextYear: "След. год",
-                      today: "Сегодня",
-                      month: "Месяц",
-                      week: "Неделя",
-                      day: "День"
-                  },
-                  defaultDate: new Date(y, m, d),
-                  lang: 'ru',
-                  buttonIcons: false, // show the prev/next text
-                  weekNumbers: true,
-                  editable: true,
-                  eventLimit: true, // allow "more" link when too many events
-                  events: mas
+              $.ajax({
+                  type: "GET",
+                  contentType: 'application/json',
+                  url: "/techcard/all",
+                  dataType: 'json',
+                  mimeType: 'application/json',
+              }).done(function( data ) {
+                  for (var i = 0; i <= data.length - 1; i++) {
+                      var id = data[i].technological_card_number;
+                      var date = new Date(data[i].start_date);
+                      var mm = date.getMonth() + 1;
+                      var dtade = data[i].start_date;
+                      var end_date = new Date(data[i].end_date);
+                      var desc = data[i].typeOfMaintenance.type_of_maintenance_name + " " + data[i].equipment.typeOfEquipment.type_of_equipment_name + " " + data[i].equipment.equipmentName;
+                      var t = {id : id,start: dtade, end: end_date, title: desc, allDay: true, url: "/repair"};
+                      console.log(t);
+                      mas.push(t);
+                  }
+                  var date = new Date();
+                  var d = date.getDate();
+                  var m = date.getMonth();
+                  var y = date.getFullYear();
+                  $('#calendar').fullCalendar({
+                      header: {
+                          left: 'prev,next today',
+                          center: 'title',
+                          right: 'month,agendaWeek,agendaDay'
+                      },
+                      monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+                      monthNamesShort: ['Янв.','Фев.','Март','Апр.','Май','Июн.','Июл.','Авг.','Сент.','Окт.','Ноя.','Дек.'],
+                      dayNames: ["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"],
+                      dayNamesShort: ["ВС","ПН","ВТ","СР","ЧТ","ПТ","СБ"],
+                      buttonText: {
+                          prev: "Пред",
+                          next: "След",
+                          prevYear: "Пред. год",
+                          nextYear: "След. год",
+                          today: "Сегодня",
+                          month: "Месяц",
+                          week: "Неделя",
+                          day: "День"
+                      },
+                      defaultDate: new Date(y, m, d),
+                      lang: 'ru',
+                      buttonIcons: false, // show the prev/next text
+                      weekNumbers: true,
+                      editable: true,
+                      eventLimit: true, // allow "more" link when too many events
+                      events: mas
+                  });
               });
-              //renderCalendar();
           });
       });
       function generateGraphics(){

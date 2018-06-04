@@ -198,7 +198,7 @@
         if(status==3&&(toir_id==3||toir_id==4||toir_id==5)){
           jQuery("#repairDialog").append("<center><div style=\"align-content: center;\"><button onclick=\"generateActIn();\">Сформировать акт передачи</button></div></center>");
         }
-        if(status==5&&(toir_id==3||toir_id==4||toir_id==5)){
+        if((status==4 || status==5) && (toir_id==3||toir_id==4||toir_id==5)){
           jQuery("#repairDialog").append("<center><div style=\"align-content: center;\"><button onclick=\"generateActOut();\">Сформировать акт приемки</button></div></center>");
         }
         </security:authorize>

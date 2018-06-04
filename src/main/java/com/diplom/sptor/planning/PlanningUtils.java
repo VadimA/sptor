@@ -91,7 +91,7 @@ public class PlanningUtils {
     public Optional<Date> getNextDateOfMaintenanceByEquipment(Equipment equipment, TypeOfMainToEquipment typeOfMainToEquipment, Date lastDateOfMaintenance) {
         if (typeOfMainToEquipment != null && lastDateOfMaintenance != null) {
             return Optional.ofNullable(new DateTime(lastDateOfMaintenance).plusDays(typeOfMainToEquipment.getPeriodicity() * DAY_IN_MONTH).toDate());
-        } else {
+        } else{
             return Optional.ofNullable(new LocalDate(equipment.getDateOfBeginExploitation()).plusDays(
                     typeOfMainToEquipment.getPeriodicity() * DAY_IN_MONTH).toDate());
         }

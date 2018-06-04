@@ -137,6 +137,11 @@ public class TechnologicalCard implements Serializable{
         this.description = description;
     }
 
+    public void addDescription(String description){
+        String oldDescription = this.getDescription();
+        this.setDescription(oldDescription+ " | " + description);
+    }
+
     public Status getStatus() {
         return status;
     }

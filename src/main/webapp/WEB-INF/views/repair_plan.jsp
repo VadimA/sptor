@@ -35,14 +35,13 @@
       $.ajax({
         type: "GET",
         contentType: 'application/json',
-        url: "/repair/"+repairId,
+        url: "/techcard/"+repairId,
         dataType: 'json',
         mimeType: 'application/json',
       }).done(function( data ) {
 
         jQuery("#repairDialog").html("<div class=\"col-md-6\" style=\"margin: 8px;\">\n\
             <p class=\"form-control-static\"> <b>Номер заявки: </b></p>\n\
-            <p class=\"form-control-static\"> <b>Цех: </b></p>\n\
             <p class=\"form-control-static\"> <b>Оборудование: </b></p>\n\
             <p class=\"form-control-static\"> <b>Тип ремонта: </b></p>\n\
             <p class=\"form-control-static\"> <b>Дата заявки:</b></p>\n\
@@ -53,8 +52,6 @@
 \n\
           <div id = \"info\" class=\"col-md-5\" style=\"margin: 8px;\" align=\"left\">\n\
             <p class=\"form-control-static\" id=\"repair_sheet_id\"></p>\n\
-\n\
-            <p class=\"form-control-static\" id=\"subdivision_id\"></p>\n\
 \n\
             <p class=\"form-control-static\" id=\"equipment_id\"></p>\n\
 \n\
@@ -80,25 +77,24 @@
         }
         var dtade = day + "-" + month + "-" + date.getFullYear();
         desc = data.description;
-        repair_id = data.repair_sheet_id;
+        repair_id = data.technological_card_id;
         status = data.status.status_id;
         start_date = dtade;
-        toir_type = data.type_of_maintenance.type_of_maintenance_name;
-        toir_id = data.type_of_maintenance.type_of_maintenance_id;
-        jQuery("#repair_sheet_id").text(data.sheet_number);
-        jQuery("#subdivision_id").text(data.subdivision.subdivision_name);
+        toir_type = data.typeOfMaintenance.type_of_maintenance_name;
+        toir_id = data.typeOfMaintenance.type_of_maintenance_id;
+        jQuery("#repair_sheet_id").text(data.technological_card_number);
         jQuery("#equipment_id").text(data.equipment.equipmentName);
-        jQuery("#type_of_maintenance_id").text(data.type_of_maintenance.type_of_maintenance_name);
+        jQuery("#type_of_maintenance_id").text(data.typeOfMaintenance.type_of_maintenance_name);
         jQuery("#start_date").text(dtade);
-        jQuery("#responsible_for_delivery").text(data.responsibleForDelivery.name);
+        jQuery("#responsible_for_delivery").text(data.responsible_for_delivery.name);
         jQuery("#repair_title").text(desc);
         jQuery("#status").text(data.status.status);
 
         <security:authorize access="hasRole('ROLE_REPAIR')">
+
         if(status==1) {
-          jQuery("#repairDialog").append("</br><center><div><p><b>Дата начала работ:</b></p><input id=\"datepicker3\" readonly=\"true\"  tabindex=\"-1\" /><p id =\"errordate\" style=\"color: red\"></p>\n\
-            <p><b>Комментарий:</b></p><input type=\"text\" id=\"reason\"/><p id =\"errorreason\" style=\"color: red\"></p></br><button onclick=\"confirmRepair(1);\">Перевести в обработку</button>" +
-                  "<button onclick=\"rejectRepair(1);\">Отклонить</button></div></center>");
+            jQuery("#repairDialog").append("</br><center><div><p><b>Дата начала работ:</b></p><input id=\"datepicker3\" readonly=\"true\"  tabindex=\"-1\" /><p id =\"errordate\" style=\"color: red\"></p>\n\
+            <p><b>Комментарий:</b></p><textarea rows=\"4\" cols=\"30\" path=\"description\"  id=\"reason\"/><p id =\"errorreason\" style=\"color: red\"></p></br><button onclick=\"confirmRepair(2);\">Перевести в обработку</button>");
         }
 
         if(status==3) {
@@ -112,15 +108,10 @@
         $("#datepicker4").datepicker({ dateFormat: 'yy-mm-dd', minDate: new Date(year,month-1,day)  });
 
         <security:authorize access="hasRole('ROLE_ADMIN')">
-        if(status==2) {
-          jQuery("#repairDialog").append("<center><div style=\"align-content: center;\"><p style=\"align-content: center;\"> <b>Комментарий:</b></p><input id=\"manager_comment\"/>\n\
-                <p id =\"manager_error\" style=\"color: red\"></p></br><button onclick=\"confirmRepair(2);\">Подтвердить</button><spacer width=\"100\" type=\"block\">" +
-                  "<button onclick=\"rejectRepair(2);\">Отправить на пересмотр</button></div></center>");
-        }
-        if(status==3&&(toir_id==3||toir_id==4||toir_id==5)){
+        if(status==3&&(toir_id==1||toir_id==2||toir_id==7)){
           jQuery("#repairDialog").append("<center><div style=\"align-content: center;\"><button onclick=\"generateActIn();\">Сформировать акт передачи</button></div></center>");
         }
-        if(status==5&&(toir_id==3||toir_id==4||toir_id==5)){
+        if(status==4 &&(toir_id==1||toir_id==2||toir_id==7)){
           jQuery("#repairDialog").append("<center><div style=\"align-content: center;\"><button onclick=\"generateActOut();\">Сформировать акт приемки</button></div></center>");
         }
         </security:authorize>
@@ -158,7 +149,7 @@
           var that = this;
           $.ajax({
             type: "POST",
-            url: "/repair/" + repair_id,
+            url: "/techcard/" + repair_id,
             content: "application/json",
             dataType: "json",
             data: {
@@ -176,25 +167,32 @@
       }
       else if(statusId==2){
         $("#manager_error").text("");
-
-        var description = $("#manager_comment").val();
-        var status = 3;
-        var that = this;
-        $.ajax({
-          type: "POST",
-          url: "/repair/confirm/" + repair_id,
-          content: "application/json",
-          dataType: "json",
-          data: {
-            status: status,
-            description: description
-          },
-          success: function (returnData) {
-            alert("Заявка подтверждена");
-            $(that).dialog("close");
-          }
-        });
-        refreshContent();
+        if ($("#datepicker3").val() == "") {
+            $("#errordate").text("Укажите дату");
+        }
+        else if ($("#reason").val() == ""){
+            $("#errorreason").text("Заполните комментарий");
+        }
+        else {
+            var description = $("#manager_comment").val();
+            var status = 3;
+            var that = this;
+            $.ajax({
+                type: "POST",
+                url: "/techcard/confirm/" + repair_id,
+                content: "application/json",
+                dataType: "json",
+                data: {
+                    status: status,
+                    description: description
+                },
+                success: function (returnData) {
+                    alert("Заявка подтверждена");
+                    $(that).dialog("close");
+                }
+            });
+            refreshContent();
+        }
       }
       else if(statusId==3) {
 
@@ -209,7 +207,7 @@
           var that = this;
           $.ajax({
             type: "POST",
-            url: "/repair/" + repair_id,
+            url: "/techcard/" + repair_id,
             content: "application/json",
             dataType: "json",
             data: {
@@ -219,70 +217,6 @@
             },
             success: function (returnData) {
               alert("Заявка выполнена");
-              $(that).dialog("close");
-            }
-          });
-          refreshContent();
-        }
-      }
-    }
-
-    function rejectRepair(statusId){
-
-      if(statusId==1) {
-        $("#errordate").text("");
-        $("#errorreason").text("");
-
-        if ($("#datepicker3").val() == "") {
-          $("#errordate").text("Укажите дату");
-        }
-        else if ($("#reason").val() == "") {
-          $("#errorreason").text("Укажите описание");
-        }
-        else {
-          var date = $("#datepicker3").val();
-          var description = $("#reason").val();
-          var status = 5;
-          var that = this;
-          $.ajax({
-            type: "POST",
-            url: "/repair/" + repair_id,
-            content: "application/json",
-            dataType: "json",
-            data: {
-              date: date,
-              status: status,
-              description: description
-            },
-            success: function (returnData) {
-              alert("Заявка отклонена");
-              $(that).dialog("close");
-            }
-          });
-          refreshContent();
-        }
-      }
-      else if(statusId==2){
-        $("#manager_error").text("");
-
-        if ($("#manager_comment").val() == "") {
-          $("#manager_error").text("Укажите причину");
-        }
-        else{
-          var description = $("#manager_comment").val();
-          var status = 1;
-          var that = this;
-          $.ajax({
-            type: "POST",
-            url: "/repair/confirm/" + repair_id,
-            content: "application/json",
-            dataType: "json",
-            data: {
-              status: status,
-              description: description
-            },
-            success: function (returnData) {
-              alert("Заявка отправлена на пересмотр");
               $(that).dialog("close");
             }
           });
@@ -372,7 +306,7 @@
               <c:if test="${techCard.status.status_id==1}">
               <td><span class="word">${techCard.status.status}</span></td>
               </c:if>
-              <c:if test="${techCard.status.status_id==2||repair.status.status_id==3}">
+              <c:if test="${techCard.status.status_id==2||techCard.status.status_id==3}">
                 <td><span class="word2">${techCard.status.status}</span></td>
               </c:if>
               <c:if test="${techCard.status.status_id==4}">

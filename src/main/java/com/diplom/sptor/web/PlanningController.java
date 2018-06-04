@@ -53,6 +53,9 @@ public class PlanningController {
     @Autowired
     TechnologicalCardService technologicalCardService;
 
+    @Autowired
+    RepairOperationService repairOperationService;
+
     public void setYearPlan(YearPlan yearPlan) {
         this.yearPlan = yearPlan;
     }
@@ -167,6 +170,32 @@ public class PlanningController {
             produces = "application/json")
     public String getPageRepairCycle(Model model) {
         return "repair_cycle";
+    }
+
+    public void approvePPRPlan(Graphic graphic){
+        graphic.setStatus(2);
+        List<RepairOperation> repairOperationList = repairOperationService.getAllRepairSheets();
+        for(RepairOperation operation: repairOperationList){
+            if(operation.getGraphicId().getGraphicId() == graphic.getGraphicId()){
+                operation.setViolation(true);
+                repairOperationService.update(operation);
+            }
+        }
+    }
+
+    public void resetOtherGraphics(Graphic graphic){
+        List<Graphic> graphicList = graphicService.getAllGraphics();
+        List<RepairOperation> repairOperationList = null;
+        for(Graphic graphicDB : graphicList){
+            if(graphicDB.getGraphicId() != graphic.getGraphicId() && graphicDB.getStatus() == 2){
+                graphicDB.setGraphicId(3);
+                repairOperationList = repairOperationService.getRepairSheetByGraphicId(graphicDB.getGraphicId());
+                for(RepairOperation operation: repairOperationList){
+                    operation.setViolation(false);
+                    repairOperationService.update(operation);
+                }
+            }
+        }
     }
 
     public void addNewMaintenanceOnPPRPlan(List<RepairOperation> repairOperationList){

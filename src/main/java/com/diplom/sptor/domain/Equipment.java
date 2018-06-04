@@ -3,6 +3,7 @@ package com.diplom.sptor.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -37,6 +38,7 @@ public class Equipment implements Serializable{
     private int inventoryNumber;
 
     @Column(name = "graduation_year")
+    @DateTimeFormat(pattern = "dd-mm-yyyy")
     private Date graduationYear;
 
     @Column(name = "producer_of_equipment")
@@ -55,6 +57,7 @@ public class Equipment implements Serializable{
     private StatusOfEquipment status;
 
     @Column(name = "date_of_exploitation")
+    @DateTimeFormat(pattern = "dd-mm-yyyy")
     private Date dateOfBeginExploitation;
 
     public Equipment() {}

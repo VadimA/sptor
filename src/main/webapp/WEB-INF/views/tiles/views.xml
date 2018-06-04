@@ -74,4 +74,7 @@
     <definition name="tech_card" extends="template">
         <put-attribute name="body" value="/WEB-INF/views/tech_card.jsp" />
     </definition>
+    <definition name="stock" extends="template">
+        <put-attribute name="body" value="/WEB-INF/views/stock.jsp" />
+    </definition>
 </tiles-definitions>

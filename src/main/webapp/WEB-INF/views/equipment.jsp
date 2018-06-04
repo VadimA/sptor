@@ -40,11 +40,16 @@
             chart.draw(data, options);
         }
 
+        console.log(current_equipment);
+        if(current_equipment){
+            console.log(resultHTML);
+            jQuery("#result").html(resultHTML);
+        }
   </script>
 
 
 </head>
-
+<body  onload="getList();">
       <div class="text-center" style="display: table; margin: 0 auto; text-align: center;">
         <div class="btn-toolbar" \>
           <div class="btn-group">
@@ -213,4 +218,5 @@
     <script src="js/jquery.ba-cond.min.js"></script>
     <script src="js/jquery.slitslider.js"></script>
   </div>
+</body>
 </html>

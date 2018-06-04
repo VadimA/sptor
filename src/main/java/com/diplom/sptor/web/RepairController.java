@@ -105,7 +105,9 @@ public class RepairController {
         Components component = null;
         if(components != 0) {
             component = componentService.getComponentById(components);
-            deleteComponentInStock(component);
+            if(!deleteComponentInStock(component)){
+                component = null;
+            }
         }
         Subdivisions subdivisions = subdivisionService.getSubdivisionById(subdivision_id);
         TypeOfMaintenance typeOfMaintenance = typeOfMaintenanceService.getTypeById(type_of_maintenance_id);
@@ -117,10 +119,15 @@ public class RepairController {
         changeStatusOfEquipment(equipment, status, typeOfMaintenance);
     }
 
-    public void deleteComponentInStock(Components components){
-        Spares spares =  spareService.getSpareById(components.getSpare().getSpare_id());
-        spares.setAmount_in_stock(spares.getAmount_in_stock() - 1);
-        //this.SpareService.updateSpare(spares);
+    public boolean deleteComponentInStock(Components components){
+        boolean isValid = false;
+        Spares spare =  spareService.getSpareById(components.getSpare().getSpare_id());
+        if(spare.getAmount_in_stock() - 1 > 0) {
+            spare.setAmount_in_stock(spare.getAmount_in_stock() - 1);
+            isValid = true;
+        }
+        spareService.saveSpare(spare);
+        return isValid;
     }
 
     public void changeStatusOfEquipment(Equipment equipment, Status status, TypeOfMaintenance typeOfMaintenance){

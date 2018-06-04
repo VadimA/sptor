@@ -11,13 +11,19 @@ function getList () {
         }
         e.stopPropagation();
     });
+    console.log(current_equipment);
+    if(current_equipment){
+        console.log(resultHTML);
+        jQuery("#result").html(resultHTML);
+    }
 }
 
 function SendGet(equipment_id) {
+    window.location.replace("/equipments/" + equipment_id);
     $.ajax({
         type: "GET",
         contentType: 'application/json',
-        url: "/equipments/"+equipment_id,
+        url: "/equipment/"+equipment_id,
         dataType: 'json',
         mimeType: 'application/json',
     }).done(function( data ) {
@@ -50,13 +56,14 @@ function SendGet(equipment_id) {
         jQuery("#eq_type").text(data.typeOfEquipment.type_of_equipment_name);
         jQuery("#eq_sub").text(data.subdivision.subdivision_name);
         jQuery("#eq_inv").text(data.inventoryNumber);
-        jQuery("#eq_year").text(data.graduationYear);
+        jQuery("#eq_year").text(dateConvert(data.graduationYear));
         jQuery("#eq_prod").text(data.producerOfEquipment);
         jQuery("#eq_desc").text(data.description);
 
         current_equipment = equipment_id;
         current_equipment_name = data.equipmentName;
         current_equipment_type = data.typeOfEquipment.type_of_equipment_id;
+        resultHTML = '';
     });
 }
 
@@ -547,6 +554,7 @@ function openEquipment() {
 }
 
 function openDocuments(document_id){
+    resultHTML = document.getElementById('result').innerHTML;
     location.href = "/documents/download/"+document_id;
 }
 
