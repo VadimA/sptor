@@ -6,7 +6,6 @@
 <%@ page session="false" isELIgnored="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 
-<html>
 <head>
   <title>ИС ПТОР Оборудование</title>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -39,17 +38,22 @@
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
             chart.draw(data, options);
         }
-
-        console.log(current_equipment);
-        if(current_equipment){
-            console.log(resultHTML);
-            jQuery("#result").html(resultHTML);
+        if (window.location.hash) {
+            var hashJson = window.location.hash.substring(1);
+            window.location.hash = "";
+            // Restore the deserialized data to memory
+            myData = decodeURIComponent(hashJson).split('##')[3];
+            current_equipment = decodeURIComponent(hashJson).split('##')[0];
+            current_equipment_name = decodeURIComponent(hashJson).split('##')[1];
+            current_equipment_type = decodeURIComponent(hashJson).split('##')[2];
+            console.log("BBBB ===== ",myData);
+            console.log("EQUIPMENT ===== ",current_equipment);
+            jQuery("#result").html(myData);
         }
   </script>
 
 
 </head>
-<body  onload="getList();">
       <div class="text-center" style="display: table; margin: 0 auto; text-align: center;">
         <div class="btn-toolbar" \>
           <div class="btn-group">
@@ -207,7 +211,6 @@
                 </table>
             </form:form>
         </div>
-    </div>
 
 
     <script src="js/vendor/jquery-1.9.1.min.js"></script>
@@ -217,6 +220,3 @@
 
     <script src="js/jquery.ba-cond.min.js"></script>
     <script src="js/jquery.slitslider.js"></script>
-  </div>
-</body>
-</html>

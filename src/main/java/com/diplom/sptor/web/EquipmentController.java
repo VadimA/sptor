@@ -456,8 +456,8 @@ public class EquipmentController {
     @RequestMapping(value = "/techcard/confirm/{repairId}", method = RequestMethod.POST,
             produces = "application/json")
     public void confirmRepair(@PathVariable("repairId") int repairId,
-                              @RequestParam int status,
-                              @RequestParam String description, Model model) throws ParseException  {
+                              int status,
+                              String description, Model model) throws ParseException  {
         TechnologicalCard technologicalCard= technologicalCardService.getCardById(repairId);
         Status statusNew = statusService.getStatusById(status);
         technologicalCard.setStatus(statusNew);

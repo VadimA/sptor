@@ -117,7 +117,7 @@
         </security:authorize>
 
         jQuery("#repairDialog").dialog({
-          title: "Заявка №"+ data.sheet_number,
+          title: "Заявка №"+ data.technological_card_number,
           width:650,
           height: 570,
           resizable:false,

@@ -11,19 +11,16 @@ function getList () {
         }
         e.stopPropagation();
     });
-    console.log(current_equipment);
-    if(current_equipment){
-        console.log(resultHTML);
-        jQuery("#result").html(resultHTML);
+    if(myData) {
+        jQuery("#result").html(myData);
     }
 }
 
 function SendGet(equipment_id) {
-    window.location.replace("/equipments/" + equipment_id);
     $.ajax({
         type: "GET",
         contentType: 'application/json',
-        url: "/equipment/"+equipment_id,
+        url: "/equipments/"+equipment_id,
         dataType: 'json',
         mimeType: 'application/json',
     }).done(function( data ) {
@@ -92,16 +89,16 @@ function getTechCard(equipment_id){
     }).done(function( data ) {
 
         cards = data;
-        jQuery("#result").html("<center></br><h5>Оборудование: " + current_equipment_name + "</h5></center><button class=\"btn btn-default\"  type=\"button\" onclick=\"addTechCard()\">Добавить тех.карту</button></br><table class=\"table table-hover\" id=\"params_t\">\n\
+        jQuery("#result").html("<center></br><h5>Оборудование: " + current_equipment_name + "</h5></center></br><table class=\"table table-hover\" id=\"params_t\">\n\
 <thead>\n\
-  <tr><th>Номер тех.карты</th><th>Ответственный</th><th>Дата начала</th><th>Дата окончания</th></tr>\n\
+  <tr><th></th><th>Номер тех.карты</th><th>Ответственный</th><th>Дата начала</th><th>Дата окончания</th></tr>\n\
   </thead>\n\
 <tbody>\n");
         for(var i =0;i<cards.length;i++) {
             number = i;
             var startDate = dateConvert(cards[i].start_date);
             var endDate = dateConvert(cards[i].end_date);
-            $("#params_t").append("<tr><td onclick=\"openTechCard(cards[number].technological_card_id)\"><span class=\"glyphicon glyphicon-file\"></span></td> <td>" + cards[i].technological_card_number + "</td><td>" + cards[i].responsible_for_delivery.responsible + "</td><td>" + startDate + "</td><td>" + endDate +"</td></tr>");
+            $("#params_t").append("<tr><td onclick=\"openTechCard(cards[number].technological_card_id)\"><span class=\"glyphicon glyphicon-file\" role=\"button\"></span></td> <td>" + cards[i].technological_card_number + "</td><td>" + cards[i].responsible_for_delivery.responsible + "</td><td>" + startDate + "</td><td>" + endDate +"</td></tr>");
         }
     });
 }
@@ -212,7 +209,7 @@ function workedHours(equipment_id){
         Morris.Area(config);
 
         if(data.length <1){
-            $("#myfirstchart").append("<h4>По данному образцу оборудования не имеется истории показателя наработки</h4>");
+            $("#myfirstchart").append("</br><h4>По данному образцу оборудования не имеется истории показателя наработки</h4>");
         }
         else {
             for (var i = 0; i <= data.length - 1; i++) {
@@ -235,23 +232,28 @@ function addWorkedHours() {
                 {
                     text: 'Добавить',
                     click: function() {
-                        var value = parseFloat(document.getElementById("work_hour").value);
-                        var that = this;
-                        $(that).dialog("close");
-                        $("#work_hour").val("0.0");
-                        $.ajax({
-                            type: "POST",
-                            url: "/working_hours/add",
-                            content: "application/json",
-                            dataType: "json",
-                            context: $(this),
-                            data: {value: value, equipment_id: current_equipment},
-                            success: function (returnData) {
-                                $(that).dialog("close");
-                                //window.location.reload(true);//$('#container').html(returnData);
-                            }
-                        });
-                        history.go(0);
+                        if (parseFloat(document.getElementById("work_hour").value) <= 0 || parseFloat(document.getElementById("work_hour").value)>100) {
+                            $("#errormsg").text("Неверное значение");
+                        }
+                        else {
+                            var value = parseFloat(document.getElementById("work_hour").value);
+                            var that = this;
+                            $(that).dialog("close");
+                            $("#work_hour").val("0.0");
+                            $.ajax({
+                                type: "POST",
+                                url: "/working_hours/add",
+                                content: "application/json",
+                                dataType: "json",
+                                context: $(this),
+                                data: {value: value, equipment_id: current_equipment},
+                                success: function (returnData) {
+                                    $(that).dialog("close");
+                                    //window.location.reload(true);//$('#container').html(returnData);
+                                }
+                            });
+                            workedHours(current_equipment);
+                        }
                     }},
                 {
                     text: 'Закрыть',
@@ -425,7 +427,7 @@ function downTime(equipment_id){
         Morris.Area(config);
 
         if(data.length <1){
-            $("#myfirstchart").append("<h4>По данному образцу оборудования не имеется истории показателя наработки</h4>");
+            $("#myfirstchart").append("</br><h4>По данному образцу оборудования не имеется истории показателя простоя</h4>");
         }
         else {
             for (var i = 0; i <= data.length - 1; i++) {
@@ -468,11 +470,8 @@ function addDownTime() {
                                     //window.location.reload(true);//$('#container').html(returnData);
                                 }
                             });
-                            SendGet(current_equipment);
                             downTime(current_equipment);
                         }
-                        SendGet(current_equipment);
-                        downTime(current_equipment);
                     }},
                 {
                     text: 'Закрыть',
@@ -501,7 +500,8 @@ function getDocuments(equipment_id){
         for(var i =0;i<data.length;i++) {
             components_id = data[i].component_id;
             var changeDate = dateConvert(data[i].date_of_adding);
-            $("#params_t").append("<tr><td onclick=\"openDocuments(this.innerHTML)\">" + data[i].document_id + "</td><td>" + data[i].document_name + "</td><td>" + changeDate + "</td><td>" + data[i].description + "</td></tr>");
+            document_id = data[i].document_id;
+            $("#params_t").append("<tr><td onclick=\"openDocuments(document_id, current_equipment, current_equipment_name, current_equipment_type)\"><span class=\"glyphicon glyphicon-file\" role=\"button\"></span></td><td>" + data[i].document_name + "</td><td>" + changeDate + "</td><td>" + data[i].description + "</td></tr>");
         }
         jQuery("#result").append("<table class=\"table table-hover\" id=\"repair_t\"></table>");
     });
@@ -553,9 +553,11 @@ function openEquipment() {
     );
 }
 
-function openDocuments(document_id){
+function openDocuments(document_id, equipment, equipment_name, equipment_type){
     resultHTML = document.getElementById('result').innerHTML;
-    location.href = "/documents/download/"+document_id;
+    console.log("AAAA = ", resultHTML);
+    window.location.hash = encodeURIComponent(equipment +"##"+ equipment_name + "##" + equipment_type + "##" + resultHTML);
+    window.location.href = "/documents/download/"+document_id;
 }
 
 function getNewGraphicPPR(){

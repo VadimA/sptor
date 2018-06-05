@@ -47,7 +47,7 @@
             </ul>
           </li>
           <security:authorize access="hasRole('ROLE_ADMIN')">
-            <li><a href="<c:url value="/graphics"/>">План-график</a></li>
+            <li><a href="<c:url value="/graphics"/>">Календарь-график</a></li>
             <li><a href="<c:url value="/users"/>">Справочники</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Планирование <span class="caret"></span></a>

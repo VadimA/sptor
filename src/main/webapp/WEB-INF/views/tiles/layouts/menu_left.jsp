@@ -5,11 +5,11 @@
 
 <div class="tree well" align="left">
     <li>
-        <span>Все оборудование</span>
+        <span role="button">Все оборудование</span>
         <ul id="all_equipments">
             <c:forEach items="${subdivisions}" var="subdivision" begin="0" end="${subdivisions.size()}" varStatus="status">
                 <li>
-                    <span >${subdivisions.get(status.index).subdivision_name}</span>
+                    <span role="button">${subdivisions.get(status.index).subdivision_name}</span>
                     <c:if test="${subdivisions.get(status.index).subdivision_id==1}">
                         <ul id="myeq1" class="myeq1">
                         </ul>
@@ -41,16 +41,16 @@
                         }).done(function( data ) {
                             for(var i =0;i<data.length;i++) {
                                 if(data[i].status.status_id==1) {
-                                    var html = "<li style='color: #228B22; list-style-type: square;'> <span style='color: green;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
+                                    var html = "<li style='color: #228B22; list-style-type: square;'> <span role='button' style='color: green;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
                                 }
                                 if(data[i].status.status_id==2) {
-                                    var html = "<li style='color: orange; list-style-type: square;'> <span  style='color: orange;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
+                                    var html = "<li style='color: orange; list-style-type: square;'> <span role='button' style='color: orange;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
                                 }
                                 if(data[i].status.status_id==3) {
-                                    var html = "<li style='color: #FF4500; list-style-type: square;'> <span  style='color: red;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
+                                    var html = "<li style='color: #FF4500; list-style-type: square;'> <span role='button' style='color: red;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
                                 }
                                 if(data[i].status.status_id==4) {
-                                    var html = "<li style='color: #B0C4DE; list-style-type: square;'> <span  style='color: grey;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
+                                    var html = "<li style='color: #B0C4DE; list-style-type: square;'> <span  role='button' style='color: grey;' onclick=\"SendGet(" + data[i].equipmentId + ");\">" + data[i].equipmentName + "</span> </li>";
                                 }
                                 if(data[i].subdivision.subdivision_id==1) {
                                     jQuery("#myeq1").append(html);
