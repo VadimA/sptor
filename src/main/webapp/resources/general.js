@@ -11,7 +11,10 @@ function getList () {
         }
         e.stopPropagation();
     });
-    if(myData) {
+    if (typeof myData === "undefined") {
+        console.log('myData is not defined');
+    }
+    else{
         jQuery("#result").html(myData);
     }
 }
@@ -252,6 +255,7 @@ function addWorkedHours() {
                                     //window.location.reload(true);//$('#container').html(returnData);
                                 }
                             });
+                            SendGet(current_equipment);
                             workedHours(current_equipment);
                         }
                     }},
@@ -470,6 +474,7 @@ function addDownTime() {
                                     //window.location.reload(true);//$('#container').html(returnData);
                                 }
                             });
+                            SendGet(current_equipment);
                             downTime(current_equipment);
                         }
                     }},

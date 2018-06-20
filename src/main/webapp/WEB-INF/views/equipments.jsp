@@ -25,6 +25,7 @@
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
   <script>
+      window.onload = getEquipment;
     $(document).ready(function() {
       $("#datepicker1").datepicker({ dateFormat: 'yy' });
       $("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });
@@ -39,7 +40,7 @@
   </style>
 
 </head>
-<body onload="getEquipment();">
+<body>
       <center>
         <div class="text-center" style="display: table; margin: 0 auto; text-align: center;">
           <div class="btn-toolbar" \>

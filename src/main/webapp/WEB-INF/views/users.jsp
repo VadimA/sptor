@@ -28,6 +28,8 @@
   <title>ИС ПТОР Оборудование</title>
   <script type="text/javascript">
 
+      window.onload = getUsers;
+
     function getUsers(){
       $.ajax({
         type: "GET",
@@ -62,17 +64,8 @@
     }
   </script>
 
-  <script>
-    $(document).ready(function() {
-      $("#datepicker1").datepicker({ dateFormat: 'yy-mm-dd' });
-      $("#datepicker2").datepicker({ dateFormat: 'yy-mm-dd' });
-
-    });
-  </script>
-
-
 </head>
-<body onload="getUsers();">
+<body>
       </br>
       <center>
         <div class="text-center" style="display: table; margin: 0 auto; text-align: center;">

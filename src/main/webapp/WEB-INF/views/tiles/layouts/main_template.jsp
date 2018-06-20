@@ -49,7 +49,7 @@
    .morris-hover.morris-default-style .morris-hover-point{white-space:nowrap;margin:0.1em 0}
  </style>
 </head>
-<body  onload="getList();">
+<body onload="getList();">
 
 <div id="container">
   <div id="header" class="col-md-12">

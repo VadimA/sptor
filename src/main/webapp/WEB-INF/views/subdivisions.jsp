@@ -27,7 +27,7 @@
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
   <script type="text/javascript">
-
+    window.onload = getSubdivision;
     function getSubdivision(){
       $.ajax({
         type: "GET",
@@ -64,7 +64,7 @@
   </script>
 
 </head>
-<body onload="getSubdivision();">
+<body>
       <center>
         <div class="text-center" style="display: table; margin: 0 auto; text-align: center;">
           <div class="btn-toolbar" \>
