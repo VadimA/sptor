@@ -198,7 +198,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-            <version>4.0.4.RELEASE</version>
+            <version>5.2.14.RELEASE</version>
         </dependency>
 
         <dependency>
