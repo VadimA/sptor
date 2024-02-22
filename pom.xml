@@ -168,7 +168,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.4.1212</version>
+            <version>42.7.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -299,7 +299,7 @@
                 <dependency>
                     <groupId>org.postgresql</groupId>
                     <artifactId>postgresql</artifactId>
-                    <version>9.4.1212</version>
+                    <version>42.7.2</version>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.tomcat</groupId>
@@ -345,7 +345,7 @@
                 <dependency>
                     <groupId>org.postgresql</groupId>
                     <artifactId>postgresql</artifactId>
-                    <version>9.4.1212</version>
+                    <version>42.7.2</version>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.tomcat</groupId>
